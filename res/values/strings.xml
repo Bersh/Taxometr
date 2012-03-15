@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Android Archetype</string>
+    <string name="text1">Maven</string>
+    <string name="text2">Android Archetype</string>
+  	
+</resources>

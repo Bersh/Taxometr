@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>Taxometr</groupId>
+	<artifactId>Taxometr</artifactId>
+	<version>1.0</version>
+	<packaging>apk</packaging>
+	<name>Android Quick Start</name>
+
+
+	<properties>
+		<outputDirectory>target/classes</outputDirectory>
+		<!-- Path to the sdk in the file system -->
+		<sdkPath>C:\Program Files (x86)\Android\android-sdk\</sdkPath>
+	</properties>
+
+	<repositories>
+        <repository>
+          <id>mavenAndroid</id>
+          <name>central</name>
+          <url>https://maven-android-archetype.googlecode.com/svn/repository</url>
+    </repository>
+	
+ </repositories>
+ 
+ <dependencies>
+		<dependency>
+			<groupId>com.google</groupId>
+			<artifactId>android</artifactId>
+			<version>2.2_r2</version>
+            <!--<version>2.2</version>-->
+			<scope>provided</scope>
+		</dependency>
+
+				
+		
+<!-- 
+===================================
+GOOGLE MAPS DEPENDENCY
+===================================
+-->
+<!-- 
+		<dependency>
+   			<groupId>com.google.android.maps</groupId>
+    		<artifactId>maps</artifactId>
+    		<version>8_r2</version>
+    		<scope>provided</scope>
+		</dependency>
+-->
+	</dependencies>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<testSourceDirectory>src/test/java</testSourceDirectory>
+		<resources>
+			<resource>
+				<directory>res</directory>
+			</resource>
+		</resources>
+
+		<plugins>
+<!--			<plugin>
+				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+				<artifactId>maven-android-plugin</artifactId>
+				<version>2.6.0</version>-->
+            <plugin>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <version>3.1.1</version>
+				<configuration>
+					<sdk>
+						<path>${sdkPath}</path>
+						<platform>2.2</platform>
+					</sdk>
+					<deleteConflictingFiles>true</deleteConflictingFiles>
+					<androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
+					<resourceDirectory>${project.basedir}/res</resourceDirectory>
+				</configuration>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<id>compile</id>
+						<phase>package</phase>
+						<configuration>
+							<target>
+								<copy file="target/${project.build.finalName}.apk" todir="target/classes" />
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+
+	</build>
+
+</project>
