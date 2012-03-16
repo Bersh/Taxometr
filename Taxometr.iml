@@ -41,10 +41,10 @@
       <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/extracted-dependencies" />
       <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/target/surefire" />
-      <excludeFolder url="file://$MODULE_DIR$/target/test-classes" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.google:android:2.2_r2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.android.maps:maps:8_r2" level="project" />
     <orderEntry type="jdk" jdkName="Android 2.2 Platform" jdkType="Android SDK" />
   </component>
 </module>
