@@ -3,7 +3,7 @@
 	package="com.taxometr"
 	android:versionCode="8" android:versionName="2.2">
 	<application android:icon="@drawable/icon" android:label="@string/app_name">
-        <activity class="MapActivity" android:name=".MainActivity" android:label="@string/app_name">
+        <activity class="MapActivity" android:name=".activites.MainActivity" android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -35,9 +35,9 @@
 PERMISSION REQUIRED FOR GOOGLE MAPS
 ===================================
 -->
-	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />   <!--GPS Provider-->
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
-	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />   <!--NETWORK_PROVIDER-->
 	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-sdk android:minSdkVersion="1" />

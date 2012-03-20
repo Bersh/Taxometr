@@ -9,7 +9,7 @@
 
 
 	<properties>
-		<outputDirectory>target/classes</outputDirectory>
+		<!--<outputDirectory>target/classes</outputDirectory>-->
 		<!-- Path to the sdk in the file system -->
 		<sdkPath>C:\Program Files (x86)\Android\android-sdk\</sdkPath>
 	</properties>

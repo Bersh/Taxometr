@@ -13,6 +13,7 @@ public final class R {
     public static final class drawable {
         public static final int android256x256=0x7f020000;
         public static final int icon=0x7f020001;
+        public static final int red_pin=0x7f020002;
     }
     public static final class id {
         public static final int map_view=0x7f050000;
