@@ -5,7 +5,7 @@
 	<artifactId>Taxometr</artifactId>
 	<version>1.0</version>
 	<packaging>apk</packaging>
-	<name>Android Quick Start</name>
+	<name>Taxometr</name>
 
 
 	<properties>

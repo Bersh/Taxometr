@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--Application-->
     <string name="app_name">Taxometr</string>
-    <string name="text1">Maven</string>
-    <string name="text2">Android Archetype</string>
-  	
+    <!--/Application-->
+
+    <!--StartActivity-->
+  	<string name="btn_from_text">Откуда</string>
+    <string name="btn_to_text">Куда</string>
+    <string name="btn_route_text">Расчитать стоимость</string>
+    <!--/StartActivity-->
+
+    <!-- SelectAdressActivity -->
+    <string name="btn_my_location">Текущее местоположение</string>
+    <string name="btn_map_point">Указать точку на карте</string>
+    <!--/SelectAdressActivity-->
 </resources>

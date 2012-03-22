@@ -2,7 +2,6 @@ package com.taxometr.activites;
 
 import java.util.List;
 import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
@@ -20,8 +19,9 @@ import android.widget.Toast;
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  * @since 15.03.12
  */
-public class MainActivity extends MapActivity {
+public class GoogleMapActivity extends com.google.android.maps.MapActivity {
     private static final int MIN_UPDATE_TIME = 3000;
+    private static final int MIN_DISTANCE = 1000;
     private MapController mapController;
     private LocationManager locationManager;
 
@@ -33,9 +33,13 @@ public class MainActivity extends MapActivity {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        setContentView(R.layout.main);
+        setContentView(R.layout.google_map_view);
         mapView = (MapView) this.findViewById(R.id.map_view);
         mapView.setBuiltInZoomControls(true);
+        final MyLocationOverlay myLocationOverlay = new MyLocationOverlay(this, mapView);
+        myLocationOverlay.disableCompass();
+        myLocationOverlay.enableMyLocation();
+        mapView.getOverlays().add(myLocationOverlay);
     }
 
     @Override
@@ -62,7 +66,7 @@ public class MainActivity extends MapActivity {
 
         final LocationProvider locationProvider = this.locationManager.getProvider(locationProviderType);
         if (locationProvider != null) {
-            this.locationManager.requestLocationUpdates(locationProvider.getName(), MIN_UPDATE_TIME, 1000,
+            this.locationManager.requestLocationUpdates(locationProvider.getName(), MIN_UPDATE_TIME, MIN_DISTANCE,
                     this.locationListenerRecenterMap);
         } else {
             Toast.makeText(this, "Taxometr cannot continue,"
@@ -70,11 +74,6 @@ public class MainActivity extends MapActivity {
                     + " at this time.", Toast.LENGTH_SHORT).show();
             this.finish();
         }
-
-        final MyLocationOverlay myLocationOverlay = new MyLocationOverlay(this, mapView);
-        myLocationOverlay.disableCompass();
-        myLocationOverlay.enableMyLocation();
-        mapView.getOverlays().add(myLocationOverlay);
 
         final GeoPoint lastKnownPoint = getLastKnownPoint();
         mapController = this.mapView.getController();

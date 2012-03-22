@@ -16,14 +16,33 @@ public final class R {
         public static final int red_pin=0x7f020002;
     }
     public static final class id {
+        public static final int address=0x7f050001;
+        public static final int from=0x7f050004;
+        public static final int map_point=0x7f050003;
         public static final int map_view=0x7f050000;
+        public static final int my_location=0x7f050002;
+        public static final int route=0x7f050006;
+        public static final int to=0x7f050005;
     }
     public static final class layout {
-        public static final int main=0x7f030000;
+        public static final int google_map_view=0x7f030000;
+        public static final int select_address_view=0x7f030001;
+        public static final int start_view=0x7f030002;
     }
     public static final class string {
+        /** Application
+         */
         public static final int app_name=0x7f040000;
-        public static final int text1=0x7f040001;
-        public static final int text2=0x7f040002;
+        /** /Application
+StartActivity
+         */
+        public static final int btn_from_text=0x7f040001;
+        public static final int btn_map_point=0x7f040005;
+        /** /StartActivity
+ SelectAdressActivity 
+         */
+        public static final int btn_my_location=0x7f040004;
+        public static final int btn_route_text=0x7f040003;
+        public static final int btn_to_text=0x7f040002;
     }
 }
