@@ -17,12 +17,13 @@ public final class R {
     }
     public static final class id {
         public static final int address=0x7f050001;
-        public static final int from=0x7f050004;
-        public static final int map_point=0x7f050003;
+        public static final int btn_accept_address=0x7f050004;
+        public static final int btn_calc_route=0x7f050007;
+        public static final int btn_map_point=0x7f050003;
+        public static final int btn_my_location=0x7f050002;
+        public static final int btn_to=0x7f050006;
+        public static final int from_btn=0x7f050005;
         public static final int map_view=0x7f050000;
-        public static final int my_location=0x7f050002;
-        public static final int route=0x7f050006;
-        public static final int to=0x7f050005;
     }
     public static final class layout {
         public static final int google_map_view=0x7f030000;
@@ -33,6 +34,7 @@ public final class R {
         /** Application
          */
         public static final int app_name=0x7f040000;
+        public static final int btn_accept_adress=0x7f040006;
         /** /Application
 StartActivity
          */

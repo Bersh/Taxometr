@@ -6,21 +6,21 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
     <Button
-            android:id="@+id/from"
+            android:id="@+id/from_btn"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:text="@string/btn_from_text">
     </Button>
     <Button
-            android:id="@+id/to"
+            android:id="@+id/btn_to"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/from"
+            android:layout_below="@+id/from_btn"
             android:text="@string/btn_to_text">
     </Button>
     <Button
-            android:id="@+id/route"
+            android:id="@+id/btn_calc_route"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

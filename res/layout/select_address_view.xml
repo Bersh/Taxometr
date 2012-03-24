@@ -11,17 +11,24 @@
             android:layout_alignParentTop="true">
     </EditText>
     <Button
-            android:id="@+id/my_location"
+            android:id="@+id/btn_my_location"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/address"
             android:text="@string/btn_my_location">
     </Button>
     <Button
-            android:id="@+id/map_point"
+            android:id="@+id/btn_map_point"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/my_location"
+            android:layout_below="@+id/btn_my_location"
             android:text="@string/btn_map_point">
+    </Button>
+    <Button
+            android:id="@+id/btn_accept_address"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="@string/btn_accept_adress">
     </Button>
 </RelativeLayout>

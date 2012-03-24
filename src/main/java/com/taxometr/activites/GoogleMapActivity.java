@@ -2,11 +2,12 @@ package com.taxometr.activites;
 
 import java.util.List;
 import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
-import com.taxometr.R;
 import com.taxometr.helpers.LocationHelper;
+import com.taxometr.R;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
@@ -19,7 +20,7 @@ import android.widget.Toast;
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  * @since 15.03.12
  */
-public class GoogleMapActivity extends com.google.android.maps.MapActivity {
+public class GoogleMapActivity extends MapActivity {
     private static final int MIN_UPDATE_TIME = 3000;
     private static final int MIN_DISTANCE = 1000;
     private MapController mapController;

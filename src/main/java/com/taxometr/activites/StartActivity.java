@@ -3,7 +3,6 @@ package com.taxometr.activites;
 
 import com.taxometr.R;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,25 +13,48 @@ import android.widget.Button;
  * @since 22.03.12
  */
 public class StartActivity extends Activity {
+    private Button btnFrom;
+    private Button btnTo;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_view);
 
-        //Button btnSelectAddress = (Button) findViewById(R.id.);
+        btnFrom = (Button) findViewById(R.id.from_btn);
+        btnFrom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent(StartActivity.this, SelectAdressActivity.class);
+                startActivityForResult(intent, 1);
+            }
+        });
+
+        btnTo = (Button) findViewById(R.id.btn_to);
+        btnTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent(StartActivity.this, SelectAdressActivity.class);
+                startActivityForResult(intent, 2);
+            }
+        });
+
     }
 
-    /**
-     * class for buttons from/to
-     */
-    private class SelectAddressBtn implements View.OnClickListener {
-        private SelectAddressBtn(Context context) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null) {
+            return;
         }
-
-        @Override
-        public void onClick(View v) {
-            final Intent intent = new Intent(StartActivity.this, SelectAdressActivity.class);
-            startActivity(intent);
+        switch (requestCode) {
+            case 1:
+                btnFrom.setText(getString(R.string.btn_from_text) + "\n" + data.getStringExtra("address"));
+                break;
+            case 2:
+                btnTo.setText(getString(R.string.btn_to_text) + "\n" + data.getStringExtra("address"));
+                break;
+            default:
         }
     }
+
 }
