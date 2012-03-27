@@ -1,6 +1,13 @@
 package com.taxometr.helpers;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.List;
+
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.LocationManager;
 import com.google.android.maps.GeoPoint;
 import android.location.Location;
 import android.util.Log;
@@ -105,5 +112,34 @@ public class LocationHelper {
         }
         Log.d(LOGTAG, LocationHelper.CLASSTAG + " parsePoint result - " + result);
         return result;
+    }
+
+    /**
+     * Converts last known point from LocationManager to GeoPoint
+     *
+     * @param locationManager location manager
+     * @param locationProviderType location provider type
+     * @return GeoPoint coresponds to last known point from LocationManager
+     */
+    public static GeoPoint getLastKnownPoint(LocationManager locationManager, String locationProviderType) {
+        final GeoPoint lastKnownPoint;
+        final Location lastKnownLocation = locationManager.getLastKnownLocation(locationProviderType);
+        if (lastKnownLocation != null) {
+            lastKnownPoint = LocationHelper.getGeoPoint(lastKnownLocation);
+        } else {
+            lastKnownPoint = LocationHelper.DEFAULT_LOCATION;
+        }
+        return lastKnownPoint;
+    }
+
+    public static String getAddressByCoordinates(double latitude, double longitude, Context context) {
+        Geocoder geocoder = new Geocoder(context);
+        try{
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            return addresses.get(0).toString();
+        } catch (IOException e) {
+            Log.e(LOGTAG, "Error", e);
+        }
+        return "";
     }
 }
