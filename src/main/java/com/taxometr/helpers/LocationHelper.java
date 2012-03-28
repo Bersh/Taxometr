@@ -38,7 +38,7 @@ public class LocationHelper {
     /**
      * log tag fro logging
      */
-    private static final String LOGTAG = "taxometr";
+    public static final String LOGTAG = "taxometr";
 
     /**
      * Default constructor
@@ -132,14 +132,14 @@ public class LocationHelper {
         return lastKnownPoint;
     }
 
-    public static String getAddressByCoordinates(double latitude, double longitude, Context context) {
+    public static Address getAddressByCoordinates(double latitude, double longitude, Context context) {
         Geocoder geocoder = new Geocoder(context);
         try{
             List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            return addresses.get(0).toString();
+            return addresses.get(0);
         } catch (IOException e) {
             Log.e(LOGTAG, "Error", e);
         }
-        return "";
+        return null;
     }
 }
