@@ -14,6 +14,6 @@
     <string name="btn_my_location">Текущее местоположение</string>
     <string name="btn_map_point">Указать точку на карте</string>
     <string name="btn_accept_adress">Принять</string>
-    <string name="dlg_progress">Определяется текущее местоположение...</string>
+    <string name="dlg_progress">Определяется текущее местоположение&#8230;</string>
     <!--/SelectAddressActivity-->
 </resources>

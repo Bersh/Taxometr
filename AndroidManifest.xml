@@ -2,8 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.taxometr"
 	android:versionCode="8" android:versionName="2.2">
+
+    <uses-sdk android:minSdkVersion="1"
+            android:targetSdkVersion="8"/>
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />   <!--GPS Provider-->
+    	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />   <!--NETWORK_PROVIDER-->
+    	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    	<uses-permission android:name="android.permission.INTERNET" />
+
+
 	<application android:icon="@drawable/icon" android:label="@string/app_name">
-        <activity class="MapActivity" android:name=".activites.GoogleMapActivity" android:label="@string/app_name">
+        <activity android:name=".activites.GoogleMapActivity" android:label="@string/app_name">
 <!--            <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -17,35 +28,10 @@
         </activity>
         <activity android:name=".activites.SelectAddressActivity"/>
 
-        <!--        <application android:label="@string/app_name" android:icon="@drawable/icon">
-            <activity android:name="MyActivity"
-                      android:label="@string/app_name">
-                <intent-filter>
-                    <action android:name="android.intent.action.MAIN" />
-                    <category android:name="android.intent.category.LAUNCHER" />
-                </intent-filter>
-            </activity>
-        </application>-->
-
-        <!--
-        ===================================
-        UNCOMMENT TO ENABLE GOOGLE MAPS
-        ===================================
-        -->
 
  	<uses-library android:name="com.google.android.maps"
-                   android:required="true"></uses-library>
+                   android:required="true" />
 	</application>
 
-<!-- 
-===================================
-PERMISSION REQUIRED FOR GOOGLE MAPS
-===================================
--->
-	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />   <!--GPS Provider-->
-	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
-	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />   <!--NETWORK_PROVIDER-->
-	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-sdk android:minSdkVersion="1" />
+
 </manifest>
