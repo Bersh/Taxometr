@@ -3,13 +3,12 @@ package com.taxometr.helpers;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
-
+import com.google.android.maps.GeoPoint;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.LocationManager;
-import com.google.android.maps.GeoPoint;
 import android.location.Location;
+import android.location.LocationManager;
 import android.util.Log;
 
 /**
@@ -38,7 +37,17 @@ public class LocationHelper {
     /**
      * log tag fro logging
      */
-    private static final String LOGTAG = "taxometr";
+    public static final String LOGTAG = "taxometr";
+
+    /**
+     * the minimum time interval for notifications, in milliseconds.
+     */
+    public static final int MIN_UPDATE_TIME = 3000;
+
+    /**
+     * the minimum distance interval for notifications, in meters
+     */
+    public static final int MIN_DISTANCE = 10;
 
     /**
      * Default constructor
@@ -132,14 +141,22 @@ public class LocationHelper {
         return lastKnownPoint;
     }
 
-    public static String getAddressByCoordinates(double latitude, double longitude, Context context) {
-        Geocoder geocoder = new Geocoder(context);
+    /**
+     * Return address by given coordinates
+     * @param latitude latitude
+     * @param longitude longitude
+     * @param context context
+     * @return address by given coordinates
+     * @throws IOException if {@link android.location.Geocoder} is not available
+     */
+    public static Address getAddressByCoordinates(double latitude, double longitude, Context context) throws IOException {
+        final Geocoder geocoder = new Geocoder(context);
         try{
-            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            return addresses.get(0).toString();
+            final List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            return addresses.get(0);
         } catch (IOException e) {
             Log.e(LOGTAG, "Error", e);
+            throw e;
         }
-        return "";
     }
 }

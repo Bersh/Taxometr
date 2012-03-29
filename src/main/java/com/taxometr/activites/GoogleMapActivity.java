@@ -15,8 +15,6 @@ import java.util.List;
  * @since 15.03.12
  */
 public class GoogleMapActivity extends MapActivity {
-    private static final int MIN_UPDATE_TIME = 3000;
-    private static final int MIN_DISTANCE = 1000;
     private MapController mapController;
 
     private MapView mapView;
@@ -44,16 +42,16 @@ public class GoogleMapActivity extends MapActivity {
     public void onStart() {
         super.onStart();
 
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        final LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         if (locationManager == null) {
             this.finish();
             return;
         }
 
-        Criteria criteria = new Criteria();
+        final Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
         criteria.setSpeedRequired(false);
-        String locationProviderType = locationManager.getBestProvider(criteria, true);
+        final String locationProviderType = locationManager.getBestProvider(criteria, true);
 
 /*      final List<String> enabledProviders = locationManager.getProviders(true);
         if (enabledProviders.contains(LocationManager.GPS_PROVIDER)) {
@@ -66,7 +64,7 @@ public class GoogleMapActivity extends MapActivity {
 
         final LocationProvider locationProvider = locationManager.getProvider(locationProviderType);
         if (locationProvider != null) {
-            locationManager.requestLocationUpdates(locationProvider.getName(), MIN_UPDATE_TIME, MIN_DISTANCE,
+            locationManager.requestLocationUpdates(locationProvider.getName(), LocationHelper.MIN_UPDATE_TIME, LocationHelper.MIN_DISTANCE,
                     this.locationListenerRecenterMap);
         } else {
             Toast.makeText(this, "Taxometr cannot continue,"
