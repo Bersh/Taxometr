@@ -25,7 +25,7 @@ public class StartActivity extends Activity {
         btnFrom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Intent intent = new Intent(StartActivity.this, SelectAdressActivity.class);
+                final Intent intent = new Intent(StartActivity.this, SelectAddressActivity.class);
                 startActivityForResult(intent, 1);
             }
         });
@@ -34,7 +34,7 @@ public class StartActivity extends Activity {
         btnTo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Intent intent = new Intent(StartActivity.this, SelectAdressActivity.class);
+                final Intent intent = new Intent(StartActivity.this, SelectAddressActivity.class);
                 startActivityForResult(intent, 2);
             }
         });

@@ -3,6 +3,7 @@ package com.taxometr.activites;
 import android.content.Context;
 import android.location.*;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 import com.google.android.maps.*;
 import com.taxometr.R;
@@ -61,7 +62,7 @@ public class GoogleMapActivity extends MapActivity {
         } else {
             locationProviderType = LocationManager.PASSIVE_PROVIDER;
         }*/
-
+        Log.d(LocationHelper.LOGTAG, "locationProviderType: " + locationProviderType);   //TODO remove
         final LocationProvider locationProvider = locationManager.getProvider(locationProviderType);
         if (locationProvider != null) {
             locationManager.requestLocationUpdates(locationProvider.getName(), LocationHelper.MIN_UPDATE_TIME, LocationHelper.MIN_DISTANCE,

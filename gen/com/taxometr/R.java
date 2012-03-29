@@ -41,10 +41,11 @@ StartActivity
         public static final int btn_from_text=0x7f040001;
         public static final int btn_map_point=0x7f040005;
         /** /StartActivity
- SelectAdressActivity 
+ SelectAddressActivity 
          */
         public static final int btn_my_location=0x7f040004;
         public static final int btn_route_text=0x7f040003;
         public static final int btn_to_text=0x7f040002;
+        public static final int dlg_progress=0x7f040007;
     }
 }
