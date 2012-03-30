@@ -1,19 +1,18 @@
-package com.taxometr.activites;
+package ua.com.taxometr.activites;
 
-import com.taxometr.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import ua.com.taxometr.R;
 
 /**
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  * @since 22.03.12
  */
-public class SelectAdressActivity extends Activity {
-
+public class SelectAddressActivity extends Activity {
     private EditText address;
 
     @Override
@@ -33,18 +32,18 @@ public class SelectAdressActivity extends Activity {
     }
 
     /**
-     * listener for button map_point
+     * OnClickListener for button map_point
      */
     private class MapPointBtnListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            final Intent intent = new Intent(SelectAdressActivity.this, GoogleMapActivity.class);
+            final Intent intent = new Intent(SelectAddressActivity.this, GoogleMapActivity.class);
             startActivity(intent);
         }
     }
 
     /**
-     * listener for accept button
+     * OnClickListener for accept button
      */
     private class AcceptBtnListener implements View.OnClickListener {
         @Override
@@ -55,4 +54,6 @@ public class SelectAdressActivity extends Activity {
             finish();
         }
     }
+
+
 }

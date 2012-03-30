@@ -1,8 +1,14 @@
-package com.taxometr.helpers;
+package ua.com.taxometr.helpers;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.List;
 import com.google.android.maps.GeoPoint;
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.util.Log;
 
 /**
@@ -31,7 +37,17 @@ public class LocationHelper {
     /**
      * log tag fro logging
      */
-    private static final String LOGTAG = "taxometr";
+    public static final String LOGTAG = "taxometr";
+
+    /**
+     * the minimum time interval for notifications, in milliseconds.
+     */
+    public static final int MIN_UPDATE_TIME = 3000;
+
+    /**
+     * the minimum distance interval for notifications, in meters
+     */
+    public static final int MIN_DISTANCE = 10;
 
     /**
      * Default constructor
@@ -105,5 +121,42 @@ public class LocationHelper {
         }
         Log.d(LOGTAG, LocationHelper.CLASSTAG + " parsePoint result - " + result);
         return result;
+    }
+
+    /**
+     * Converts last known point from LocationManager to GeoPoint
+     *
+     * @param locationManager location manager
+     * @param locationProviderType location provider type
+     * @return GeoPoint coresponds to last known point from LocationManager
+     */
+    public static GeoPoint getLastKnownPoint(LocationManager locationManager, String locationProviderType) {
+        final GeoPoint lastKnownPoint;
+        final Location lastKnownLocation = locationManager.getLastKnownLocation(locationProviderType);
+        if (lastKnownLocation != null) {
+            lastKnownPoint = LocationHelper.getGeoPoint(lastKnownLocation);
+        } else {
+            lastKnownPoint = LocationHelper.DEFAULT_LOCATION;
+        }
+        return lastKnownPoint;
+    }
+
+    /**
+     * Return address by given coordinates
+     * @param latitude latitude
+     * @param longitude longitude
+     * @param context context
+     * @return address by given coordinates
+     * @throws IOException if {@link android.location.Geocoder} is not available
+     */
+    public static Address getAddressByCoordinates(double latitude, double longitude, Context context) throws IOException {
+        final Geocoder geocoder = new Geocoder(context);
+        try{
+            final List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            return addresses.get(0);
+        } catch (IOException e) {
+            Log.e(LOGTAG, "Error", e);
+            throw e;
+        }
     }
 }

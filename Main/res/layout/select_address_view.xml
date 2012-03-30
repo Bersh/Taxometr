@@ -8,6 +8,7 @@
             android:id="@+id/address"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:inputType="text"
             android:layout_alignParentTop="true">
     </EditText>
     <Button

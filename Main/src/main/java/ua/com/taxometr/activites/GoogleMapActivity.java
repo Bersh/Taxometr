@@ -1,33 +1,22 @@
-package com.taxometr.activites;
+package ua.com.taxometr.activites;
 
-import java.util.List;
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapActivity;
-import com.google.android.maps.MapController;
-import com.google.android.maps.MapView;
-import com.google.android.maps.MyLocationOverlay;
-import com.taxometr.helpers.LocationHelper;
-import com.taxometr.R;
 import android.content.Context;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.location.LocationProvider;
+import android.location.*;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
+import com.google.android.maps.*;
+import ua.com.taxometr.R;
+import ua.com.taxometr.helpers.LocationHelper;
 
 /**
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  * @since 15.03.12
  */
 public class GoogleMapActivity extends MapActivity {
-    private static final int MIN_UPDATE_TIME = 3000;
-    private static final int MIN_DISTANCE = 1000;
     private MapController mapController;
-    private LocationManager locationManager;
 
     private MapView mapView;
-    private String locationProviderType;
 
     private final LocationListener locationListenerRecenterMap = new LocationTrackingListener();
 
@@ -52,22 +41,29 @@ public class GoogleMapActivity extends MapActivity {
     public void onStart() {
         super.onStart();
 
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        final LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         if (locationManager == null) {
             this.finish();
+            return;
         }
-        final List<String> enabledProviders = locationManager.getProviders(true);
+
+        final Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        criteria.setSpeedRequired(false);
+        final String locationProviderType = locationManager.getBestProvider(criteria, true);
+
+/*      final List<String> enabledProviders = locationManager.getProviders(true);
         if (enabledProviders.contains(LocationManager.GPS_PROVIDER)) {
             locationProviderType = LocationManager.GPS_PROVIDER;
         } else if (enabledProviders.contains(LocationManager.NETWORK_PROVIDER)) {
             locationProviderType = LocationManager.NETWORK_PROVIDER;
         } else {
             locationProviderType = LocationManager.PASSIVE_PROVIDER;
-        }
-
-        final LocationProvider locationProvider = this.locationManager.getProvider(locationProviderType);
+        }*/
+        Log.d(LocationHelper.LOGTAG, "locationProviderType: " + locationProviderType);   //TODO remove
+        final LocationProvider locationProvider = locationManager.getProvider(locationProviderType);
         if (locationProvider != null) {
-            this.locationManager.requestLocationUpdates(locationProvider.getName(), MIN_UPDATE_TIME, MIN_DISTANCE,
+            locationManager.requestLocationUpdates(locationProvider.getName(), LocationHelper.MIN_UPDATE_TIME, LocationHelper.MIN_DISTANCE,
                     this.locationListenerRecenterMap);
         } else {
             Toast.makeText(this, "Taxometr cannot continue,"
@@ -76,26 +72,10 @@ public class GoogleMapActivity extends MapActivity {
             this.finish();
         }
 
-        final GeoPoint lastKnownPoint = getLastKnownPoint();
+        final GeoPoint lastKnownPoint = LocationHelper.getLastKnownPoint(locationManager, locationProviderType);
         mapController = this.mapView.getController();
         mapController.setZoom(10);
         mapController.animateTo(lastKnownPoint);
-    }
-
-    /**
-     * Converts last known point from LocationManager to GeoPoint
-     *
-     * @return GeoPoint coresponds to last known point from LocationManager
-     */
-    private GeoPoint getLastKnownPoint() {
-        final GeoPoint lastKnownPoint;
-        final Location lastKnownLocation = this.locationManager.getLastKnownLocation(locationProviderType);
-        if (lastKnownLocation != null) {
-            lastKnownPoint = LocationHelper.getGeoPoint(lastKnownLocation);
-        } else {
-            lastKnownPoint = LocationHelper.DEFAULT_LOCATION;
-        }
-        return lastKnownPoint;
     }
 
     /**

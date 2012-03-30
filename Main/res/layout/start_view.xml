@@ -6,7 +6,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
     <Button
-            android:id="@+id/from_btn"
+            android:id="@+id/btn_from"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -16,7 +16,7 @@
             android:id="@+id/btn_to"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/from_btn"
+            android:layout_below="@+id/btn_from"
             android:text="@string/btn_to_text">
     </Button>
     <Button
@@ -24,7 +24,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:text="@string/btn_route_text">
+            android:text="@string/btn_calc_route_text">
     </Button>
 </RelativeLayout>
 
