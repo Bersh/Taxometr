@@ -1,8 +1,6 @@
-package com.taxometr.activites;
+package ua.com.taxometr.activites;
 
 import java.io.IOException;
-import com.taxometr.R;
-import com.taxometr.helpers.LocationHelper;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -18,6 +16,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import ua.com.taxometr.R;
+import ua.com.taxometr.helpers.LocationHelper;
 
 /**
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>

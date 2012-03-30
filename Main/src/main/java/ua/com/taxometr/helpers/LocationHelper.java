@@ -1,4 +1,4 @@
-package com.taxometr.helpers;
+package ua.com.taxometr.helpers;
 
 import java.io.IOException;
 import java.text.DecimalFormat;

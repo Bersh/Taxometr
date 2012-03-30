@@ -7,7 +7,7 @@
     <!--StartActivity-->
   	<string name="btn_from_text">Откуда</string>
     <string name="btn_to_text">Куда</string>
-    <string name="btn_route_text">Расчитать стоимость</string>
+    <string name="btn_calc_route_text">Расчитать стоимость</string>
     <!--/StartActivity-->
 
     <!-- SelectAddressActivity -->

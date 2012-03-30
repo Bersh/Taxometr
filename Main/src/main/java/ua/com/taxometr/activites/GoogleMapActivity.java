@@ -1,4 +1,4 @@
-package com.taxometr.activites;
+package ua.com.taxometr.activites;
 
 import android.content.Context;
 import android.location.*;
@@ -6,10 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 import com.google.android.maps.*;
-import com.taxometr.R;
-import com.taxometr.helpers.LocationHelper;
-
-import java.util.List;
+import ua.com.taxometr.R;
+import ua.com.taxometr.helpers.LocationHelper;
 
 /**
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>

@@ -1,12 +1,11 @@
-package com.taxometr.activites;
+package ua.com.taxometr.activites;
 
-
-import com.taxometr.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import ua.com.taxometr.R;
 
 /**
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
@@ -21,7 +20,7 @@ public class StartActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_view);
 
-        btnFrom = (Button) findViewById(R.id.from_btn);
+        btnFrom = (Button) findViewById(R.id.btn_from);
         btnFrom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
