@@ -13,4 +13,11 @@
             android:apiKey=
                     "05pgTR7t1F5rmXHkTjhT9zPx1Q9cn1Rxg5Ks9ug"/>
 
+    <Button
+            android:id="@+id/btn_accept"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="@string/btn_accept"/>
+
 </RelativeLayout>

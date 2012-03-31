@@ -12,6 +12,15 @@ import ua.com.taxometr.R;
  * @since 22.03.12
  */
 public class StartActivity extends Activity {
+    private static final String CLASSTAG = StartActivity.class.getSimpleName();
+    /**
+     * request code for {@link StartActivity#btnFrom}
+     */
+    public static final int BTN_FROM_REQUEST_CODE = 1;
+    /**
+     * request code for {@link StartActivity#btnTo}
+     */
+    public static final int BTN_TO_REQUEST_CODE = 2;
     private Button btnFrom;
     private Button btnTo;
 
@@ -25,7 +34,7 @@ public class StartActivity extends Activity {
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent(StartActivity.this, SelectAddressActivity.class);
-                startActivityForResult(intent, 1);
+                startActivityForResult(intent, BTN_FROM_REQUEST_CODE);
             }
         });
 
@@ -34,7 +43,7 @@ public class StartActivity extends Activity {
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent(StartActivity.this, SelectAddressActivity.class);
-                startActivityForResult(intent, 2);
+                startActivityForResult(intent, BTN_TO_REQUEST_CODE);
             }
         });
 

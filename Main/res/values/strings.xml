@@ -16,4 +16,8 @@
     <string name="btn_accept_adress">Принять</string>
     <string name="dlg_progress">Определяется текущее местоположение&#8230;</string>
     <!--/SelectAddressActivity-->
+
+    <!--GoogleMapActivity-->
+    <string name="btn_accept">Принять</string>
+    <!--/GoogleMapActivity-->
 </resources>

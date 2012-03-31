@@ -14,6 +14,14 @@
         <module>Taxometr-it</module>
     </modules>
 
+    <repositories>
+        <repository>
+            <id>mavenAndroid</id>
+            <name>central</name>
+            <url>https://maven-android-archetype.googlecode.com/svn/repository</url>
+        </repository>
+    </repositories>
+
     <dependencyManagement>
         <dependencies>
             <!--            <dependency>

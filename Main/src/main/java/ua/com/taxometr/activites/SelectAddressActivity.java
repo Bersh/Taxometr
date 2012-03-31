@@ -1,29 +1,28 @@
 package ua.com.taxometr.activites;
 
-import java.io.IOException;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.location.LocationProvider;
+import android.location.*;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import de.akquinet.android.androlog.Log;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.LocationHelper;
+
+import java.io.IOException;
 
 /**
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  * @since 22.03.12
  */
 public class SelectAddressActivity extends Activity {
+    private static final String CLASSTAG = SelectAddressActivity.class.getSimpleName();
+    public static final int MAP_ACTIVITY_REQUEST_CODE = 1;
     private EditText address;
     private final LocationListener locationListener = new LocationTrackingListener();
     private LocationManager locationManager;
@@ -47,6 +46,13 @@ public class SelectAddressActivity extends Activity {
         findViewById(R.id.btn_my_location).setOnClickListener(myLocationBtnListener);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if((resultCode == RESULT_OK) && (requestCode == MAP_ACTIVITY_REQUEST_CODE)) {
+            address.setText(data.getExtras().get("address").toString());
+        }
+    }
+
     /**
      * OnClickListener for button map_point
      */
@@ -54,7 +60,7 @@ public class SelectAddressActivity extends Activity {
         @Override
         public void onClick(View v) {
             final Intent intent = new Intent(SelectAddressActivity.this, GoogleMapActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, MAP_ACTIVITY_REQUEST_CODE);
         }
     }
 
@@ -116,19 +122,9 @@ public class SelectAddressActivity extends Activity {
         public void onLocationChanged(final Location loc) {
             progressDialog.dismiss();
             try {
-                final Address addr = LocationHelper.getAddressByCoordinates(loc.getLatitude(), loc.getLongitude(), SelectAddressActivity.this);
-                final StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < 3; i++) {
-                    final String s = addr.getAddressLine(i);
-                    if (s != null) {
-                        if (sb.length() > 0) {
-                            sb.append(", ");
-                        }
-                        sb.append(s);
-                    }
-                }
-                address.setText(sb.toString());
+                address.setText(LocationHelper.getAddressStringByCoordinates(loc.getLatitude(), loc.getLongitude(), SelectAddressActivity.this));
             } catch (IOException e) {
+                Log.e(LocationHelper.LOGTAG, e.getMessage(), e);
                 Toast.makeText(SelectAddressActivity.this, "Cannot determine your location,"
                         + " Geocoder service is not available.",
                         Toast.LENGTH_SHORT).show();
