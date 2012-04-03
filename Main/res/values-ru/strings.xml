@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Application-->
+    <string name="app_name">Taxometr</string>
+    <!--/Application-->
+
+    <!--StartActivity-->
+  	<string name="btn_from_text">Откуда</string>
+    <string name="btn_to_text">Куда</string>
+    <string name="btn_calc_route_text">Рассчитать стоимость</string>
+    <string name="btn_call_text">Позвонить</string>
+    <!--/StartActivity-->
+
+    <!-- SelectAddressActivity -->
+    <string name="btn_my_location">Текущее местоположение</string>
+    <string name="btn_map_point">Указать точку на карте</string>
+    <string name="btn_accept_adress">Принять</string>
+    <!--/SelectAddressActivity-->
+
+    <!--CallActivity-->
+    <string name="lbl_ask">Вы уверены, что хотите позвонить по данному номеру?</string>
+    <string name="btn_ok_text">Позвонить</string>
+    <string name="btn_cancel_text">Отмена</string>
+    <!--/CallActivity-->
+</resources>
