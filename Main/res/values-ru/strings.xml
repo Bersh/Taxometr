@@ -15,6 +15,7 @@
     <string name="btn_my_location">Текущее местоположение</string>
     <string name="btn_map_point">Указать точку на карте</string>
     <string name="btn_accept_adress">Принять</string>
+    <string name="dlg_progress">Определение вашего местоположения…</string>
     <!--/SelectAddressActivity-->
 
     <!--CallActivity-->
@@ -22,4 +23,8 @@
     <string name="btn_ok_text">Позвонить</string>
     <string name="btn_cancel_text">Отмена</string>
     <!--/CallActivity-->
+
+    <!--GoogleMapActivity-->
+    <string name="btn_accept">Принять</string>
+    <!--/GoogleMapActivity-->
 </resources>

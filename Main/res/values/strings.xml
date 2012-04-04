@@ -15,6 +15,7 @@
     <string name="btn_my_location">Current location</string>
     <string name="btn_map_point">Specify a point on the map</string>
     <string name="btn_accept_adress">Accept</string>
+    <string name="dlg_progress">Obtaining your location…</string>
     <!--/SelectAddressActivity-->
 
     <!--CallActivity-->
@@ -22,4 +23,8 @@
     <string name="btn_ok_text">Call</string>
     <string name="btn_cancel_text">Cancel</string>
     <!--/CallActivity-->
+
+    <!--GoogleMapActivity-->
+    <string name="btn_accept">Accept</string>
+    <!--/GoogleMapActivity-->
 </resources>
