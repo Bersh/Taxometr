@@ -1,25 +1,23 @@
 package ua.com.taxometr.helpers;
 
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.List;
+import com.google.android.maps.GeoPoint;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
-import com.google.android.maps.GeoPoint;
-
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.util.List;
 
 /**
  * useful functions and constants for location
- *
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  */
 public class LocationHelper {
     /**
-     * Class tag for logging
+     * Class tag fro logging
      */
     public static final String CLASSTAG = LocationHelper.class.getSimpleName();
 
@@ -37,7 +35,7 @@ public class LocationHelper {
             (int) (50.27 * LocationHelper.MILLION));
 
     /**
-     * log tag for logging
+     * log tag fro logging
      */
     public static final String LOGTAG = "taxometr";
 
@@ -61,7 +59,6 @@ public class LocationHelper {
      * Parse Location into GeoPoint  <br/>
      * note GeoPoint stores lat/long as "integer numbers of microdegrees"
      * meaning int*1E6
-     *
      * @param loc instance of {@link android.location.Location}
      * @return {@link com.google.android.maps.GeoPoint} converted from given location
      */
@@ -73,7 +70,6 @@ public class LocationHelper {
 
     /**
      * Parse geoRssPoint into GeoPoint(<georss:point>36.835 -121.899</georss:point>)
-     *
      * @param geoRssPoint geo point in rss format
      * @return {@link com.google.android.maps.GeoPoint} converted from rss format
      */
@@ -95,7 +91,6 @@ public class LocationHelper {
 
     /**
      * Parse double point(-127.50) into String (127.50W)
-     *
      * @param point double cordinate
      * @param isLat is latitude
      * @return string coordinate
@@ -131,7 +126,7 @@ public class LocationHelper {
     /**
      * Converts last known point from LocationManager to GeoPoint
      *
-     * @param locationManager      location manager
+     * @param locationManager location manager
      * @param locationProviderType location provider type
      * @return GeoPoint coresponds to last known point from LocationManager
      */
@@ -148,86 +143,20 @@ public class LocationHelper {
 
     /**
      * Return address by given coordinates
-     *
-     * @param latitude  latitude
+     * @param latitude latitude
      * @param longitude longitude
-     * @param context   context
+     * @param context context
      * @return address by given coordinates
      * @throws IOException if {@link android.location.Geocoder} is not available
      */
     public static Address getAddressByCoordinates(double latitude, double longitude, Context context) throws IOException {
         final Geocoder geocoder = new Geocoder(context);
-        try {
+        try{
             final List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
             return addresses.get(0);
         } catch (IOException e) {
             Log.e(LOGTAG, "Error", e);
             throw e;
         }
-    }
-
-    /**
-     * Returns assress in string format by given coordinates
-     * @param latitude latitude
-     * @param longitude longitude
-     * @param context context
-     * @return address string
-     * @throws IOException if {@link android.location.Geocoder} is not available
-     */
-    public static String getAddressStringByCoordinates(double latitude, double longitude, Context context) throws IOException {
-        final Geocoder geocoder = new Geocoder(context);
-        final Address address;
-        try {
-            final List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            address = addresses.get(0);
-        } catch (IOException e) {
-            Log.e(LOGTAG, "Error", e);
-            throw e;
-        }
-
-        return getAddressString(address);
-    }
-
-    /**
-     * Returns address in string format by given {@link android.location.Address} object
-     * @param address {@link android.location.Address} object
-     * @return address string
-     */
-    private static String getAddressString(Address address) {
-        final StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 3; i++) {
-            final String s = address.getAddressLine(i);
-            if (s != null) {
-                if (sb.length() > 0) {
-                    sb.append(", ");
-                }
-                sb.append(s);
-            }
-        }
-        return sb.toString();
-    }
-
-    /**
-     * Return string address representation by given {@link com.google.android.maps.GeoPoint}
-     *
-     * @param geoPoint geo point
-     * @param context  context
-     * @return address by given coordinates
-     * @throws IOException if {@link android.location.Geocoder} is not available
-     */
-    public static String getAddressByGeoPoint(GeoPoint geoPoint, Context context) throws IOException {
-        final double latitude = geoPoint.getLatitudeE6() / MILLION;
-        final double longitude = geoPoint.getLongitudeE6() / MILLION;
-        final Geocoder geocoder = new Geocoder(context);
-        final Address address;
-        try {
-            final List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            address = addresses.get(0);
-        } catch (IOException e) {
-            Log.e(LOGTAG, "Error", e);
-            throw e;
-        }
-
-        return getAddressString(address);
     }
 }

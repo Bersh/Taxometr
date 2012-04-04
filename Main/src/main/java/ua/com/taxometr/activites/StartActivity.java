@@ -12,17 +12,9 @@ import ua.com.taxometr.R;
  * @since 22.03.12
  */
 public class StartActivity extends Activity {
-    private static final String CLASSTAG = StartActivity.class.getSimpleName();
-    /**
-     * request code for {@link StartActivity#btnFrom}
-     */
-    public static final int BTN_FROM_REQUEST_CODE = 1;
-    /**
-     * request code for {@link StartActivity#btnTo}
-     */
-    public static final int BTN_TO_REQUEST_CODE = 2;
     private Button btnFrom;
     private Button btnTo;
+    private Button btnCall;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,7 +26,7 @@ public class StartActivity extends Activity {
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent(StartActivity.this, SelectAddressActivity.class);
-                startActivityForResult(intent, BTN_FROM_REQUEST_CODE);
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -43,10 +35,20 @@ public class StartActivity extends Activity {
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent(StartActivity.this, SelectAddressActivity.class);
-                startActivityForResult(intent, BTN_TO_REQUEST_CODE);
+                startActivityForResult(intent, 2);
             }
         });
+        btnCall = (Button) findViewById(R.id.btn_call);
+        btnCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(StartActivity.this, CallActivity.class);
+                String phoneNumber = "tel:"+"0000000000";
+                intent.putExtra("phoneNumber",phoneNumber);
+                startActivity(intent);
 
+            }
+        });
     }
 
     @Override

@@ -5,19 +5,21 @@
     <!--/Application-->
 
     <!--StartActivity-->
-  	<string name="btn_from_text">Откуда</string>
-    <string name="btn_to_text">Куда</string>
-    <string name="btn_calc_route_text">Расчитать стоимость</string>
+  	<string name="btn_from_text">From</string>
+    <string name="btn_to_text">To</string>
+    <string name="btn_calc_route_text">Calculate the cost</string>
+    <string name="btn_call_text">Call</string>
     <!--/StartActivity-->
 
     <!-- SelectAddressActivity -->
-    <string name="btn_my_location">Текущее местоположение</string>
-    <string name="btn_map_point">Указать точку на карте</string>
-    <string name="btn_accept_adress">Принять</string>
-    <string name="dlg_progress">Определяется текущее местоположение&#8230;</string>
+    <string name="btn_my_location">Current location</string>
+    <string name="btn_map_point">Specify a point on the map</string>
+    <string name="btn_accept_adress">Accept</string>
     <!--/SelectAddressActivity-->
 
-    <!--GoogleMapActivity-->
-    <string name="btn_accept">Принять</string>
-    <!--/GoogleMapActivity-->
+    <!--CallActivity-->
+    <string name="lbl_ask">Are you sure you want to call the number?</string>
+    <string name="btn_ok_text">Call</string>
+    <string name="btn_cancel_text">Cancel</string>
+    <!--/CallActivity-->
 </resources>
