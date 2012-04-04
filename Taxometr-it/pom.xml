@@ -60,7 +60,8 @@
                 <extensions>true</extensions>
             </plugin>
         </plugins>
-        <testSourceDirectory>src/ua/com/taxometr/test</testSourceDirectory>
+        <!--<testSourceDirectory>src/ua/com/taxometr/test</testSourceDirectory>-->
+        <sourceDirectory>src/</sourceDirectory>
     </build>
 
     <profiles>
