@@ -1,16 +1,15 @@
 package ua.com.taxometr.helpers;
 
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.List;
+import com.google.android.maps.GeoPoint;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
-import com.google.android.maps.GeoPoint;
-
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.util.List;
 
 /**
  * useful functions and constants for location
@@ -215,7 +214,7 @@ public class LocationHelper {
      * @return address by given coordinates
      * @throws IOException if {@link android.location.Geocoder} is not available
      */
-    public static String getAddressByGeoPoint(GeoPoint geoPoint, Context context) throws IOException {
+    public static String getAddressStringByGeoPoint(GeoPoint geoPoint, Context context) throws IOException {
         final double latitude = geoPoint.getLatitudeE6() / MILLION;
         final double longitude = geoPoint.getLongitudeE6() / MILLION;
         final Geocoder geocoder = new Geocoder(context);

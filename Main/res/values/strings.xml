@@ -26,5 +26,7 @@
 
     <!--GoogleMapActivity-->
     <string name="btn_accept">Accept</string>
+    <string name="btn_zoom_in">+</string>
+    <string name="btn_zoom_out">-</string>
     <!--/GoogleMapActivity-->
 </resources>

@@ -1,6 +1,7 @@
 package ua.com.taxometr.test;
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.TouchUtils;
 import android.widget.Button;
 import ua.com.taxometr.R;
 import ua.com.taxometr.activites.StartActivity;
@@ -38,6 +39,7 @@ public class StartActivityTest extends ActivityInstrumentationTestCase2<StartAct
         assertEquals(btnFrom.getText(), startActivity.getString(R.string.btn_from_text));
         assertEquals(btnTo.getText(), startActivity.getString(R.string.btn_to_text));
         assertEquals(btnCalcRoute.getText(), startActivity.getString(R.string.btn_calc_route_text));
+        TouchUtils.clickView(this, btnFrom);
     }
 }
 

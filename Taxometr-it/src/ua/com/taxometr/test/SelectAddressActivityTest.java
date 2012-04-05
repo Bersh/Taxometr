@@ -1,6 +1,7 @@
 package ua.com.taxometr.test;
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.TouchUtils;
 import ua.com.taxometr.activites.SelectAddressActivity;
 
 /**

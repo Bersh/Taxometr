@@ -38,13 +38,22 @@ public class GoogleMapActivity extends MapActivity {
 
     private final LocationListener locationListenerRecenterMap = new LocationTrackingListener();
     private AddressItemizedOverlay addressItemizedOverlay;
+    private LocationManager locationManager;
+    private Button acceptBtn;
 
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.google_map_view);
         mapView = (MapView) this.findViewById(R.id.map_view);
-        mapView.setBuiltInZoomControls(true);
+        mapView.setBuiltInZoomControls(false);
+
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager == null) {
+            this.finish();
+            return;
+        }
+
         final MyLocationOverlay myLocationOverlay = new MyLocationOverlay(this, mapView);
         myLocationOverlay.disableCompass();
         myLocationOverlay.enableMyLocation();
@@ -53,47 +62,75 @@ public class GoogleMapActivity extends MapActivity {
         mapView.getOverlays().add(myLocationOverlay);
         mapView.setOnTouchListener(new MapOnTouchListener());
         final View.OnClickListener acceptBtnListener = new AcceptBtnListener();
-        final Button acceptBtn = (Button) findViewById(R.id.btn_accept);
+        acceptBtn = (Button) findViewById(R.id.btn_accept);
         acceptBtn.setOnClickListener(acceptBtnListener);
+
+        final Button zoomInBtn = (Button) findViewById(R.id.btn_zoom_in);
+        final Button zoomOutBtn = (Button) findViewById(R.id.btn_zoom_out);
+        final Button myLocationBtn = (Button) findViewById(R.id.btn_my_location);
+        zoomInBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mapController.zoomIn();
+            }
+        });
+
+        zoomOutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mapController.zoomOut();
+            }
+        });
+
+        myLocationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final GeoPoint myLocation = myLocationOverlay.getMyLocation();
+                if (myLocation != null) {
+                    mapController.animateTo(myLocation);
+                    mapController.setCenter(myLocation);
+                }
+            }
+        });
+
+        mapController = this.mapView.getController();
+        mapController.setZoom(18);
     }
 
     @Override
-    protected boolean isRouteDisplayed() {
-        return false;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        final LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        if (locationManager == null) {
-            this.finish();
-            return;
-        }
-
+    public void onResume() {
+        super.onResume();
         final Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
         criteria.setSpeedRequired(false);
         final String locationProviderType = locationManager.getBestProvider(criteria, true);
-
-        Log.d(LocationHelper.LOGTAG, "locationProviderType: " + locationProviderType);   //TODO remove
         final LocationProvider locationProvider = locationManager.getProvider(locationProviderType);
         if (locationProvider != null) {
             locationManager.requestLocationUpdates(locationProvider.getName(), LocationHelper.MIN_UPDATE_TIME, LocationHelper.MIN_DISTANCE,
-                    this.locationListenerRecenterMap);
+                    locationListenerRecenterMap);
         } else {
             Toast.makeText(this, "Taxometr cannot continue,"
                     + " the GPS location provider is not available"
                     + " at this time.", Toast.LENGTH_SHORT).show();
             this.finish();
         }
+    }
 
-        final GeoPoint lastKnownPoint = LocationHelper.getLastKnownPoint(locationManager, locationProviderType);
-        mapController = this.mapView.getController();
-        mapController.setZoom(10);
-        mapController.animateTo(lastKnownPoint);
+/*    @Override
+    public void onStop() {
+        super.onStop();
+        locationManager.removeUpdates(locationListenerRecenterMap);
+    }*/
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        locationManager.removeUpdates(locationListenerRecenterMap);
+    }
+
+    @Override
+    protected boolean isRouteDisplayed() {
+        return false;
     }
 
     /**
@@ -111,14 +148,16 @@ public class GoogleMapActivity extends MapActivity {
                 final GeoPoint geoPoint = projection.fromPixels((int) event.getX(), (int) event.getY());
                 addressItemizedOverlay.addOverlay(new OverlayItem(geoPoint, "", ""));
                 mapView.invalidate();
+                acceptBtn.setEnabled(true);
             }
 
-            return true;
+            return false;
         }
     }
 
     /**
      * OnClickListener for Accept button
+     *
      * @see android.view.View.OnClickListener
      */
     private class AcceptBtnListener implements View.OnClickListener {
@@ -129,7 +168,7 @@ public class GoogleMapActivity extends MapActivity {
             int resultCode = RESULT_OK;
             String address = "";
             try {
-                address = LocationHelper.getAddressByGeoPoint(addressItemizedOverlay.getItem(0).getPoint(), GoogleMapActivity.this);
+                address = LocationHelper.getAddressStringByGeoPoint(addressItemizedOverlay.getItem(0).getPoint(), GoogleMapActivity.this);
             } catch (IOException e) {
                 Log.e(CLASSTAG, e.getMessage(), e);
                 resultCode = RESULT_CANCELED;
