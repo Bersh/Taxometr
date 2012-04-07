@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.LocationHelper;
@@ -65,9 +66,9 @@ public class GoogleMapActivity extends MapActivity {
         acceptBtn = (Button) findViewById(R.id.btn_accept);
         acceptBtn.setOnClickListener(acceptBtnListener);
 
-        final Button zoomInBtn = (Button) findViewById(R.id.btn_zoom_in);
-        final Button zoomOutBtn = (Button) findViewById(R.id.btn_zoom_out);
-        final Button myLocationBtn = (Button) findViewById(R.id.btn_my_location);
+        final ImageButton zoomInBtn = (ImageButton) findViewById(R.id.btn_zoom_in);
+        final ImageButton zoomOutBtn = (ImageButton) findViewById(R.id.btn_zoom_out);
+        final ImageButton myLocationBtn = (ImageButton) findViewById(R.id.btn_my_location);
         zoomInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
