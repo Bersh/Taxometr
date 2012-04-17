@@ -1,10 +1,15 @@
 package ua.com.taxometr.helpers;
 
+/**
+ * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
+ * @since 17.04.12
+ */
+
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import de.akquinet.android.androlog.Log;
+import android.util.Log;
 
 /**
  * Helper for database operations
