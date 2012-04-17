@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.ListView;
 import de.akquinet.android.androlog.Log;
 import ua.com.taxometr.R;
+import ua.com.taxometr.helpers.DBHelper;
 
 /**
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
