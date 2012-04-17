@@ -58,9 +58,22 @@ public class DBHelper extends SQLiteOpenHelper {
                     + "foreign key(taxi_id) references taxi_services(_id));");
 
             //create sample data
-            db.execSQL("insert into countries (name_rus, name_en) values(\"Россия\", \"Russia\")");
-            db.execSQL("insert into countries (name_rus, name_en) values(\"Украина\", \"Ukraine\")");
+            db.execSQL("insert into countries (_id, name_rus, name_en) values(0, \"Россия\", \"Russia\")");
+            db.execSQL("insert into countries (_id, name_rus, name_en) values(1, \"Украина\", \"Ukraine\")");
 
+            db.execSQL("insert into cities (_id, name_rus, name_en, country_id) values(0, \"Москва\", \"Moscow\", 0)");
+            db.execSQL("insert into cities (_id, name_rus, name_en, country_id) values(1, \"Киев\", \"Kiev\", 1)");
+
+
+            db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id) values(0, \"Мегаполис\", \"Megapolis\", 1)");
+            db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id) values(1, \"Каприз\", \"Kapriz\", 1)");
+            db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id) values(3, \"Хит такси\", \"Hit taxi\", 0)");
+
+            db.execSQL("insert into phones (phone, taxi_id) values(\"+380939125432\", 0)");
+            db.execSQL("insert into phones (phone, taxi_id) values(\"+380931111111\", 0)");
+            db.execSQL("insert into phones (phone, taxi_id) values(\"+380504512365\", 0)");
+            db.execSQL("insert into phones (phone, taxi_id) values(\"+380674512395\", 1)");
+            db.execSQL("insert into phones (phone, taxi_id) values(\"+380502315276\", 2)");
             Log.e("Taxometr_DB", "Tables created!");
         } catch (SQLException e) {
             Log.e("Taxometr_DB", e.getMessage(), e);
