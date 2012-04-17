@@ -1,15 +1,16 @@
 package ua.com.taxometr.helpers;
 
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.util.List;
-import com.google.android.maps.GeoPoint;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
+import com.google.android.maps.GeoPoint;
+
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.List;
 
 /**
  * useful functions and constants for location
@@ -160,7 +161,7 @@ public class LocationHelper {
             final List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
             return addresses.get(0);
         } catch (IOException e) {
-            Log.e(LOGTAG, "Error", e);
+            Log.e(LOGTAG, CLASSTAG + e.getMessage(), e);
             throw e;
         }
     }
@@ -180,7 +181,7 @@ public class LocationHelper {
             final List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
             address = addresses.get(0);
         } catch (IOException e) {
-            Log.e(LOGTAG, "Error", e);
+            Log.e(LOGTAG, CLASSTAG + e.getMessage(), e);
             throw e;
         }
 
@@ -223,7 +224,7 @@ public class LocationHelper {
             final List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
             address = addresses.get(0);
         } catch (IOException e) {
-            Log.e(LOGTAG, "Error", e);
+            Log.e(LOGTAG, CLASSTAG + e.getMessage(), e);
             throw e;
         }
 

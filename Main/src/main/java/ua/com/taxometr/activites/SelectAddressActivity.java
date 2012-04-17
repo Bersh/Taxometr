@@ -1,15 +1,10 @@
 package ua.com.taxometr.activites;
 
-import java.io.IOException;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.location.LocationProvider;
+import android.location.*;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +13,8 @@ import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.LocationHelper;
+
+import java.io.IOException;
 
 /**
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
@@ -127,7 +124,7 @@ public class SelectAddressActivity extends Activity {
             try {
                 address.setText(LocationHelper.getAddressStringByCoordinates(loc.getLatitude(), loc.getLongitude(), SelectAddressActivity.this));
             } catch (IOException e) {
-                Log.e(LocationHelper.LOGTAG, e.getMessage(), e);
+                Log.e(LocationHelper.LOGTAG, CLASSTAG + " " + e.getMessage(), e);
                 Toast.makeText(SelectAddressActivity.this, "Cannot determine your location,"
                         + " Geocoder service is not available.",
                         Toast.LENGTH_SHORT).show();
