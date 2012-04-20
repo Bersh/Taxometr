@@ -4,8 +4,9 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.widget.ListAdapter;
 import android.widget.ListView;
-import de.akquinet.android.androlog.Log;
+import android.widget.SimpleCursorAdapter;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.DBHelper;
 
@@ -15,6 +16,7 @@ import ua.com.taxometr.helpers.DBHelper;
  */
 public class TaxiServicesActivity extends Activity {
     DBHelper dbHelper;
+    private static final String ISO_RUSSIAN = "rus";
 
     /**
      * Called when the activity is first created.
@@ -22,42 +24,31 @@ public class TaxiServicesActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //this.deleteDatabase("TaxometrDB");
-
         setContentView(R.layout.taxi_services_list_view);
-        ListView lvTaxiServices = (ListView) findViewById(R.id.taxi_services_list);
 
         //create DBHelper for database manipulating
         dbHelper = new DBHelper(this);
 
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-/*
-        db.execSQL("create table countries ("
-                + "_id integer primary key autoincrement, "
-                + "name_rus text, "
-                + "name_en);");
-        db.execSQL("insert into countries (name_rus, name_en) values(\"Россия\", \"Russia\")");
-        db.execSQL("insert into countries (name_rus, name_en) values(\"Украина\", \"Ukraine\")");
-*/
+        final SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor c = db.query("countries", new String[] {"name_en"}, null, null, null, null, null);
-        if (c.moveToFirst()) {
-            int nameEnId = c.getColumnIndex("name_en");
-            Log.e("Taxometr_DB", "name_rus_id = " + nameEnId);
-            do {
-                Log.e("Taxometr_DB", "name_rus = " + c.getString(nameEnId));
-            } while (c.moveToNext());
+        //determine russian or english name use
+        final String currentLanguage = this.getResources().getConfiguration().locale.getISO3Language();
+        final String nameField;
+        if(currentLanguage.equals(ISO_RUSSIAN)) {
+            nameField = "name_rus";
         } else {
-            Log.d("Taxometr_DB", "No records found");
+            nameField = "name_en";
         }
+
+        //get data from db
+        final Cursor cursor = db.query("taxi_services", new String[] {"_id", "name_en", "name_rus"}, null, null, null, null, null);
+        final ListAdapter cursorAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1,
+                cursor, new String[] {nameField}, new int[] { android.R.id.text1 });
+
+        //apply cursor adapter
+        final ListView lvTaxiServices = (ListView) findViewById(R.id.taxi_services_list);
+        lvTaxiServices.setAdapter(cursorAdapter);
         dbHelper.close();
-/*        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1,
-                c, )
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1,
-                dbHelper.getReadableDatabase().);*/
-
     }
 
 }
