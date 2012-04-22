@@ -19,7 +19,7 @@
     <!--/SelectAddressActivity-->
 
     <!--CallActivity-->
-    <string name="lbl_ask">Are you sure you want to call the number?</string>
+    <string name="lbl_ask">Are you sure you want to call this number?</string>
     <string name="btn_ok_text">Call</string>
     <string name="btn_cancel_text">Cancel</string>
     <!--/CallActivity-->
