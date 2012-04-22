@@ -16,6 +16,8 @@
     <string name="btn_map_point">Specify a point on the map</string>
     <string name="btn_accept_adress">Accept</string>
     <string name="dlg_progress">Obtaining your location…</string>
+    <string name="err_gps_not_available">Cannot determine your location, the GPS location provider is not available.</string>
+    <string name="err_geocoder_not_available">Cannot determine your location, Geocoder service is not available.</string>
     <!--/SelectAddressActivity-->
 
     <!--CallActivity-->

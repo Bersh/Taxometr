@@ -87,8 +87,7 @@ public class SelectAddressActivity extends Activity {
 
             locationManager = (LocationManager) SelectAddressActivity.this.getSystemService(Context.LOCATION_SERVICE);
             if (locationManager == null) {
-                Toast.makeText(SelectAddressActivity.this, "Cannot determine your location,"
-                        + " the GPS location provider is not available.",
+                Toast.makeText(SelectAddressActivity.this, getString(R.string.err_gps_not_available),
                         Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -125,8 +124,7 @@ public class SelectAddressActivity extends Activity {
                 address.setText(LocationHelper.getAddressStringByCoordinates(loc.getLatitude(), loc.getLongitude(), SelectAddressActivity.this));
             } catch (IOException e) {
                 Log.e(LocationHelper.LOGTAG, CLASSTAG + " " + e.getMessage(), e);
-                Toast.makeText(SelectAddressActivity.this, "Cannot determine your location,"
-                        + " Geocoder service is not available.",
+                Toast.makeText(SelectAddressActivity.this, getString(R.string.err_geocoder_not_available),
                         Toast.LENGTH_SHORT).show();
             } finally {
                 locationManager.removeUpdates(this);

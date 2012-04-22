@@ -19,6 +19,7 @@ import android.util.Log;
  */
 public class DBHelper extends SQLiteOpenHelper {
 
+    private static final String LOGTAG = "TaxometrDB";
     /**
      * Database helper constructor
      *
@@ -39,10 +40,9 @@ public class DBHelper extends SQLiteOpenHelper {
             //create database structure
             createDBStructure(db);
             createSampleData(db);
-            Log.e("Taxometr_DB", "Tables created!");
+            Log.e(LOGTAG, "Tables created!");
         } catch (SQLException e) {
-            Log.e("Taxometr_DB", e.getMessage(), e);
-            Log.e("Taxometr_DB", "Tasdgklsdjklgjsdklgjklsdjgklsdjklhgsdjgvkla");
+            Log.e(LOGTAG, e.getMessage(), e);
             throw e;
         }
     }

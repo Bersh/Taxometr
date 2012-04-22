@@ -16,6 +16,8 @@
     <string name="btn_map_point">Указать точку на карте</string>
     <string name="btn_accept_adress">Принять</string>
     <string name="dlg_progress">Определение вашего местоположения…</string>
+    <string name="err_gps_not_available">Невозможно определить ваше местоположение, GPS недоступен.</string>
+    <string name="err_gps_not_available">Невозможно определить ваше местоположение, Geocoder недоступен.</string>
     <!--/SelectAddressActivity-->
 
     <!--CallActivity-->

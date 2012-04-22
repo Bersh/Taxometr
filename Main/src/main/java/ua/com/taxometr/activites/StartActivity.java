@@ -17,7 +17,6 @@ public class StartActivity extends Activity {
     private static final String CLASSTAG = StartActivity.class.getSimpleName();
     private Button btnFrom;
     private Button btnTo;
-    private Button btnCall;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,13 +40,13 @@ public class StartActivity extends Activity {
                 startActivityForResult(intent, BTN_TO_REQUEST_CODE);
             }
         });
-        btnCall = (Button) findViewById(R.id.btn_call);
+        final Button btnCall = (Button) findViewById(R.id.btn_call);
         btnCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(StartActivity.this, CallActivity.class);
-                String phoneNumber = "tel:"+"0000000000";
-                intent.putExtra("phoneNumber",phoneNumber);
+                final Intent intent = new Intent(StartActivity.this, CallActivity.class);
+                final String phoneNumber = "tel:" + "0000000000";
+                intent.putExtra("phoneNumber", phoneNumber);
                 startActivity(intent);
 
             }
