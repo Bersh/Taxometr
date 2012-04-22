@@ -9,15 +9,13 @@
     <string name="btn_to_text">Куда</string>
     <string name="btn_calc_route_text">Рассчитать стоимость</string>
     <string name="btn_call_text">Позвонить</string>
+    <string name="btn_taxi_services_list">Список служб</string>
     <!--/StartActivity-->
 
     <!-- SelectAddressActivity -->
     <string name="btn_my_location">Текущее местоположение</string>
     <string name="btn_map_point">Указать точку на карте</string>
     <string name="btn_accept_adress">Принять</string>
-    <string name="dlg_progress">Определение вашего местоположения…</string>
-    <string name="err_gps_not_available">Невозможно определить ваше местоположение, GPS недоступен.</string>
-    <string name="err_gps_not_available">Невозможно определить ваше местоположение, Geocoder недоступен.</string>
     <!--/SelectAddressActivity-->
 
     <!--CallActivity-->
@@ -29,4 +27,10 @@
     <!--GoogleMapActivity-->
     <string name="btn_accept">Принять</string>
     <!--/GoogleMapActivity-->
+
+    <!--Global-->
+    <string name="dlg_progress">Определение вашего местоположения…</string>
+    <string name="err_gps_not_available">Невозможно определить ваше местоположение, GPS недоступен.</string>
+    <string name="err_geocoder_not_available">Невозможно определить ваше местоположение, Geocoder недоступен.</string>
+    <!--/Global-->
 </resources>

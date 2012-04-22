@@ -9,15 +9,13 @@
     <string name="btn_to_text">To</string>
     <string name="btn_calc_route_text">Calculate the cost</string>
     <string name="btn_call_text">Call</string>
+    <string name="btn_taxi_services_list">Taxi services list</string>
     <!--/StartActivity-->
 
     <!-- SelectAddressActivity -->
     <string name="btn_my_location">Current location</string>
     <string name="btn_map_point">Specify a point on the map</string>
     <string name="btn_accept_adress">Accept</string>
-    <string name="dlg_progress">Obtaining your location…</string>
-    <string name="err_gps_not_available">Cannot determine your location, the GPS location provider is not available.</string>
-    <string name="err_geocoder_not_available">Cannot determine your location, Geocoder service is not available.</string>
     <!--/SelectAddressActivity-->
 
     <!--CallActivity-->
@@ -32,4 +30,10 @@
     <string name="btn_zoom_out_content_descriptor">btn_zoom_out image</string>
     <string name="btn_my_location_content_descriptor">btn_zoom_my_location image</string>
     <!--/GoogleMapActivity-->
+
+    <!--Global-->
+    <string name="dlg_progress">Obtaining your location…</string>
+    <string name="err_gps_not_available">Cannot determine your location, the GPS location provider is not available.</string>
+    <string name="err_geocoder_not_available">Cannot determine your location, Geocoder service is not available.</string>
+    <!--/Global-->
 </resources>

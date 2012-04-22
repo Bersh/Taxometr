@@ -1,12 +1,11 @@
 package ua.com.taxometr.helpers;
 
 import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
+import android.location.*;
 import android.util.Log;
+import android.widget.Toast;
 import com.google.android.maps.GeoPoint;
+import ua.com.taxometr.R;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -229,5 +228,32 @@ public class LocationHelper {
         }
 
         return getAddressString(address);
+    }
+
+    public static void requestLocationUpdates(Context context, LocationManager locationManager, LocationListener listener) {
+        if (locationManager == null) {
+            Toast.makeText(context, context.getString(R.string.err_gps_not_available),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        final Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        criteria.setSpeedRequired(false);
+        final String locationProviderType = locationManager.getBestProvider(criteria, true);
+        LocationProvider locationProvider = locationManager.getProvider(locationProviderType);
+        if (locationProvider != null) {
+            locationManager.requestLocationUpdates(locationProvider.getName(), LocationHelper.MIN_UPDATE_TIME, LocationHelper.MIN_DISTANCE,
+                    listener);
+        }
+
+        // Because on some devices GPS location works bad
+        if (!locationProviderType.equals(LocationManager.NETWORK_PROVIDER)) {
+            locationProvider = locationManager.getProvider(LocationManager.NETWORK_PROVIDER);
+            if (locationProvider != null) {
+                locationManager.requestLocationUpdates(locationProvider.getName(), LocationHelper.MIN_UPDATE_TIME, LocationHelper.MIN_DISTANCE,
+                        listener);
+            }
+        }
     }
 }

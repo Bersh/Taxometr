@@ -84,32 +84,8 @@ public class SelectAddressActivity extends Activity {
         @Override
         public void onClick(View v) {
             progressDialog = ProgressDialog.show(SelectAddressActivity.this, "", getString(R.string.dlg_progress), true);
-
             locationManager = (LocationManager) SelectAddressActivity.this.getSystemService(Context.LOCATION_SERVICE);
-            if (locationManager == null) {
-                Toast.makeText(SelectAddressActivity.this, getString(R.string.err_gps_not_available),
-                        Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            final Criteria criteria = new Criteria();
-            criteria.setAccuracy(Criteria.ACCURACY_FINE);
-            criteria.setSpeedRequired(false);
-            final String locationProviderType = locationManager.getBestProvider(criteria, true);
-            LocationProvider locationProvider = locationManager.getProvider(locationProviderType);
-            if (locationProvider != null) {
-                locationManager.requestLocationUpdates(locationProvider.getName(), LocationHelper.MIN_UPDATE_TIME, LocationHelper.MIN_DISTANCE,
-                        SelectAddressActivity.this.locationListener);
-            }
-
-            // Because on some devices GPS location works bad
-            if (!locationProviderType.equals(LocationManager.NETWORK_PROVIDER)) {
-                locationProvider = locationManager.getProvider(LocationManager.NETWORK_PROVIDER);
-                if (locationProvider != null) {
-                    locationManager.requestLocationUpdates(locationProvider.getName(), LocationHelper.MIN_UPDATE_TIME, LocationHelper.MIN_DISTANCE,
-                            SelectAddressActivity.this.locationListener);
-                }
-            }
+            LocationHelper.requestLocationUpdates(SelectAddressActivity.this, locationManager, locationListener);
         }
     }
 
