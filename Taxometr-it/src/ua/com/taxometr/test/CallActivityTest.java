@@ -9,7 +9,7 @@ import ua.com.taxometr.R;
 public class CallActivityTest extends ActivityInstrumentationTestCase2<CallActivity>
 {
     CallActivity mActivity;
-    TextView mView;
+    //TextView mView;
     Button mButton1, mButton2;
     String resourceString1,resourceString2,resourceString3;
 
@@ -20,7 +20,7 @@ public class CallActivityTest extends ActivityInstrumentationTestCase2<CallActiv
     protected void setUp() throws Exception {
         super.setUp();
         mActivity = this.getActivity();
-        mView = (TextView) mActivity.findViewById(R.id.lbl_ask_call);
+//        mView = (TextView) mActivity.findViewById(R.id.lbl_ask_call);
         mButton1 = (Button) mActivity.findViewById(R.id.btn_accept_call);
         mButton2 = (Button) mActivity.findViewById(R.id.btn_cancel_call);
         resourceString1 = mActivity.getString(R.string.lbl_ask);
@@ -30,13 +30,13 @@ public class CallActivityTest extends ActivityInstrumentationTestCase2<CallActiv
 
     public void testPreconditions() {
         assertNotNull(mActivity);
-        assertNotNull(mView);
+//        assertNotNull(mView);
         assertNotNull(mButton1);
         assertNotNull(mButton2);
     }
 
     public void testText() {
-        assertEquals(resourceString1,(String)mView.getText());
+       // assertEquals(resourceString1,(String)mView.getText());
         assertEquals(resourceString2,(String)mButton1.getText());
         assertEquals(resourceString3,(String)mButton2.getText());
     }
