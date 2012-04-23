@@ -23,7 +23,7 @@
             android:id="@+id/btn_taxi_services_list"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/btn_calc_route"
+            android:layout_below="@+id/btn_to"
             android:text="@string/btn_taxi_services_list">
     </Button>
     <Button

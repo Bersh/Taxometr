@@ -34,7 +34,8 @@ public class StartActivity extends Activity {
      * Shown when determining city
      */
     private ProgressDialog progressDialog;
-    private String City;
+    private String city;
+    private String country;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,7 +113,8 @@ public class StartActivity extends Activity {
             progressDialog.dismiss();
             try {
                 final Address address = LocationHelper.getAddressByCoordinates(loc.getLatitude(), loc.getLongitude(), StartActivity.this);
-                City = address.getAddressLine(1);
+                city = address.getAddressLine(1);
+                country = address.getAddressLine(3);
             } catch (IOException e) {
                 Log.e(LocationHelper.LOGTAG, CLASSTAG + " " + e.getMessage(), e);
                 Toast.makeText(StartActivity.this, getString(R.string.err_geocoder_not_available),
