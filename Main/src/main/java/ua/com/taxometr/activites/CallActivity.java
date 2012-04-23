@@ -7,39 +7,39 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import ua.com.taxometr.R;
 import android.util.Log;
 import android.content.ActivityNotFoundException;
 
 /**
- * Created with IntelliJ IDEA.
+ *
  * User: Kardan
  * Date: 02.04.12
  * Time: 17:49
- * To change this template use File | Settings | File Templates.
  */
 public class CallActivity extends Activity{
-    private Button btnAccept;
-    private Button btnCancel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.call_view);
         final String phoneNumber = getIntent().getStringExtra("phoneNumber");
+        TextView lblNumber = (TextView) findViewById(R.id.lbl_call_number);
+        lblNumber.setText(phoneNumber);
 
-        btnAccept = (Button) findViewById(R.id.btn_accept_call);
+        Button btnAccept = (Button) findViewById(R.id.btn_accept_call);
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                call(phoneNumber);
+                call("tel:" + phoneNumber);
                 final Intent intent = new Intent();
                 setResult(RESULT_OK, intent);
                 finish();
             }
         });
 
-        btnCancel = (Button) findViewById(R.id.btn_cancel_call);
+        Button btnCancel = (Button) findViewById(R.id.btn_cancel_call);
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override

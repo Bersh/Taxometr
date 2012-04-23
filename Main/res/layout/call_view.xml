@@ -6,9 +6,17 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
     <TextView
+            android:id="@+id/lbl_ask_call"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/lbl_ask"
+            />
+    <TextView
+            android:id="@+id/lbl_call_number"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lbl_ask_call"
+            android:text=""
             />
     <Button
             android:id="@+id/btn_accept_call"

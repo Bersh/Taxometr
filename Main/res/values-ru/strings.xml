@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!--Application-->
     <string name="app_name">Taxometr</string>
     <!--/Application-->
@@ -22,4 +23,5 @@
     <string name="btn_ok_text">Позвонить</string>
     <string name="btn_cancel_text">Отмена</string>
     <!--/CallActivity-->
+
 </resources>

@@ -14,7 +14,6 @@ import ua.com.taxometr.R;
 public class StartActivity extends Activity {
     private Button btnFrom;
     private Button btnTo;
-    private Button btnCall;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,13 +37,13 @@ public class StartActivity extends Activity {
                 startActivityForResult(intent, 2);
             }
         });
-        btnCall = (Button) findViewById(R.id.btn_call);
+        Button btnCall = (Button) findViewById(R.id.btn_call);
         btnCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(StartActivity.this, CallActivity.class);
-                String phoneNumber = "tel:"+"0000000000";
-                intent.putExtra("phoneNumber",phoneNumber);
+                String phoneNumber = "0000000000";
+                intent.putExtra("phoneNumber", phoneNumber);
                 startActivity(intent);
 
             }
