@@ -90,11 +90,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL("insert into cities (_id, name_rus, name_en, country_id) values(0, \"Москва\", \"Moscow\", 0)");
         db.execSQL("insert into cities (_id, name_rus, name_en, country_id) values(1, \"Киев\", \"Kiev\", 1)");
+        db.execSQL("insert into cities (_id, name_rus, name_en, country_id) values(2, \"Днепропетровск\", \"Dnipropetrovsk\", 1)");
 
 
-        db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id) values(0, \"Мегаполис\", \"Megapolis\", 1)");
-        db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id) values(1, \"Каприз\", \"Kapriz\", 1)");
-        db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id) values(3, \"Хит такси\", \"Hit taxi\", 0)");
+        db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id) values(0, \"Мегаполис\", \"Megapolis\", 2)");
+        db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id) values(1, \"Каприз\", \"Kapriz\", 2)");
+        db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id) values(2, \"Киев Такси 1\", \"Kyev taxi 1\", 1)");
+        db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id) values(3, \"Киев Такси 2\", \"Kyev taxi 2\", 1)");
+        db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id) values(4, \"Хит такси\", \"Hit taxi\", 0)");
 
         db.execSQL("insert into phones (phone, taxi_id) values(\"+380939125432\", 0)");
         db.execSQL("insert into phones (phone, taxi_id) values(\"+380931111111\", 0)");

@@ -1,6 +1,8 @@
 package ua.com.taxometr.activites;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.DBHelper;
 
 /**
+ * Activity for displaying list of taxi services
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  * @since 16.04.12
  */
@@ -40,8 +43,15 @@ public class TaxiServicesActivity extends Activity {
             nameField = "name_en";
         }
 
-        //get data from db
-        final Cursor cursor = db.query("taxi_services", new String[] {"_id", "name_en", "name_rus"}, null, null, null, null, null);
+        // get current city and country
+        final SharedPreferences prefs = getSharedPreferences(StartActivity.PREFS_NAME, Context.MODE_PRIVATE);
+        final String city = prefs.getString(StartActivity.CITY_KEY, "");
+        final String country = prefs.getString(StartActivity.COUNTRY_KEY, "");
+
+        //get taxi services from db
+        final Cursor cursor = db.query("taxi_services a, cities b, countries c", new String[] {"a._id", "a.name_en", "a.name_rus"},
+                "a.city_id = b._id and b.country_id = c._id and c." + nameField + " = ? and b."  + nameField + " = ?",
+                new String[] {country, city}, null, null, null);
         final ListAdapter cursorAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1,
                 cursor, new String[] {nameField}, new int[] { android.R.id.text1 });
 

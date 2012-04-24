@@ -96,7 +96,6 @@ public class SelectAddressActivity extends Activity {
     private class LocationTrackingListener implements LocationListener {
         @Override
         public void onLocationChanged(final Location loc) {
-            progressDialog.dismiss();
             try {
                 address.setText(LocationHelper.getAddressStringByCoordinates(loc.getLatitude(), loc.getLongitude(), SelectAddressActivity.this));
             } catch (IOException e) {
@@ -105,6 +104,7 @@ public class SelectAddressActivity extends Activity {
                         Toast.LENGTH_SHORT).show();
             } finally {
                 locationManager.removeUpdates(this);
+                progressDialog.dismiss();
             }
         }
 

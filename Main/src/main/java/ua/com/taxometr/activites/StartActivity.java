@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Location;
 import android.location.LocationListener;
@@ -25,17 +26,29 @@ public class StartActivity extends Activity {
     private static final int BTN_FROM_REQUEST_CODE = 1;
     private static final int BTN_TO_REQUEST_CODE = 2;
     private static final String CLASSTAG = StartActivity.class.getSimpleName();
+
+    /**
+     * name for shared preferences
+     */
+    public static final String PREFS_NAME = "TaxometrPrefs";
+
+    /**
+     * key for city data
+     */
+    public static final String CITY_KEY = "CITY";
+
+    /**
+     * key for country data
+     */
+    public static final String COUNTRY_KEY = "COUNTRY";
     private Button btnFrom;
     private Button btnTo;
-    private Button btnTaxiServicesList;
     private LocationManager locationManager;
 
     /**
      * Shown when determining city
      */
     private ProgressDialog progressDialog;
-    private String city;
-    private String country;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,7 +84,7 @@ public class StartActivity extends Activity {
             }
         });
 
-        btnTaxiServicesList = (Button) findViewById(R.id.btn_taxi_services_list);
+        final Button btnTaxiServicesList = (Button) findViewById(R.id.btn_taxi_services_list);
         btnTaxiServicesList.setOnClickListener(new BtnTaxiServicesListner());
     }
 
@@ -110,17 +123,22 @@ public class StartActivity extends Activity {
     private class LocationTrackingListener implements LocationListener {
         @Override
         public void onLocationChanged(final Location loc) {
-            progressDialog.dismiss();
             try {
                 final Address address = LocationHelper.getAddressByCoordinates(loc.getLatitude(), loc.getLongitude(), StartActivity.this);
-                city = address.getAddressLine(1);
-                country = address.getAddressLine(3);
+                final SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                final SharedPreferences.Editor editor = prefs.edit();
+                editor.putString(CITY_KEY, address.getAddressLine(1));
+                editor.putString(COUNTRY_KEY, address.getAddressLine(3));
+                editor.commit();
+                final Intent intent = new Intent(StartActivity.this, TaxiServicesActivity.class);
+                startActivity(intent);
             } catch (IOException e) {
                 Log.e(LocationHelper.LOGTAG, CLASSTAG + " " + e.getMessage(), e);
                 Toast.makeText(StartActivity.this, getString(R.string.err_geocoder_not_available),
                         Toast.LENGTH_SHORT).show();
             } finally {
                 locationManager.removeUpdates(this);
+                progressDialog.dismiss();
             }
         }
 
