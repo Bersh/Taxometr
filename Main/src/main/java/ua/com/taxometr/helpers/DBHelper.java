@@ -90,7 +90,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL("insert into cities (_id, name_rus, name_en, country_id) values(0, \"Москва\", \"Moscow\", 0)");
         db.execSQL("insert into cities (_id, name_rus, name_en, country_id) values(1, \"Киев\", \"Kiev\", 1)");
-        db.execSQL("insert into cities (_id, name_rus, name_en, country_id) values(2, \"Днепропетровск\", \"Dnipropetrovsk\", 1)");
+        db.execSQL("insert into cities (_id, name_rus, name_en, country_id) values(2, \"Днепропетровск\", \"Dnipropetrovs'k\", 1)");
 
 
         db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id) values(0, \"Мегаполис\", \"Megapolis\", 2)");
