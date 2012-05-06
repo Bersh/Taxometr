@@ -1,16 +1,17 @@
 package ua.com.taxometr.routs;
 
-import java.util.Stack;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import java.util.Stack;
 
 /**
  * @author ibershadskiy <a href="mailto:Ilya.Bershadskiy@exigenservices.com">Ilya Bershadskiy</a>
  * @since 26.04.12
  */
 public class KMLHandler extends DefaultHandler {
-    Road mRoad;
+    Road road;
     boolean isPlacemark;
     boolean isRoute;
     boolean isItemIcon;
@@ -21,7 +22,7 @@ public class KMLHandler extends DefaultHandler {
      * Default constructor
      */
     public KMLHandler() {
-        mRoad = new Road();
+        road = new Road();
     }
 
     @Override
@@ -30,7 +31,7 @@ public class KMLHandler extends DefaultHandler {
         mCurrentElement.push(localName);
         if ("Placemark".equalsIgnoreCase(localName)) {
             isPlacemark = true;
-            mRoad.mPoints = addPoint(mRoad.mPoints);
+            road.mPoints = addPoint(road.mPoints);
         } else if ("ItemIcon".equalsIgnoreCase(localName)) {
             if (isPlacemark) {
                 isItemIcon = true;
@@ -54,27 +55,27 @@ public class KMLHandler extends DefaultHandler {
                 if (isPlacemark) {
                     isRoute = "Route".equalsIgnoreCase(mString);
                     if (!isRoute) {
-                        mRoad.mPoints[mRoad.mPoints.length - 1].mName = mString;
+                        road.mPoints[road.mPoints.length - 1].mName = mString;
                     }
                 } else {
-                    mRoad.mName = mString;
+                    road.mName = mString;
                 }
             } else if ("color".equalsIgnoreCase(localName) && !isPlacemark) {
-                mRoad.mColor = Integer.parseInt(mString, 16);
+                road.mColor = Integer.parseInt(mString, 16);
             } else if ("width".equalsIgnoreCase(localName) && !isPlacemark) {
-                mRoad.mWidth = Integer.parseInt(mString);
+                road.mWidth = Integer.parseInt(mString);
             } else if ("description".equalsIgnoreCase(localName)) {
                 if (isPlacemark) {
                     String description = cleanup(mString);
                     if (!isRoute) {
-                        mRoad.mPoints[mRoad.mPoints.length - 1].mDescription = description;
+                        road.mPoints[road.mPoints.length - 1].mDescription = description;
                     } else {
-                        mRoad.mDescription = description;
+                        road.mDescription = description;
                     }
                 }
             } else if ("href".equalsIgnoreCase(localName)) {
                 if (isItemIcon) {
-                    mRoad.mPoints[mRoad.mPoints.length - 1].mIconUrl = mString;
+                    road.mPoints[road.mPoints.length - 1].mIconUrl = mString;
                 }
             } else if ("coordinates".equalsIgnoreCase(localName)) {
                 if (isPlacemark) {
@@ -82,15 +83,15 @@ public class KMLHandler extends DefaultHandler {
                         String[] xyParsed = split(mString, ",");
                         double lon = Double.parseDouble(xyParsed[0]);
                         double lat = Double.parseDouble(xyParsed[1]);
-                        mRoad.mPoints[mRoad.mPoints.length - 1].mLatitude = lat;
-                        mRoad.mPoints[mRoad.mPoints.length - 1].mLongitude = lon;
+                        road.mPoints[road.mPoints.length - 1].mLatitude = lat;
+                        road.mPoints[road.mPoints.length - 1].mLongitude = lon;
                     } else {
                         String[] coodrinatesParsed = split(mString, " ");
                         int lenNew = coodrinatesParsed.length;
-                        int lenOld = mRoad.mRoute.length;
+                        int lenOld = road.mRoute.length;
                         double[][] temp = new double[lenOld + lenNew][2];
                         for (int i = 0; i < lenOld; i++) {
-                            temp[i] = mRoad.mRoute[i];
+                            temp[i] = road.mRoute[i];
                         }
                         for (int i = 0; i < lenNew; i++) {
                             String[] xyParsed = split(coodrinatesParsed[i], ",");
@@ -99,7 +100,7 @@ public class KMLHandler extends DefaultHandler {
                                         .parseDouble(xyParsed[j]);
                             }
                         }
-                        mRoad.mRoute = temp;
+                        road.mRoute = temp;
                     }
                 }
             }
