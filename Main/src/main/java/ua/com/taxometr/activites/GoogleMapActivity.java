@@ -1,20 +1,8 @@
 package ua.com.taxometr.activites;
 
-import java.io.IOException;
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapActivity;
-import com.google.android.maps.MapController;
-import com.google.android.maps.MapView;
-import com.google.android.maps.MyLocationOverlay;
-import com.google.android.maps.OverlayItem;
-import com.google.android.maps.Projection;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.location.LocationProvider;
+import android.location.*;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -22,9 +10,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
+import com.google.android.maps.*;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.LocationHelper;
 import ua.com.taxometr.mapOverlays.AddressItemizedOverlay;
+
+import java.io.IOException;
 
 /**
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
@@ -43,8 +34,8 @@ public class GoogleMapActivity extends MapActivity {
     private Button acceptBtn;
 
     @Override
-    public void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.google_map_view);
         mapView = (MapView) this.findViewById(R.id.map_view);
         mapView.setBuiltInZoomControls(false);

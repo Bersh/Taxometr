@@ -1,6 +1,5 @@
 package ua.com.taxometr.activites;
 
-import java.io.IOException;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -14,9 +13,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import com.google.android.maps.GeoPoint;
 import de.akquinet.android.androlog.Log;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.LocationHelper;
+
+import java.io.IOException;
 
 /**
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
@@ -84,8 +86,27 @@ public class StartActivity extends Activity {
             }
         });
 
+        final Button btnCalcRoute = (Button) findViewById(R.id.btn_calc_route);
+        btnCalcRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                GeoPoint geoPoint = LocationHelper.getGeoPointByAddressString(btnTo.getText().toString(), StartActivity.this);
+                } catch (IOException e) {
+                    Log.e(e.getMessage());
+                }
+/*
+                final Intent intent = new Intent(StartActivity.this, GoogleMapActivity.class);
+                intent.putExtra("isRouteMode", true);
+                intent.putExtra("isRouteMode", true);
+                startActivity(intent);
+*/
+
+            }
+        });
+
         final Button btnTaxiServicesList = (Button) findViewById(R.id.btn_taxi_services_list);
-        btnTaxiServicesList.setOnClickListener(new BtnTaxiServicesListner());
+        btnTaxiServicesList.setOnClickListener(new BtnTaxiServicesListener());
     }
 
     @Override
@@ -107,7 +128,7 @@ public class StartActivity extends Activity {
     /**
      * OnClickListener for btn_taxi_services_list
      */
-    private class BtnTaxiServicesListner implements View.OnClickListener {
+    private class BtnTaxiServicesListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
