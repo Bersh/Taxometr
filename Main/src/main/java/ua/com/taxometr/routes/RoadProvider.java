@@ -1,13 +1,12 @@
-package ua.com.taxometr.routs;
+package ua.com.taxometr.routes;
 
-import de.akquinet.android.androlog.Log;
-import org.xml.sax.SAXException;
-
+import java.io.IOException;
+import java.io.InputStream;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.io.IOException;
-import java.io.InputStream;
+import org.xml.sax.SAXException;
+import de.akquinet.android.androlog.Log;
 
 /**
  * @author ibershadskiy <a href="mailto:Ilya.Bershadskiy@exigenservices.com">Ilya Bershadskiy</a>
@@ -38,8 +37,7 @@ public class RoadProvider {
      * @param toLon destination point longitude
      * @return route url for Google Maps service
      */
-    public static String getUrl(double fromLat, double fromLon, double toLat,
-                                double toLon) {// connect to map web service
+    public static String getUrl(double fromLat, double fromLon, double toLat, double toLon) {// connect to map web service
         final StringBuilder urlString = new StringBuilder();
         urlString.append("http://maps.google.com/maps?f=d&hl=en");
         urlString.append("&saddr=");// from

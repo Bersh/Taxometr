@@ -1,23 +1,47 @@
 package ua.com.taxometr.activites;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.List;
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
+import com.google.android.maps.MapView;
+import com.google.android.maps.MyLocationOverlay;
+import com.google.android.maps.Overlay;
+import com.google.android.maps.OverlayItem;
+import com.google.android.maps.Projection;
 import android.content.Context;
 import android.content.Intent;
-import android.location.*;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
-import com.google.android.maps.*;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.LocationHelper;
 import ua.com.taxometr.mapOverlays.AddressItemizedOverlay;
+import ua.com.taxometr.mapOverlays.RouteOverlay;
+import ua.com.taxometr.routes.Road;
+import ua.com.taxometr.routes.RoadProvider;
 
-import java.io.IOException;
+import static ua.com.taxometr.helpers.LocationHelper.getGeoPointByAddressString;
 
 /**
+ * Activity with google map view
+ *
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  * @since 15.03.12
  */
@@ -32,6 +56,21 @@ public class GoogleMapActivity extends MapActivity {
     private AddressItemizedOverlay addressItemizedOverlay;
     private LocationManager locationManager;
     private Button acceptBtn;
+    private boolean isInRouteMode;
+    private Road road;
+
+    private final Handler routeHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+//               TextView textView = (TextView) findViewById(R.id.description);
+//               textView.setText(mRoad.mName + " " + mRoad.mDescription);
+            final RouteOverlay routeOverlay = new RouteOverlay(road, mapView);
+            final List<Overlay> listOfOverlays = mapView.getOverlays();
+            listOfOverlays.clear();
+            listOfOverlays.add(routeOverlay);
+            mapView.invalidate();
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,6 +126,46 @@ public class GoogleMapActivity extends MapActivity {
 
         mapController = this.mapView.getController();
         mapController.setZoom(18);
+
+        final Intent intent = getIntent();
+        isInRouteMode = intent.getBooleanExtra("isRouteMode", false);
+        if (isInRouteMode) {
+            acceptBtn.setVisibility(View.INVISIBLE);
+            final String fromAddress = intent.getStringExtra("fromAddress");
+            final String toAddress = intent.getStringExtra("toAddress");
+            final GeoPoint fromPoint;
+            final GeoPoint toPoint;
+            try {
+                fromPoint = getGeoPointByAddressString(fromAddress, this);
+                toPoint = getGeoPointByAddressString(toAddress, this);
+            } catch (IOException e) {
+                Toast.makeText(this, getString(R.string.err_geocoder_not_available),
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+            (new RouteCalculationThread(fromPoint, toPoint)).start();
+
+
+        }
+    }
+
+    /**
+     * Get connection with google service
+     *
+     * @param url url for route request
+     * @return result xml in KML format as stream
+     */
+    private static InputStream getConnection(String url) {
+        InputStream is = null;
+        try {
+            final URLConnection conn = new URL(url).openConnection();
+            is = conn.getInputStream();
+        } catch (MalformedURLException e) {
+            Log.e(CLASSTAG, e.getMessage());
+        } catch (IOException e) {
+            Log.e(CLASSTAG, e.getMessage());
+        }
+        return is;
     }
 
     @Override
@@ -108,11 +187,6 @@ public class GoogleMapActivity extends MapActivity {
         }
     }
 
-/*    @Override
-    public void onStop() {
-        super.onStop();
-        locationManager.removeUpdates(locationListenerRecenterMap);
-    }*/
 
     @Override
     public void onPause() {
@@ -122,7 +196,37 @@ public class GoogleMapActivity extends MapActivity {
 
     @Override
     protected boolean isRouteDisplayed() {
-        return false;
+        return isInRouteMode;
+    }
+
+    /**
+     * Tread for obtaining route in KML format from google service
+     */
+    private class RouteCalculationThread extends Thread {
+        private final GeoPoint fromPoint;
+        private final GeoPoint toPoint;
+
+        /**
+         * Constructor for {@link ua.com.taxometr.activites.GoogleMapActivity.RouteCalculationThread}
+         *
+         * @param fromPoint start point
+         * @param toPoint   end point
+         */
+        private RouteCalculationThread(GeoPoint fromPoint, GeoPoint toPoint) {
+            this.fromPoint = fromPoint;
+            this.toPoint = toPoint;
+        }
+
+        @Override
+        public void run() {
+            final String url = RoadProvider.getUrl(fromPoint.getLatitudeE6() / LocationHelper.MILLION,
+                    fromPoint.getLongitudeE6() / LocationHelper.MILLION,
+                    toPoint.getLatitudeE6() / LocationHelper.MILLION,
+                    toPoint.getLongitudeE6() / LocationHelper.MILLION);
+            final InputStream inputStream = getConnection(url);
+            road = RoadProvider.getRoute(inputStream);
+            routeHandler.sendEmptyMessage(0);
+        }
     }
 
     /**

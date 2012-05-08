@@ -1,5 +1,7 @@
 package ua.com.taxometr.activites;
 
+import java.io.IOException;
+import com.google.android.maps.GeoPoint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -13,12 +15,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-import com.google.android.maps.GeoPoint;
 import de.akquinet.android.androlog.Log;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.LocationHelper;
-
-import java.io.IOException;
 
 /**
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
@@ -46,6 +45,9 @@ public class StartActivity extends Activity {
     private Button btnFrom;
     private Button btnTo;
     private LocationManager locationManager;
+
+    private static String fromAddress;
+    private static String toAddress;
 
     /**
      * Shown when determining city
@@ -90,17 +92,11 @@ public class StartActivity extends Activity {
         btnCalcRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                GeoPoint geoPoint = LocationHelper.getGeoPointByAddressString(btnTo.getText().toString(), StartActivity.this);
-                } catch (IOException e) {
-                    Log.e(e.getMessage());
-                }
-/*
                 final Intent intent = new Intent(StartActivity.this, GoogleMapActivity.class);
                 intent.putExtra("isRouteMode", true);
-                intent.putExtra("isRouteMode", true);
+                intent.putExtra("fromAddress", fromAddress);
+                intent.putExtra("toAddress", toAddress);
                 startActivity(intent);
-*/
 
             }
         });
@@ -116,10 +112,12 @@ public class StartActivity extends Activity {
         }
         switch (requestCode) {
             case 1:
-                btnFrom.setText(getString(R.string.btn_from_text) + "\n" + data.getStringExtra("address"));
+                fromAddress = data.getStringExtra("address");
+                btnFrom.setText(getString(R.string.btn_from_text) + "\n" + fromAddress);
                 break;
             case 2:
-                btnTo.setText(getString(R.string.btn_to_text) + "\n" + data.getStringExtra("address"));
+                toAddress = data.getStringExtra("address");
+                btnTo.setText(getString(R.string.btn_to_text) + "\n" + toAddress);
                 break;
             default:
         }

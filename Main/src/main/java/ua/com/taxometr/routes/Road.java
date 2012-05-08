@@ -1,6 +1,4 @@
-package ua.com.taxometr.routs;
-
-import ua.com.taxometr.routs.Point;
+package ua.com.taxometr.routes;
 
 /**
  * @author ibershadskiy <a href="mailto:Ilya.Bershadskiy@exigenservices.com">Ilya Bershadskiy</a>

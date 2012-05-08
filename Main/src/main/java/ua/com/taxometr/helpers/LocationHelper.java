@@ -1,15 +1,20 @@
 package ua.com.taxometr.helpers;
 
-import android.content.Context;
-import android.location.*;
-import android.util.Log;
-import android.widget.Toast;
-import com.google.android.maps.GeoPoint;
-import ua.com.taxometr.R;
-
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
+import com.google.android.maps.GeoPoint;
+import android.content.Context;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
+import android.util.Log;
+import android.widget.Toast;
+import ua.com.taxometr.R;
 
 /**
  * useful functions and constants for location
@@ -237,11 +242,15 @@ public class LocationHelper {
      * @return {@link com.google.android.maps.GeoPoint} by given address string
      * @throws IOException if {@link android.location.Geocoder} is not available
      */
+    @SuppressWarnings("ThrowCaughtLocally")
     public static GeoPoint getGeoPointByAddressString(String addressString, Context context) throws IOException {
         final Geocoder geocoder = new Geocoder(context);
         final Address address;
         try {
             final List<Address> addresses = geocoder.getFromLocationName(addressString, 1);
+            if(addresses.isEmpty()) {
+                throw new IOException("No address found");
+            }
             address = addresses.get(0);
         } catch (IOException e) {
             Log.e(LOGTAG, CLASSTAG + e.getMessage(), e);

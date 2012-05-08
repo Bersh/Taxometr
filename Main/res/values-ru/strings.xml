@@ -26,6 +26,7 @@
 
     <!--GoogleMapActivity-->
     <string name="btn_accept">Принять</string>
+    <string name="err_cant_determine_coordinates_by_address">Невозможно определиить координаты по заданному адресу.</string>
     <!--/GoogleMapActivity-->
 
     <!--Global-->

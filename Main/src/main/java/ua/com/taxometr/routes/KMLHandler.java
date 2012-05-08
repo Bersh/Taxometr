@@ -1,4 +1,4 @@
-package ua.com.taxometr.routs;
+package ua.com.taxometr.routes;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

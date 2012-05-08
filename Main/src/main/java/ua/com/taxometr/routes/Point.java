@@ -1,4 +1,4 @@
-package ua.com.taxometr.routs;
+package ua.com.taxometr.routes;
 
 /**
  * @author ibershadskiy <a href="mailto:Ilya.Bershadskiy@exigenservices.com">Ilya Bershadskiy</a>
