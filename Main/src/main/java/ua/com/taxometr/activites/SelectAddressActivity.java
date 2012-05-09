@@ -1,6 +1,5 @@
 package ua.com.taxometr.activites;
 
-import java.io.IOException;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -17,6 +16,8 @@ import de.akquinet.android.androlog.Log;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.LocationHelper;
 
+import java.io.IOException;
+
 /**
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  * @since 22.03.12
@@ -25,7 +26,7 @@ public class SelectAddressActivity extends Activity {
     private static final String CLASSTAG = SelectAddressActivity.class.getSimpleName();
     private static final int MAP_ACTIVITY_REQUEST_CODE = 1;
     private EditText address;
-    private final LocationListener locationListener = new LocationTrackingListener();
+    private final LocationListener locationTrackingListener = new LocationTrackingListener();
     private LocationManager locationManager;
     private ProgressDialog progressDialog;
 
@@ -51,6 +52,14 @@ public class SelectAddressActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if((resultCode == RESULT_OK) && (requestCode == MAP_ACTIVITY_REQUEST_CODE)) {
             address.setText(data.getExtras().get("address").toString());
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (locationManager != null && locationTrackingListener != null) {
+            locationManager.removeUpdates(locationTrackingListener);
         }
     }
 
@@ -86,7 +95,7 @@ public class SelectAddressActivity extends Activity {
         public void onClick(View v) {
             progressDialog = ProgressDialog.show(SelectAddressActivity.this, "", getString(R.string.dlg_progress), true);
             locationManager = (LocationManager) SelectAddressActivity.this.getSystemService(Context.LOCATION_SERVICE);
-            LocationHelper.requestLocationUpdates(SelectAddressActivity.this, locationManager, locationListener);
+            LocationHelper.requestLocationUpdates(SelectAddressActivity.this, locationManager, locationTrackingListener);
         }
     }
 

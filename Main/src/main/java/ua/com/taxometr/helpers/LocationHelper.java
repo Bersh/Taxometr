@@ -1,20 +1,15 @@
 package ua.com.taxometr.helpers;
 
+import android.content.Context;
+import android.location.*;
+import android.util.Log;
+import android.widget.Toast;
+import com.google.android.maps.GeoPoint;
+import ua.com.taxometr.R;
+
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
-import com.google.android.maps.GeoPoint;
-import android.content.Context;
-import android.location.Address;
-import android.location.Criteria;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.location.LocationProvider;
-import android.util.Log;
-import android.widget.Toast;
-import ua.com.taxometr.R;
 
 /**
  * useful functions and constants for location
@@ -137,7 +132,7 @@ public class LocationHelper {
      *
      * @param locationManager      location manager
      * @param locationProviderType location provider type
-     * @return GeoPoint coresponds to last known point from LocationManager
+     * @return GeoPoint corresponds to last known point from LocationManager
      */
     public static GeoPoint getLastKnownPoint(LocationManager locationManager, String locationProviderType) {
         final GeoPoint lastKnownPoint;

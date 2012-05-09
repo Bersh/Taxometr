@@ -1,7 +1,5 @@
 package ua.com.taxometr.activites;
 
-import java.io.IOException;
-import com.google.android.maps.GeoPoint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -18,6 +16,8 @@ import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.LocationHelper;
+
+import java.io.IOException;
 
 /**
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
@@ -44,10 +44,13 @@ public class StartActivity extends Activity {
     public static final String COUNTRY_KEY = "COUNTRY";
     private Button btnFrom;
     private Button btnTo;
+    private Button btnCalcRoute;
     private LocationManager locationManager;
 
     private static String fromAddress;
     private static String toAddress;
+
+    private final LocationListener locationTrackingListener = new LocationTrackingListener();
 
     /**
      * Shown when determining city
@@ -88,7 +91,7 @@ public class StartActivity extends Activity {
             }
         });
 
-        final Button btnCalcRoute = (Button) findViewById(R.id.btn_calc_route);
+        btnCalcRoute = (Button) findViewById(R.id.btn_calc_route);
         btnCalcRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,11 +103,13 @@ public class StartActivity extends Activity {
 
             }
         });
+        btnCalcRoute.setEnabled(false);
 
         final Button btnTaxiServicesList = (Button) findViewById(R.id.btn_taxi_services_list);
         btnTaxiServicesList.setOnClickListener(new BtnTaxiServicesListener());
     }
 
+    @SuppressWarnings("AssignmentToStaticFieldFromInstanceMethod")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data == null) {
@@ -121,6 +126,15 @@ public class StartActivity extends Activity {
                 break;
             default:
         }
+        btnCalcRoute.setEnabled(!"".equals(fromAddress) && !"".equals(toAddress));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (locationManager != null && locationTrackingListener != null) {
+            locationManager.removeUpdates(locationTrackingListener);
+        }
     }
 
     /**
@@ -132,7 +146,7 @@ public class StartActivity extends Activity {
         public void onClick(View v) {
             progressDialog = ProgressDialog.show(StartActivity.this, "", getString(R.string.dlg_progress), true);
             locationManager = (LocationManager) StartActivity.this.getSystemService(Context.LOCATION_SERVICE);
-            LocationHelper.requestLocationUpdates(StartActivity.this, locationManager, new LocationTrackingListener());
+            LocationHelper.requestLocationUpdates(StartActivity.this, locationManager, locationTrackingListener);
         }
     }
 

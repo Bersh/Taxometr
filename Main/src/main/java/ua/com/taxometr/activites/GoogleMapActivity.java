@@ -1,26 +1,8 @@
 package ua.com.taxometr.activites;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.List;
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapActivity;
-import com.google.android.maps.MapController;
-import com.google.android.maps.MapView;
-import com.google.android.maps.MyLocationOverlay;
-import com.google.android.maps.Overlay;
-import com.google.android.maps.OverlayItem;
-import com.google.android.maps.Projection;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.location.LocationProvider;
+import android.location.*;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -29,13 +11,22 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
+import com.google.android.maps.*;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.LocationHelper;
 import ua.com.taxometr.mapOverlays.AddressItemizedOverlay;
 import ua.com.taxometr.mapOverlays.RouteOverlay;
 import ua.com.taxometr.routes.Road;
 import ua.com.taxometr.routes.RoadProvider;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.List;
 
 import static ua.com.taxometr.helpers.LocationHelper.getGeoPointByAddressString;
 
@@ -52,7 +43,7 @@ public class GoogleMapActivity extends MapActivity {
 
     private MapView mapView;
 
-    private final LocationListener locationListenerRecenterMap = new LocationTrackingListener();
+    private final LocationListener locationTrackingListener = new LocationTrackingListener();
     private AddressItemizedOverlay addressItemizedOverlay;
     private LocationManager locationManager;
     private Button acceptBtn;
@@ -88,13 +79,8 @@ public class GoogleMapActivity extends MapActivity {
         final MyLocationOverlay myLocationOverlay = new MyLocationOverlay(this, mapView);
         myLocationOverlay.disableCompass();
         myLocationOverlay.enableMyLocation();
-        addressItemizedOverlay = new AddressItemizedOverlay(getResources().getDrawable(R.drawable.red_pin));
-        mapView.getOverlays().add(addressItemizedOverlay);
-        mapView.getOverlays().add(myLocationOverlay);
-        mapView.setOnTouchListener(new MapOnTouchListener());
-        final View.OnClickListener acceptBtnListener = new AcceptBtnListener();
+
         acceptBtn = (Button) findViewById(R.id.btn_accept);
-        acceptBtn.setOnClickListener(acceptBtnListener);
 
         final ImageButton zoomInBtn = (ImageButton) findViewById(R.id.btn_zoom_in);
         final ImageButton zoomOutBtn = (ImageButton) findViewById(R.id.btn_zoom_out);
@@ -127,8 +113,11 @@ public class GoogleMapActivity extends MapActivity {
         mapController = this.mapView.getController();
         mapController.setZoom(18);
 
+        final TextView routeInfo = (TextView) findViewById(R.id.txt_route_info);
+        routeInfo.setVisibility(View.INVISIBLE);
+
         final Intent intent = getIntent();
-        isInRouteMode = intent.getBooleanExtra("isRouteMode", false);
+        isInRouteMode = intent.getBooleanExtra("isRouteMode", false);  //activity started to display route?
         if (isInRouteMode) {
             acceptBtn.setVisibility(View.INVISIBLE);
             final String fromAddress = intent.getStringExtra("fromAddress");
@@ -143,30 +132,17 @@ public class GoogleMapActivity extends MapActivity {
                         Toast.LENGTH_SHORT).show();
                 return;
             }
-            (new RouteCalculationThread(fromPoint, toPoint)).start();
-
-
+            (new Thread(new RouteCalculationThread(fromPoint, toPoint))).start();
+        } else {  //activity started to select address
+            addressItemizedOverlay = new AddressItemizedOverlay(getResources().getDrawable(R.drawable.red_pin));
+            mapView.getOverlays().add(addressItemizedOverlay);
+            mapView.getOverlays().add(myLocationOverlay);
+            mapView.setOnTouchListener(new MapOnTouchListener());
+            final View.OnClickListener acceptBtnListener = new AcceptBtnListener();
+            acceptBtn.setOnClickListener(acceptBtnListener);
         }
     }
 
-    /**
-     * Get connection with google service
-     *
-     * @param url url for route request
-     * @return result xml in KML format as stream
-     */
-    private static InputStream getConnection(String url) {
-        InputStream is = null;
-        try {
-            final URLConnection conn = new URL(url).openConnection();
-            is = conn.getInputStream();
-        } catch (MalformedURLException e) {
-            Log.e(CLASSTAG, e.getMessage());
-        } catch (IOException e) {
-            Log.e(CLASSTAG, e.getMessage());
-        }
-        return is;
-    }
 
     @Override
     public void onResume() {
@@ -178,7 +154,7 @@ public class GoogleMapActivity extends MapActivity {
         final LocationProvider locationProvider = locationManager.getProvider(locationProviderType);
         if (locationProvider != null) {
             locationManager.requestLocationUpdates(locationProvider.getName(), LocationHelper.MIN_UPDATE_TIME, LocationHelper.MIN_DISTANCE,
-                    locationListenerRecenterMap);
+                    locationTrackingListener);
         } else {
             Toast.makeText(this, "Taxometr cannot continue,"
                     + " the GPS location provider is not available"
@@ -191,7 +167,9 @@ public class GoogleMapActivity extends MapActivity {
     @Override
     public void onPause() {
         super.onPause();
-        locationManager.removeUpdates(locationListenerRecenterMap);
+        if (locationManager != null && locationTrackingListener != null) {
+            locationManager.removeUpdates(locationTrackingListener);
+        }
     }
 
     @Override
@@ -202,7 +180,7 @@ public class GoogleMapActivity extends MapActivity {
     /**
      * Tread for obtaining route in KML format from google service
      */
-    private class RouteCalculationThread extends Thread {
+    private class RouteCalculationThread implements Runnable {
         private final GeoPoint fromPoint;
         private final GeoPoint toPoint;
 
@@ -226,6 +204,25 @@ public class GoogleMapActivity extends MapActivity {
             final InputStream inputStream = getConnection(url);
             road = RoadProvider.getRoute(inputStream);
             routeHandler.sendEmptyMessage(0);
+        }
+
+        /**
+         * Get connection with google service
+         *
+         * @param url url for route request
+         * @return result xml in KML format as stream
+         */
+        private InputStream getConnection(String url) {
+            InputStream is = null;
+            try {
+                final URLConnection conn = new URL(url).openConnection();
+                is = conn.getInputStream();
+            } catch (MalformedURLException e) {
+                Log.e(CLASSTAG, e.getMessage());
+            } catch (IOException e) {
+                Log.e(CLASSTAG, e.getMessage());
+            }
+            return is;
         }
     }
 

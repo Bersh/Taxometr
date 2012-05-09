@@ -4,12 +4,19 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:gravity="center_horizontal" android:padding="0px">
+    <TextView
+            android:id="@+id/txt_route_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
     <com.google.android.maps.MapView
             android:id="@+id/map_view"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:enabled="true"
             android:clickable="true"
+            android:layout_below="@+id/txt_route_info"
             android:apiKey=
                     "05pgTR7t1F5rmXHkTjhT9zPx1Q9cn1Rxg5Ks9ug"/>
 

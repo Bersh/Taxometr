@@ -1,16 +1,17 @@
 package ua.com.taxometr.mapOverlays;
 
-import java.util.ArrayList;
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapController;
-import com.google.android.maps.MapView;
-import com.google.android.maps.Overlay;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MapController;
+import com.google.android.maps.MapView;
+import com.google.android.maps.Overlay;
 import ua.com.taxometr.helpers.LocationHelper;
 import ua.com.taxometr.routes.Road;
+
+import java.util.ArrayList;
 
 /**
  * Map overlay for displaying route
@@ -35,13 +36,13 @@ public class RouteOverlay extends Overlay {
                 points.add(new GeoPoint((int) (road.mRoute[i][1] * LocationHelper.MILLION),
                         (int) (road.mRoute[i][0] * LocationHelper.MILLION)));
             }
-            final int moveToLat = (points.get(0).getLatitudeE6() + (points.get(
+/*            final int moveToLat = (points.get(0).getLatitudeE6() + (points.get(
                     points.size() - 1).getLatitudeE6() - points.get(0)
                     .getLatitudeE6()) / 2);
             final int moveToLong = (points.get(0).getLongitudeE6() + (points.get(
                     points.size() - 1).getLongitudeE6() - points.get(0)
-                    .getLongitudeE6()) / 2);
-            final GeoPoint moveTo = new GeoPoint(moveToLat, moveToLong);
+                    .getLongitudeE6()) / 2);*/
+            final GeoPoint moveTo = new GeoPoint(points.get(0).getLatitudeE6(), points.get(0).getLongitudeE6());
 
             final MapController mapController = mv.getController();
             mapController.animateTo(moveTo);
@@ -61,10 +62,13 @@ public class RouteOverlay extends Overlay {
      * @param canvas canvas
      */
     public void drawRoute(MapView mv, Canvas canvas) {
-        final Paint paint = new Paint();
-        paint.setColor(Color.GREEN);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(3);
+        final Paint linePaint = new Paint();
+        linePaint.setColor(Color.GREEN);
+        linePaint.setStyle(Paint.Style.STROKE);
+        linePaint.setStrokeWidth(3);
+        final Paint pointPaint = new Paint();
+        pointPaint.setColor(Color.GREEN);
+        pointPaint.setStyle(Paint.Style.FILL);
         int x1 = -1;
         int y1 = -1;
         int x2 = -1;
@@ -75,7 +79,8 @@ public class RouteOverlay extends Overlay {
             x2 = point.x;
             y2 = point.y;
             if (i > 0) {
-                canvas.drawLine(x1, y1, x2, y2, paint);
+                canvas.drawCircle(x1, y1, 5, pointPaint);
+                canvas.drawLine(x1, y1, x2, y2, linePaint);
             }
             x1 = x2;
             y1 = y2;
