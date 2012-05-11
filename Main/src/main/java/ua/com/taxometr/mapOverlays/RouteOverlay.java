@@ -1,17 +1,16 @@
 package ua.com.taxometr.mapOverlays;
 
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Point;
+import java.util.ArrayList;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Point;
 import ua.com.taxometr.helpers.LocationHelper;
 import ua.com.taxometr.routes.Road;
-
-import java.util.ArrayList;
 
 /**
  * Map overlay for displaying route
@@ -30,11 +29,11 @@ public class RouteOverlay extends Overlay {
      */
     public RouteOverlay(Road road, MapView mv) {
         this.road = road;
-        if (road.mRoute.length > 0) {
+        if (road.route.length > 0) {
             points = new ArrayList<GeoPoint>();
-            for (int i = 0; i < road.mRoute.length; i++) {
-                points.add(new GeoPoint((int) (road.mRoute[i][1] * LocationHelper.MILLION),
-                        (int) (road.mRoute[i][0] * LocationHelper.MILLION)));
+            for (int i = 0; i < road.route.length; i++) {
+                points.add(new GeoPoint((int) (road.route[i][1] * LocationHelper.MILLION),
+                        (int) (road.route[i][0] * LocationHelper.MILLION)));
             }
 /*            final int moveToLat = (points.get(0).getLatitudeE6() + (points.get(
                     points.size() - 1).getLatitudeE6() - points.get(0)

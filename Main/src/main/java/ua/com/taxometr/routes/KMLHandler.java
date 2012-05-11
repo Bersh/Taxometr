@@ -1,10 +1,9 @@
 package ua.com.taxometr.routes;
 
+import java.util.Stack;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-
-import java.util.Stack;
 
 /**
  * @author ibershadskiy <a href="mailto:Ilya.Bershadskiy@exigenservices.com">Ilya Bershadskiy</a>
@@ -15,8 +14,8 @@ public class KMLHandler extends DefaultHandler {
     boolean isPlacemark;
     boolean isRoute;
     boolean isItemIcon;
-    private final Stack mCurrentElement = new Stack();
-    private String mString;
+    private final Stack currentElement = new Stack();
+    private String tmpString;
 
     /**
      * Default constructor
@@ -28,70 +27,70 @@ public class KMLHandler extends DefaultHandler {
     @Override
     public void startElement(String uri, String localName, String name,
                              Attributes attributes) throws SAXException {
-        mCurrentElement.push(localName);
+        currentElement.push(localName);
         if ("Placemark".equalsIgnoreCase(localName)) {
             isPlacemark = true;
-            road.mPoints = addPoint(road.mPoints);
+            road.points = addPoint(road.points);
         } else if ("ItemIcon".equalsIgnoreCase(localName)) {
             if (isPlacemark) {
                 isItemIcon = true;
             }
         }
-        mString = "";
+        tmpString = "";
     }
 
     @Override
     public void characters(char[] ch, int start, int length)
             throws SAXException {
         final String chars = new String(ch, start, length).trim();
-        mString = mString + chars;
+        tmpString = tmpString + chars;
     }
 
     @Override
     public void endElement(String uri, String localName, String name)
             throws SAXException {
-        if (mString.length() > 0) {
+        if (tmpString.length() > 0) {
             if ("name".equalsIgnoreCase(localName)) {
                 if (isPlacemark) {
-                    isRoute = "Route".equalsIgnoreCase(mString);
+                    isRoute = "Route".equalsIgnoreCase(tmpString);
                     if (!isRoute) {
-                        road.mPoints[road.mPoints.length - 1].mName = mString;
+                        road.points[road.points.length - 1].name = tmpString;
                     }
                 } else {
-                    road.mName = mString;
+                    road.name = tmpString;
                 }
             } else if ("color".equalsIgnoreCase(localName) && !isPlacemark) {
-                road.mColor = Integer.parseInt(mString, 16);
+                road.color = Integer.parseInt(tmpString, 16);
             } else if ("width".equalsIgnoreCase(localName) && !isPlacemark) {
-                road.mWidth = Integer.parseInt(mString);
+                road.width = Integer.parseInt(tmpString);
             } else if ("description".equalsIgnoreCase(localName)) {
                 if (isPlacemark) {
-                    String description = cleanup(mString);
+                    final String description = cleanup(tmpString);
                     if (!isRoute) {
-                        road.mPoints[road.mPoints.length - 1].mDescription = description;
+                        road.points[road.points.length - 1].description = description;
                     } else {
-                        road.mDescription = description;
+                        road.description = description;
                     }
                 }
             } else if ("href".equalsIgnoreCase(localName)) {
                 if (isItemIcon) {
-                    road.mPoints[road.mPoints.length - 1].mIconUrl = mString;
+                    road.points[road.points.length - 1].iconUrl = tmpString;
                 }
             } else if ("coordinates".equalsIgnoreCase(localName)) {
                 if (isPlacemark) {
                     if (!isRoute) {
-                        String[] xyParsed = split(mString, ",");
+                        String[] xyParsed = split(tmpString, ",");
                         double lon = Double.parseDouble(xyParsed[0]);
                         double lat = Double.parseDouble(xyParsed[1]);
-                        road.mPoints[road.mPoints.length - 1].mLatitude = lat;
-                        road.mPoints[road.mPoints.length - 1].mLongitude = lon;
+                        road.points[road.points.length - 1].latitude = lat;
+                        road.points[road.points.length - 1].longitude = lon;
                     } else {
-                        String[] coodrinatesParsed = split(mString, " ");
+                        String[] coodrinatesParsed = split(tmpString, " ");
                         int lenNew = coodrinatesParsed.length;
-                        int lenOld = road.mRoute.length;
+                        int lenOld = road.route.length;
                         double[][] temp = new double[lenOld + lenNew][2];
                         for (int i = 0; i < lenOld; i++) {
-                            temp[i] = road.mRoute[i];
+                            temp[i] = road.route[i];
                         }
                         for (int i = 0; i < lenNew; i++) {
                             String[] xyParsed = split(coodrinatesParsed[i], ",");
@@ -100,12 +99,12 @@ public class KMLHandler extends DefaultHandler {
                                         .parseDouble(xyParsed[j]);
                             }
                         }
-                        road.mRoute = temp;
+                        road.route = temp;
                     }
                 }
             }
         }
-        mCurrentElement.pop();
+        currentElement.pop();
         if ("Placemark".equalsIgnoreCase(localName)) {
             isPlacemark = false;
             if (isRoute) {

@@ -6,6 +6,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
+import android.content.Context;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -35,11 +36,14 @@ public class RoadProvider {
      * @param fromLon start point longitude
      * @param toLat destination point latitude
      * @param toLon destination point longitude
+     * @param context current context
      * @return route url for Google Maps service
      */
-    public static String getUrl(double fromLat, double fromLon, double toLat, double toLon) {// connect to map web service
+    public static String getUrl(double fromLat, double fromLon, double toLat, double toLon, Context context) {// connect to map web service
         final StringBuilder urlString = new StringBuilder();
-        urlString.append("http://maps.google.com/maps?f=d&hl=en");
+        final String currentLanguage = context.getResources().getConfiguration().locale.getLanguage();
+        urlString.append("http://maps.google.com/maps?f=d&hl=");
+        urlString.append(currentLanguage); //current language
         urlString.append("&saddr=");// from
         urlString.append(Double.toString(fromLat));
         urlString.append(",");

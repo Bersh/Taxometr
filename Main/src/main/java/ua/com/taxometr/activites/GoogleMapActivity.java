@@ -1,8 +1,27 @@
 package ua.com.taxometr.activites;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.List;
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
+import com.google.android.maps.MapView;
+import com.google.android.maps.MyLocationOverlay;
+import com.google.android.maps.Overlay;
+import com.google.android.maps.OverlayItem;
+import com.google.android.maps.Projection;
 import android.content.Context;
 import android.content.Intent;
-import android.location.*;
+import android.graphics.Color;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,20 +32,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.google.android.maps.*;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.LocationHelper;
 import ua.com.taxometr.mapOverlays.AddressItemizedOverlay;
 import ua.com.taxometr.mapOverlays.RouteOverlay;
 import ua.com.taxometr.routes.Road;
 import ua.com.taxometr.routes.RoadProvider;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.List;
 
 import static ua.com.taxometr.helpers.LocationHelper.getGeoPointByAddressString;
 
@@ -53,8 +64,9 @@ public class GoogleMapActivity extends MapActivity {
     private final Handler routeHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-//               TextView textView = (TextView) findViewById(R.id.description);
-//               textView.setText(mRoad.mName + " " + mRoad.mDescription);
+            final TextView routeInfo = (TextView) findViewById(R.id.txt_route_info);
+            routeInfo.setText(road.name + " " + road.description);
+            routeInfo.setTextColor(Color.BLACK);
             final RouteOverlay routeOverlay = new RouteOverlay(road, mapView);
             final List<Overlay> listOfOverlays = mapView.getOverlays();
             listOfOverlays.clear();
@@ -113,8 +125,8 @@ public class GoogleMapActivity extends MapActivity {
         mapController = this.mapView.getController();
         mapController.setZoom(18);
 
-        final TextView routeInfo = (TextView) findViewById(R.id.txt_route_info);
-        routeInfo.setVisibility(View.INVISIBLE);
+/*        routeInfo = (TextView) findViewById(R.id.txt_route_info);
+        routeInfo.setVisibility(View.INVISIBLE);*/
 
         final Intent intent = getIntent();
         isInRouteMode = intent.getBooleanExtra("isRouteMode", false);  //activity started to display route?
@@ -200,7 +212,7 @@ public class GoogleMapActivity extends MapActivity {
             final String url = RoadProvider.getUrl(fromPoint.getLatitudeE6() / LocationHelper.MILLION,
                     fromPoint.getLongitudeE6() / LocationHelper.MILLION,
                     toPoint.getLatitudeE6() / LocationHelper.MILLION,
-                    toPoint.getLongitudeE6() / LocationHelper.MILLION);
+                    toPoint.getLongitudeE6() / LocationHelper.MILLION, GoogleMapActivity.this);
             final InputStream inputStream = getConnection(url);
             road = RoadProvider.getRoute(inputStream);
             routeHandler.sendEmptyMessage(0);

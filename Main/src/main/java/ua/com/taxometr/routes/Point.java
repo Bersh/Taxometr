@@ -5,9 +5,9 @@ package ua.com.taxometr.routes;
  * @since 26.04.12
  */
 public class Point {
-        String mName;
-        String mDescription;
-        String mIconUrl;
-        double mLatitude;
-        double mLongitude;
+        String name;
+        String description;
+        String iconUrl;
+        double latitude;
+        double longitude;
 }

@@ -5,10 +5,10 @@ package ua.com.taxometr.routes;
  * @since 26.04.12
  */
 public class Road {
-        public String mName;
-        public String mDescription;
-        public int mColor;
-        public int mWidth;
-        public double[][] mRoute = new double[][] {};
-        public Point[] mPoints = new Point[] {};
+        public String name;
+        public String description;
+        public int color;
+        public int width;
+        public double[][] route = new double[][] {};
+        public Point[] points = new Point[] {};
 }
