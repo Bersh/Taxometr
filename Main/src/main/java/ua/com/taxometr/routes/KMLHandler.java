@@ -17,8 +17,10 @@ public class KMLHandler extends DefaultHandler {
     boolean isPlacemark;
     boolean isRoute;
     boolean isItemIcon;
-    private final Stack<String> currentElement = new Stack<String>();
     private String tmpString;
+
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
+    private final Stack<String> currentElement = new Stack<String>();
 
     /**
      * Default constructor

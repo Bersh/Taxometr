@@ -1,14 +1,39 @@
 package ua.com.taxometr.routes;
 
 /**
+ * Representation of route
  * @author ibershadskiy <a href="mailto:Ilya.Bershadskiy@exigenservices.com">Ilya Bershadskiy</a>
  * @since 26.04.12
  */
+@SuppressWarnings("ClassNamingConvention")
 public class Road {
-        public String name;
-        public String description;
-        public int color;
-        public int width;
-        public double[][] route = new double[][] {};
-        public Point[] points = new Point[] {};
+    /**
+     * Road name
+     */
+    public String name;
+
+    /**
+     * Road description
+     */
+    public String description;
+
+    /**
+     * Line color
+     */
+    public int color;
+
+    /**
+     * Line width
+     */
+    public int width;
+
+    /**
+     * Route points
+     */
+    public double[][] route = new double[][]{};
+
+    /**
+     *  HZ
+     */
+    public Point[] points = new Point[]{};
 }

@@ -19,6 +19,12 @@ import ua.com.taxometr.routes.Road;
 public class RoadHelper {
 
     /**
+     * Default constructor
+     */
+    private RoadHelper() {
+    }
+
+    /**
      * Parse KML file
      * @param is input stream
      * @return {@link ua.com.taxometr.routes.Road} object
