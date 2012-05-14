@@ -10,11 +10,14 @@ import org.xml.sax.helpers.DefaultHandler;
  * @since 26.04.12
  */
 public class KMLHandler extends DefaultHandler {
-    Road road;
+    private static final String ROUTE_TAG_EN = "Route";
+    private static final String ROUTE_TAG_RU = "Маршрут";
+
+    private final Road road;
     boolean isPlacemark;
     boolean isRoute;
     boolean isItemIcon;
-    private final Stack currentElement = new Stack();
+    private final Stack<String> currentElement = new Stack<String>();
     private String tmpString;
 
     /**
@@ -50,57 +53,59 @@ public class KMLHandler extends DefaultHandler {
     public void endElement(String uri, String localName, String name)
             throws SAXException {
         if (tmpString.length() > 0) {
-            if ("name".equalsIgnoreCase(localName)) {
+            if (!"name".equalsIgnoreCase(localName)) {
+                if (!"color".equalsIgnoreCase(localName) || isPlacemark) {
+                    if (!"width".equalsIgnoreCase(localName) || isPlacemark) {
+                        if ("description".equalsIgnoreCase(localName)) {
+                            if (isPlacemark) {
+                                final String description = cleanup(tmpString);
+                                if (!isRoute) {
+                                    road.points[road.points.length - 1].description = description;
+                                } else {
+                                    road.description = description;
+                                }
+                            }
+                        } else if ("href".equalsIgnoreCase(localName)) {
+                            if (isItemIcon) {
+                                road.points[road.points.length - 1].iconUrl = tmpString;
+                            }
+                        } else if ("coordinates".equalsIgnoreCase(localName)) {
+                            if (isPlacemark) {
+                                if (!isRoute) {
+                                    final String[] xyParsed = split(tmpString, ",");
+                                    road.points[road.points.length - 1].latitude = Double.parseDouble(xyParsed[1]);
+                                    road.points[road.points.length - 1].longitude = Double.parseDouble(xyParsed[0]);
+                                } else {
+                                    final String[] coodrinatesParsed = split(tmpString, " ");
+                                    final int lenNew = coodrinatesParsed.length;
+                                    final int lenOld = road.route.length;
+                                    final double[][] temp = new double[lenOld + lenNew][2];
+                                    System.arraycopy(road.route, 0, temp, 0, lenOld);
+                                    for (int i = 0; i < lenNew; i++) {
+                                        final String[] xyParsed = split(coodrinatesParsed[i], ",");
+                                        for (int j = 0; j < 2 && j < xyParsed.length; j++) {
+                                            temp[lenOld + i][j] = Double
+                                                    .parseDouble(xyParsed[j]);
+                                        }
+                                    }
+                                    road.route = temp;
+                                }
+                            }
+                        }
+                    } else {
+                        road.width = Integer.parseInt(tmpString);
+                    }
+                } else {
+                    road.color = Integer.parseInt(tmpString, 16);
+                }
+            } else {
                 if (isPlacemark) {
-                    isRoute = "Route".equalsIgnoreCase(tmpString);
+                    isRoute = ROUTE_TAG_EN.equalsIgnoreCase(tmpString) || ROUTE_TAG_RU.equalsIgnoreCase(tmpString);
                     if (!isRoute) {
                         road.points[road.points.length - 1].name = tmpString;
                     }
                 } else {
                     road.name = tmpString;
-                }
-            } else if ("color".equalsIgnoreCase(localName) && !isPlacemark) {
-                road.color = Integer.parseInt(tmpString, 16);
-            } else if ("width".equalsIgnoreCase(localName) && !isPlacemark) {
-                road.width = Integer.parseInt(tmpString);
-            } else if ("description".equalsIgnoreCase(localName)) {
-                if (isPlacemark) {
-                    final String description = cleanup(tmpString);
-                    if (!isRoute) {
-                        road.points[road.points.length - 1].description = description;
-                    } else {
-                        road.description = description;
-                    }
-                }
-            } else if ("href".equalsIgnoreCase(localName)) {
-                if (isItemIcon) {
-                    road.points[road.points.length - 1].iconUrl = tmpString;
-                }
-            } else if ("coordinates".equalsIgnoreCase(localName)) {
-                if (isPlacemark) {
-                    if (!isRoute) {
-                        String[] xyParsed = split(tmpString, ",");
-                        double lon = Double.parseDouble(xyParsed[0]);
-                        double lat = Double.parseDouble(xyParsed[1]);
-                        road.points[road.points.length - 1].latitude = lat;
-                        road.points[road.points.length - 1].longitude = lon;
-                    } else {
-                        String[] coodrinatesParsed = split(tmpString, " ");
-                        int lenNew = coodrinatesParsed.length;
-                        int lenOld = road.route.length;
-                        double[][] temp = new double[lenOld + lenNew][2];
-                        for (int i = 0; i < lenOld; i++) {
-                            temp[i] = road.route[i];
-                        }
-                        for (int i = 0; i < lenNew; i++) {
-                            String[] xyParsed = split(coodrinatesParsed[i], ",");
-                            for (int j = 0; j < 2 && j < xyParsed.length; j++) {
-                                temp[lenOld + i][j] = Double
-                                        .parseDouble(xyParsed[j]);
-                            }
-                        }
-                        road.route = temp;
-                    }
                 }
             }
         }
@@ -117,14 +122,21 @@ public class KMLHandler extends DefaultHandler {
         }
     }
 
-    private String cleanup(String value) {
+    /**
+     * Removes unnecessary elements in string
+     * @param value string to clean up
+     * @return string without elements
+     */
+    @SuppressWarnings({"ReuseOfLocalVariable", "AssignmentToMethodParameter"})
+    private static String cleanup(String value) {
         String remove = "<br/>";
         int index = value.indexOf(remove);
-        if (index != -1)
+        if (index != -1) {
             value = value.substring(0, index);
+        }
         remove = "&#160;";
         index = value.indexOf(remove);
-        int len = remove.length();
+        final int len = remove.length();
         while (index != -1) {
             value = value.substring(0, index).concat(
                     value.substring(index + len, value.length()));
@@ -133,20 +145,26 @@ public class KMLHandler extends DefaultHandler {
         return value;
     }
 
+    /**
+     * Adds new route point
+     * @param points array of route points
+     * @return array of route points
+     */
     public Point[] addPoint(Point[] points) {
-        Point[] result = new Point[points.length + 1];
-        for (int i = 0; i < points.length; i++)
-            result[i] = points[i];
+        final Point[] result = new Point[points.length + 1];
+        System.arraycopy(points, 0, result, 0, points.length);
         result[points.length] = new Point();
         return result;
     }
 
+    /**
+     * Split string using given string delimiter
+     * @param strString  source string
+     * @param strDelimiter string delimiter
+     * @return source string splited for array of strings
+     */
+    @SuppressWarnings({"AssignmentToMethodParameter", "ReuseOfLocalVariable"})
     private static String[] split(String strString, String strDelimiter) {
-        String[] strArray;
-        int iOccurrences = 0;
-        int iIndexOfInnerString = 0;
-        int iIndexOfDelimiter = 0;
-        int iCounter = 0;
         if (strString == null) {
             throw new IllegalArgumentException("Input string cannot be null.");
         }
@@ -160,22 +178,31 @@ public class KMLHandler extends DefaultHandler {
         if (!strString.endsWith(strDelimiter)) {
             strString += strDelimiter;
         }
-        while ((iIndexOfDelimiter = strString.indexOf(strDelimiter,
-                iIndexOfInnerString)) != -1) {
+        int iOccurrences = 0;
+        int iIndexOfInnerString = 0;
+        int iIndexOfDelimiter = strString.indexOf(strDelimiter, iIndexOfInnerString);
+        while (iIndexOfDelimiter != -1) {
             iOccurrences += 1;
             iIndexOfInnerString = iIndexOfDelimiter + strDelimiter.length();
+            iIndexOfDelimiter = strString.indexOf(strDelimiter, iIndexOfInnerString);
         }
-        strArray = new String[iOccurrences];
+        final String[] strArray = new String[iOccurrences];
         iIndexOfInnerString = 0;
         iIndexOfDelimiter = 0;
-        while ((iIndexOfDelimiter = strString.indexOf(strDelimiter,
-                iIndexOfInnerString)) != -1) {
+        iIndexOfDelimiter = strString.indexOf(strDelimiter, iIndexOfInnerString);
+        int iCounter = 0;
+        while (iIndexOfDelimiter != -1) {
             strArray[iCounter] = strString.substring(iIndexOfInnerString,
                     iIndexOfDelimiter);
             iIndexOfInnerString = iIndexOfDelimiter + strDelimiter.length();
             iCounter += 1;
+            iIndexOfDelimiter = strString.indexOf(strDelimiter, iIndexOfInnerString);
         }
 
         return strArray;
+    }
+
+    public Road getRoad() {
+        return road;
     }
 }

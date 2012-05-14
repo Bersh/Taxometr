@@ -1,4 +1,4 @@
-package ua.com.taxometr.routes;
+package ua.com.taxometr.helpers;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,13 +8,21 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
 import android.content.Context;
 import de.akquinet.android.androlog.Log;
+import ua.com.taxometr.routes.KMLHandler;
+import ua.com.taxometr.routes.Road;
 
 /**
+ * Helper for creating route
  * @author ibershadskiy <a href="mailto:Ilya.Bershadskiy@exigenservices.com">Ilya Bershadskiy</a>
  * @since 26.04.12
  */
-public class RoadProvider {
+public class RoadHelper {
 
+    /**
+     * Parse KML file
+     * @param is input stream
+     * @return {@link ua.com.taxometr.routes.Road} object
+     */
     public static Road getRoute(InputStream is) {
         final KMLHandler handler = new KMLHandler();
         try {
@@ -27,7 +35,7 @@ public class RoadProvider {
         } catch (IOException e) {
             Log.e(e.getMessage());
         }
-        return handler.road;
+        return handler.getRoad();
     }
 
     /**

@@ -27,6 +27,7 @@ public class RouteOverlay extends Overlay {
      * @param road {@link ua.com.taxometr.routes.Road}
      * @param mv current {@link com.google.android.maps.MapView}
      */
+    @SuppressWarnings("NumericCastThatLosesPrecision")
     public RouteOverlay(Road road, MapView mv) {
         this.road = road;
         if (road.route.length > 0) {
@@ -41,10 +42,10 @@ public class RouteOverlay extends Overlay {
             final int moveToLong = (points.get(0).getLongitudeE6() + (points.get(
                     points.size() - 1).getLongitudeE6() - points.get(0)
                     .getLongitudeE6()) / 2);*/
-            final GeoPoint moveTo = new GeoPoint(points.get(0).getLatitudeE6(), points.get(0).getLongitudeE6());
+            final GeoPoint startPoint = new GeoPoint(points.get(0).getLatitudeE6(), points.get(0).getLongitudeE6());
 
             final MapController mapController = mv.getController();
-            mapController.animateTo(moveTo);
+            mapController.animateTo(startPoint);
         }
     }
 
@@ -61,6 +62,9 @@ public class RouteOverlay extends Overlay {
      * @param canvas canvas
      */
     public void drawRoute(MapView mv, Canvas canvas) {
+        if(points.isEmpty()) {
+            return;
+        }
         final Paint linePaint = new Paint();
         linePaint.setColor(Color.GREEN);
         linePaint.setStyle(Paint.Style.STROKE);

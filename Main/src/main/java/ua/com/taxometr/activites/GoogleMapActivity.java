@@ -37,7 +37,7 @@ import ua.com.taxometr.helpers.LocationHelper;
 import ua.com.taxometr.mapOverlays.AddressItemizedOverlay;
 import ua.com.taxometr.mapOverlays.RouteOverlay;
 import ua.com.taxometr.routes.Road;
-import ua.com.taxometr.routes.RoadProvider;
+import ua.com.taxometr.helpers.RoadHelper;
 
 import static ua.com.taxometr.helpers.LocationHelper.getGeoPointByAddressString;
 
@@ -209,12 +209,12 @@ public class GoogleMapActivity extends MapActivity {
 
         @Override
         public void run() {
-            final String url = RoadProvider.getUrl(fromPoint.getLatitudeE6() / LocationHelper.MILLION,
+            final String url = RoadHelper.getUrl(fromPoint.getLatitudeE6() / LocationHelper.MILLION,
                     fromPoint.getLongitudeE6() / LocationHelper.MILLION,
                     toPoint.getLatitudeE6() / LocationHelper.MILLION,
                     toPoint.getLongitudeE6() / LocationHelper.MILLION, GoogleMapActivity.this);
             final InputStream inputStream = getConnection(url);
-            road = RoadProvider.getRoute(inputStream);
+            road = RoadHelper.getRoute(inputStream);
             routeHandler.sendEmptyMessage(0);
         }
 
@@ -296,6 +296,7 @@ public class GoogleMapActivity extends MapActivity {
             final GeoPoint geoPoint = new GeoPoint(lat, lon);
             mapController.animateTo(geoPoint);
             mapController.setCenter(geoPoint);
+            locationManager.removeUpdates(this);      //TODO remove!
         }
 
         @Override
