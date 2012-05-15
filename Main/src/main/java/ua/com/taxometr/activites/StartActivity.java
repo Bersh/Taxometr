@@ -143,7 +143,7 @@ public class StartActivity extends Activity {
 
         @Override
         public void onClick(View v) {
-            progressDialog = ProgressDialog.show(StartActivity.this, "", getString(R.string.dlg_progress), true);
+            progressDialog = ProgressDialog.show(StartActivity.this, "", getString(R.string.dlg_progress_obtaining_location), true);
             locationManager = (LocationManager) StartActivity.this.getSystemService(Context.LOCATION_SERVICE);
             LocationHelper.requestLocationUpdates(StartActivity.this, locationManager, locationTrackingListener);
         }

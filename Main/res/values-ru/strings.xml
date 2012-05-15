@@ -27,10 +27,11 @@
     <!--GoogleMapActivity-->
     <string name="btn_accept">Принять</string>
     <string name="err_cant_determine_coordinates_by_address">Невозможно определиить координаты по заданному адресу.</string>
+    <string name="err_gps_location_provider_is_not_available">GPS location provider не доступен</string>
     <!--/GoogleMapActivity-->
 
     <!--Global-->
-    <string name="dlg_progress">Определение вашего местоположения…</string>
+    <string name="dlg_progress_obtaining_location">Определение вашего местоположения…</string>
     <string name="err_gps_not_available">Невозможно определить ваше местоположение, GPS недоступен.</string>
     <string name="err_geocoder_not_available">Невозможно определить ваше местоположение, Geocoder недоступен.</string>
     <!--/Global-->

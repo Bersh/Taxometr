@@ -92,7 +92,7 @@ public class SelectAddressActivity extends Activity {
     private class MyLocationBtnListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            progressDialog = ProgressDialog.show(SelectAddressActivity.this, "", getString(R.string.dlg_progress), true);
+            progressDialog = ProgressDialog.show(SelectAddressActivity.this, "", getString(R.string.dlg_progress_obtaining_location), true);
             locationManager = (LocationManager) SelectAddressActivity.this.getSystemService(Context.LOCATION_SERVICE);
             LocationHelper.requestLocationUpdates(SelectAddressActivity.this, locationManager, locationTrackingListener);
         }

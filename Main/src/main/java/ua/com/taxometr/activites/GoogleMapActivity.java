@@ -14,6 +14,7 @@ import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 import com.google.android.maps.Projection;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -49,6 +50,7 @@ import static ua.com.taxometr.helpers.LocationHelper.getGeoPointByAddressString;
  */
 public class GoogleMapActivity extends MapActivity {
     private static final String CLASSTAG = GoogleMapActivity.class.getSimpleName();
+    private static final int MAP_ZOOM_LEVEL = 18;
 
     private MapController mapController;
 
@@ -60,6 +62,8 @@ public class GoogleMapActivity extends MapActivity {
     private Button acceptBtn;
     private boolean isInRouteMode;
     private Road road;
+    private ProgressDialog progressDialog;
+    private ImageButton myLocationBtn;
 
     private final Handler routeHandler = new Handler() {
         @Override
@@ -96,7 +100,7 @@ public class GoogleMapActivity extends MapActivity {
 
         final ImageButton zoomInBtn = (ImageButton) findViewById(R.id.btn_zoom_in);
         final ImageButton zoomOutBtn = (ImageButton) findViewById(R.id.btn_zoom_out);
-        final ImageButton myLocationBtn = (ImageButton) findViewById(R.id.btn_my_location);
+        myLocationBtn = (ImageButton) findViewById(R.id.btn_my_location);
         zoomInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,15 +122,14 @@ public class GoogleMapActivity extends MapActivity {
                 if (myLocation != null) {
                     mapController.animateTo(myLocation);
                     mapController.setCenter(myLocation);
+                } else {
+                    progressDialog = ProgressDialog.show(GoogleMapActivity.this, "", getString(R.string.dlg_progress_obtaining_location), true);
                 }
             }
         });
 
         mapController = this.mapView.getController();
-        mapController.setZoom(18);
-
-/*        routeInfo = (TextView) findViewById(R.id.txt_route_info);
-        routeInfo.setVisibility(View.INVISIBLE);*/
+        mapController.setZoom(MAP_ZOOM_LEVEL);
 
         final Intent intent = getIntent();
         isInRouteMode = intent.getBooleanExtra("isRouteMode", false);  //activity started to display route?
@@ -142,6 +145,7 @@ public class GoogleMapActivity extends MapActivity {
             } catch (IOException e) {
                 Toast.makeText(this, getString(R.string.err_geocoder_not_available),
                         Toast.LENGTH_SHORT).show();
+                Log.e(CLASSTAG, e.getMessage());
                 return;
             }
             (new Thread(new RouteCalculationThread(fromPoint, toPoint))).start();
@@ -165,13 +169,12 @@ public class GoogleMapActivity extends MapActivity {
         final String locationProviderType = locationManager.getBestProvider(criteria, true);
         final LocationProvider locationProvider = locationManager.getProvider(locationProviderType);
         if (locationProvider != null) {
+            myLocationBtn.setEnabled(true);
             locationManager.requestLocationUpdates(locationProvider.getName(), LocationHelper.MIN_UPDATE_TIME, LocationHelper.MIN_DISTANCE,
                     locationTrackingListener);
         } else {
-            Toast.makeText(this, "Taxometr cannot continue,"
-                    + " the GPS location provider is not available"
-                    + " at this time.", Toast.LENGTH_SHORT).show();
-            this.finish();
+            myLocationBtn.setEnabled(false);
+            Toast.makeText(this, getString(R.string.err_gps_location_provider_is_not_available), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -240,10 +243,11 @@ public class GoogleMapActivity extends MapActivity {
 
     /**
      * OnTouchListener for MapView <br/>
-     * Add's overlay items to {@link GoogleMapActivity#addressItemizedOverlay}
+     * Adds overlay items to {@link GoogleMapActivity#addressItemizedOverlay}
      */
     private class MapOnTouchListener implements View.OnTouchListener {
 
+        @SuppressWarnings("NumericCastThatLosesPrecision")
         @Override
         public boolean onTouch(View view, MotionEvent event) {
             final int action = event.getAction();
@@ -289,6 +293,7 @@ public class GoogleMapActivity extends MapActivity {
      * LocationListener to track location changes
      */
     private class LocationTrackingListener implements LocationListener {
+        @SuppressWarnings("NumericCastThatLosesPrecision")
         @Override
         public void onLocationChanged(final Location loc) {
             final int lat = (int) (loc.getLatitude() * LocationHelper.MILLION);
@@ -296,7 +301,10 @@ public class GoogleMapActivity extends MapActivity {
             final GeoPoint geoPoint = new GeoPoint(lat, lon);
             mapController.animateTo(geoPoint);
             mapController.setCenter(geoPoint);
-            locationManager.removeUpdates(this);      //TODO remove!
+            locationManager.removeUpdates(this);
+            if(progressDialog != null) {
+                progressDialog.dismiss();
+            }
         }
 
         @Override
