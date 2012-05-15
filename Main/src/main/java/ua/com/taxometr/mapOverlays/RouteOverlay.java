@@ -15,7 +15,7 @@ import ua.com.taxometr.routes.Road;
 /**
  * Map overlay for displaying route
  *
- * @author ibershadskiy <a href="mailto:Ilya.Bershadskiy@exigenservices.com">Ilya Bershadskiy</a>
+ * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  * @since 08.05.12
  */
 public class RouteOverlay extends Overlay {

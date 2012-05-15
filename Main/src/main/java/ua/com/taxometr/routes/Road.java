@@ -2,7 +2,7 @@ package ua.com.taxometr.routes;
 
 /**
  * Representation of route
- * @author ibershadskiy <a href="mailto:Ilya.Bershadskiy@exigenservices.com">Ilya Bershadskiy</a>
+ * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  * @since 26.04.12
  */
 @SuppressWarnings("ClassNamingConvention")
