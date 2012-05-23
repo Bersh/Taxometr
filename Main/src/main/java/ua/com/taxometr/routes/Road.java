@@ -28,6 +28,11 @@ public class Road {
     public int width;
 
     /**
+     * route length
+     */
+    public double length;
+
+    /**
      * Route points
      */
     public double[][] route = new double[][]{};
