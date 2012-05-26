@@ -1,6 +1,5 @@
 package ua.com.taxometr.activites;
 
-import java.io.IOException;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -17,6 +16,8 @@ import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.LocationHelper;
+
+import java.io.IOException;
 
 /**
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
@@ -46,8 +47,8 @@ public class StartActivity extends Activity {
     private Button btnCalcRoute;
     private LocationManager locationManager;
 
-    private static String fromAddress;
-    private static String toAddress;
+    private static String fromAddress = "Днепропетровск, пр. Карла Маркса 88";     //TODO remove
+    private static String toAddress = "Днепропетровск, ул. Артема 3";
 
     private final LocationListener locationTrackingListener = new LocationTrackingListener();
 
@@ -102,7 +103,7 @@ public class StartActivity extends Activity {
 
             }
         });
-        btnCalcRoute.setEnabled(false);
+        //btnCalcRoute.setEnabled(false);             //TODO uncoment
 
         final Button btnTaxiServicesList = (Button) findViewById(R.id.btn_taxi_services_list);
         btnTaxiServicesList.setOnClickListener(new BtnTaxiServicesListener());

@@ -1,28 +1,11 @@
 package ua.com.taxometr.activites;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.List;
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapActivity;
-import com.google.android.maps.MapController;
-import com.google.android.maps.MapView;
-import com.google.android.maps.MyLocationOverlay;
-import com.google.android.maps.Overlay;
-import com.google.android.maps.OverlayItem;
-import com.google.android.maps.Projection;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.location.LocationProvider;
+import android.location.*;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -33,12 +16,20 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.android.maps.*;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.LocationHelper;
+import ua.com.taxometr.helpers.RoadHelper;
 import ua.com.taxometr.mapOverlays.AddressItemizedOverlay;
 import ua.com.taxometr.mapOverlays.RouteOverlay;
 import ua.com.taxometr.routes.Road;
-import ua.com.taxometr.helpers.RoadHelper;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.List;
 
 import static ua.com.taxometr.helpers.LocationHelper.getGeoPointByAddressString;
 
@@ -52,10 +43,13 @@ public class GoogleMapActivity extends MapActivity {
     private static final String CLASSTAG = GoogleMapActivity.class.getSimpleName();
     private static final int MAP_ZOOM_LEVEL = 18;
 
+    /**
+     * key for route length data
+     */
+    public static final String ROUTE_LENGTH_KEY = "LENGTH";
+
     private MapController mapController;
-
     private MapView mapView;
-
     private final LocationListener locationTrackingListener = new LocationTrackingListener();
     private AddressItemizedOverlay addressItemizedOverlay;
     private LocationManager locationManager;
@@ -76,6 +70,7 @@ public class GoogleMapActivity extends MapActivity {
             listOfOverlays.clear();
             listOfOverlays.add(routeOverlay);
             mapView.invalidate();
+            acceptBtn.setEnabled(true);
         }
     };
 
@@ -97,6 +92,8 @@ public class GoogleMapActivity extends MapActivity {
         myLocationOverlay.enableMyLocation();
 
         acceptBtn = (Button) findViewById(R.id.btn_accept);
+        final View.OnClickListener acceptBtnListener = new AcceptBtnListener();
+        acceptBtn.setOnClickListener(acceptBtnListener);
 
         final ImageButton zoomInBtn = (ImageButton) findViewById(R.id.btn_zoom_in);
         final ImageButton zoomOutBtn = (ImageButton) findViewById(R.id.btn_zoom_out);
@@ -134,7 +131,6 @@ public class GoogleMapActivity extends MapActivity {
         final Intent intent = getIntent();
         isInRouteMode = intent.getBooleanExtra("isRouteMode", false);  //activity started to display route?
         if (isInRouteMode) {
-            acceptBtn.setVisibility(View.INVISIBLE);
             final String fromAddress = intent.getStringExtra("fromAddress");
             final String toAddress = intent.getStringExtra("toAddress");
             final GeoPoint fromPoint;
@@ -154,11 +150,8 @@ public class GoogleMapActivity extends MapActivity {
             mapView.getOverlays().add(addressItemizedOverlay);
             mapView.getOverlays().add(myLocationOverlay);
             mapView.setOnTouchListener(new MapOnTouchListener());
-            final View.OnClickListener acceptBtnListener = new AcceptBtnListener();
-            acceptBtn.setOnClickListener(acceptBtnListener);
         }
     }
-
 
     @Override
     public void onResume() {
@@ -177,7 +170,6 @@ public class GoogleMapActivity extends MapActivity {
             Toast.makeText(this, getString(R.string.err_gps_location_provider_is_not_available), Toast.LENGTH_SHORT).show();
         }
     }
-
 
     @Override
     public void onPause() {
@@ -271,23 +263,44 @@ public class GoogleMapActivity extends MapActivity {
      */
     private class AcceptBtnListener implements View.OnClickListener {
 
+        @SuppressWarnings("NumericCastThatLosesPrecision")
         @Override
         public void onClick(View view) {
-            final Intent resultIntent = new Intent();
-            int resultCode = RESULT_OK;
-            String address = "";
-            try {
-                address = LocationHelper.getAddressStringByGeoPoint(addressItemizedOverlay.getItem(0).getPoint(), GoogleMapActivity.this);
-            } catch (IOException e) {
-                Log.e(CLASSTAG, e.getMessage(), e);
-                resultCode = RESULT_CANCELED;
+            if (isInRouteMode) { // if rote was displayed
+                try {
+                    //determine current city and country
+                    final Address address = LocationHelper.getAddressByCoordinates(road.points[0].getLatitude(), road.points[0].getLongitude(), GoogleMapActivity.this);
+                    final SharedPreferences prefs = getSharedPreferences(StartActivity.PREFS_NAME, Context.MODE_PRIVATE);
+                    final SharedPreferences.Editor editor = prefs.edit();
+                    //put city and country in SharedPreferences
+                    editor.putString(StartActivity.CITY_KEY, address.getAddressLine(1));
+                    editor.putString(StartActivity.COUNTRY_KEY, address.getAddressLine(3));
+                    editor.putFloat(ROUTE_LENGTH_KEY, (float) road.length);
+                    editor.commit();
+                    //start TaxiServicesActivity
+                    final Intent intent = new Intent(GoogleMapActivity.this, TaxiServicesActivity.class);
+                    startActivity(intent);
+                } catch (IOException e) {
+                    Log.e(LocationHelper.LOGTAG, CLASSTAG + " " + e.getMessage(), e);
+                    Toast.makeText(GoogleMapActivity.this, getString(R.string.err_geocoder_not_available),
+                            Toast.LENGTH_SHORT).show();
+                }
+            } else {  //activity was started to select point in map
+                final Intent resultIntent = new Intent();
+                int resultCode = RESULT_OK;
+                String address = "";
+                try {
+                    address = LocationHelper.getAddressStringByGeoPoint(addressItemizedOverlay.getItem(0).getPoint(), GoogleMapActivity.this);
+                } catch (IOException e) {
+                    Log.e(CLASSTAG, e.getMessage(), e);
+                    resultCode = RESULT_CANCELED;
+                }
+                resultIntent.putExtra("address", address);
+                setResult(resultCode, resultIntent);
+                finish();
             }
-            resultIntent.putExtra("address", address);
-            setResult(resultCode, resultIntent);
-            finish();
         }
     }
-
 
     /**
      * LocationListener to track location changes
@@ -296,14 +309,17 @@ public class GoogleMapActivity extends MapActivity {
         @SuppressWarnings("NumericCastThatLosesPrecision")
         @Override
         public void onLocationChanged(final Location loc) {
-            final int lat = (int) (loc.getLatitude() * LocationHelper.MILLION);
-            final int lon = (int) (loc.getLongitude() * LocationHelper.MILLION);
-            final GeoPoint geoPoint = new GeoPoint(lat, lon);
-            mapController.animateTo(geoPoint);
-            mapController.setCenter(geoPoint);
-            locationManager.removeUpdates(this);
-            if(progressDialog != null) {
-                progressDialog.dismiss();
+            try {
+                final int lat = (int) (loc.getLatitude() * LocationHelper.MILLION);
+                final int lon = (int) (loc.getLongitude() * LocationHelper.MILLION);
+                final GeoPoint geoPoint = new GeoPoint(lat, lon);
+                mapController.animateTo(geoPoint);
+                mapController.setCenter(geoPoint);
+            } finally {
+                locationManager.removeUpdates(this);
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
             }
         }
 

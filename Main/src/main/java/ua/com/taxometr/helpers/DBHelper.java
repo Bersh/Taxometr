@@ -65,6 +65,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "name_rus text, "
                 + "name_en text, "
                 + "city_id integer, "
+                + "init_price currency, "
+                + "price_per_km currency, "
                 + "foreign key(city_id) references cities(_id));");
 
         db.execSQL("create table phones ("
@@ -88,11 +90,11 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("insert into cities (_id, name_rus, name_en, country_id) values(2, \"Днепропетровск\", \"Dnipropetrovs'k\", 1)");
 
 
-        db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id) values(0, \"Мегаполис\", \"Megapolis\", 2)");
-        db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id) values(1, \"Каприз\", \"Kapriz\", 2)");
-        db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id) values(2, \"Киев Такси 1\", \"Kyev taxi 1\", 1)");
-        db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id) values(3, \"Киев Такси 2\", \"Kyev taxi 2\", 1)");
-        db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id) values(4, \"Хит такси\", \"Hit taxi\", 0)");
+        db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id, init_price, price_per_km) values(0, \"Мегаполис\", \"Megapolis\", 2, 20, 5)");
+        db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id, init_price, price_per_km) values(1, \"Каприз\", \"Kapriz\", 2, 25, 10)");
+        db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id, init_price, price_per_km) values(2, \"Киев Такси 1\", \"Kyev taxi 1\", 1, 10, 10)");
+        db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id, init_price, price_per_km) values(3, \"Киев Такси 2\", \"Kyev taxi 2\", 1, 20, 5)");
+        db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id, init_price, price_per_km) values(4, \"Хит такси\", \"Hit taxi\", 0, 20, 5)");
 
         db.execSQL("insert into phones (phone, taxi_id) values(\"+380939125432\", 0)");
         db.execSQL("insert into phones (phone, taxi_id) values(\"+380931111111\", 0)");
