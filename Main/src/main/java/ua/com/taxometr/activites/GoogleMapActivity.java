@@ -278,8 +278,9 @@ public class GoogleMapActivity extends MapActivity {
                     editor.putFloat(ROUTE_LENGTH_KEY, (float) road.length);
                     editor.commit();
                     //start TaxiServicesActivity
-                    final Intent intent = new Intent(GoogleMapActivity.this, TaxiServicesActivity.class);
-                    startActivity(intent);
+//                    final Intent intent = new Intent(GoogleMapActivity.this, TaxiServicesActivity.class);
+//                    startActivity(intent);
+                    //TODO place code to start DB activity here
                 } catch (IOException e) {
                     Log.e(LocationHelper.LOGTAG, CLASSTAG + " " + e.getMessage(), e);
                     Toast.makeText(GoogleMapActivity.this, getString(R.string.err_geocoder_not_available),

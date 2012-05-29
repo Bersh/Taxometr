@@ -163,8 +163,9 @@ public class StartActivity extends Activity {
                 editor.putString(CITY_KEY, address.getAddressLine(1));
                 editor.putString(COUNTRY_KEY, address.getAddressLine(3));
                 editor.commit();
-                final Intent intent = new Intent(StartActivity.this, TaxiServicesActivity.class);
-                startActivity(intent);
+                //TODO place code to start DB activity here
+//                final Intent intent = new Intent(StartActivity.this, TaxiServicesActivity.class);
+//                startActivity(intent);
             } catch (IOException e) {
                 Log.e(LocationHelper.LOGTAG, CLASSTAG + " " + e.getMessage(), e);
                 Toast.makeText(StartActivity.this, getString(R.string.err_geocoder_not_available),
