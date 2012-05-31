@@ -47,8 +47,8 @@ public class StartActivity extends Activity {
     private Button btnCalcRoute;
     private LocationManager locationManager;
 
-    private static String fromAddress = "Днепропетровск, пр. Карла Маркса 88";     //TODO remove
-    private static String toAddress = "Днепропетровск, ул. Артема 3";
+    private static String fromAddress;
+    private static String toAddress;
 
     private final LocationListener locationTrackingListener = new LocationTrackingListener();
 
@@ -103,7 +103,7 @@ public class StartActivity extends Activity {
 
             }
         });
-        //btnCalcRoute.setEnabled(false);             //TODO uncoment
+        btnCalcRoute.setEnabled(false);
 
         final Button btnTaxiServicesList = (Button) findViewById(R.id.btn_taxi_services_list);
         btnTaxiServicesList.setOnClickListener(new BtnTaxiServicesListener());

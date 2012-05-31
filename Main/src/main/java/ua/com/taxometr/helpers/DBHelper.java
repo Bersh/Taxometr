@@ -91,7 +91,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
         db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id, init_price, price_per_km) values(0, \"Мегаполис\", \"Megapolis\", 2, 20, 5)");
-        db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id, init_price, price_per_km) values(1, \"Каприз\", \"Kapriz\", 2, 25, 10)");
+        db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id, init_price, price_per_km) values(1, \"Каприз\", \"Kapriz\", 2, 25, 1)");
         db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id, init_price, price_per_km) values(2, \"Киев Такси 1\", \"Kyev taxi 1\", 1, 10, 10)");
         db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id, init_price, price_per_km) values(3, \"Киев Такси 2\", \"Kyev taxi 2\", 1, 20, 5)");
         db.execSQL("insert into taxi_services (_id, name_rus, name_en, city_id, init_price, price_per_km) values(4, \"Хит такси\", \"Hit taxi\", 0, 20, 5)");
