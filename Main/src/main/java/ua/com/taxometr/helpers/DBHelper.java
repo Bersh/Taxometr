@@ -50,29 +50,29 @@ public class DBHelper extends SQLiteOpenHelper {
     private static void createDBStructure(SQLiteDatabase db) throws SQLException{
         db.execSQL("create table countries ("
                 + "_id integer primary key autoincrement, "
-                + "name_rus text, "
-                + "name_en text);");
+                + "name_rus text NOT NULL, "
+                + "name_en text NOT NULL);");
 
         db.execSQL("create table cities ("
                 + "_id integer primary key autoincrement, "
-                + "name_rus text, "
-                + "name_en text, "
-                + "country_id integer, "
+                + "name_rus text NOT NULL, "
+                + "name_en text NOT NULL, "
+                + "country_id integer NOT NULL, "
                 + "foreign key(country_id) references countries(_id));");
 
         db.execSQL("create table taxi_services ("
                 + "_id integer primary key autoincrement, "
-                + "name_rus text, "
-                + "name_en text, "
-                + "city_id integer, "
-                + "init_price currency, "
-                + "price_per_km currency, "
+                + "name_rus text NOT NULL, "
+                + "name_en text NOT NULL, "
+                + "city_id integer NOT NULL, "
+                + "init_price currency NOT NULL, "
+                + "price_per_km currency NOT NULL, "
                 + "foreign key(city_id) references cities(_id));");
 
         db.execSQL("create table phones ("
                 + "_id integer primary key autoincrement, "
-                + "phone text, "
-                + "taxi_id integer, "
+                + "phone text NOT NULL, "
+                + "taxi_id integer NOT NULL, "
                 + "foreign key(taxi_id) references taxi_services(_id));");
     }
 
