@@ -83,11 +83,9 @@ public class TaxiServicesActivity extends ListActivity {
     }
 
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
+    protected void onListItemClick(ListView listView, View view, int position, long id) {
         final Intent intent = new Intent(this, PhonesListActivity.class);
-        intent.putExtra(PhonesListActivity.TAXI_SERVICE_ID_NAME, l.getItemIdAtPosition(position));
+        intent.putExtra(PhonesListActivity.TAXI_SERVICE_ID_NAME, listView.getItemIdAtPosition(position));
         startActivity(intent);
     }
-
-
 }

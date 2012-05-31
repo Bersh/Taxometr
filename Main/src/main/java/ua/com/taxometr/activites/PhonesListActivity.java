@@ -2,12 +2,18 @@ package ua.com.taxometr.activites;
 
 import android.R;
 import android.app.ListActivity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import ua.com.taxometr.helpers.DBHelper;
 
 /**
@@ -45,4 +51,14 @@ public class PhonesListActivity extends ListActivity {
         }
     }
 
+    @Override
+    protected void onListItemClick(ListView listView, View view, int position, long id) {
+        try {
+            final Intent callIntent = new Intent(Intent.ACTION_CALL);
+            callIntent.setData(Uri.parse("tel:" + ((TextView) view).getText()));
+            startActivity(callIntent);
+        } catch (ActivityNotFoundException activityException) {
+            Log.e("Error", "Call failed", activityException);
+        }
+    }
 }
