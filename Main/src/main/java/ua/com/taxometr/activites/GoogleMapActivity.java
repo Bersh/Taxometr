@@ -277,9 +277,9 @@ public class GoogleMapActivity extends MapActivity {
                     editor.putString(StartActivity.COUNTRY_KEY, address.getAddressLine(3));
                     editor.putFloat(ROUTE_LENGTH_KEY, (float) road.length);
                     editor.commit();
-                    //start TaxiServicesActivity
-//                    final Intent intent = new Intent(GoogleMapActivity.this, TaxiServicesActivity.class);
-//                    startActivity(intent);
+                    //start DatabaseActivity
+                    final Intent intent = new Intent(GoogleMapActivity.this, DatabaseActivity.class);
+                    startActivity(intent);
                     //TODO place code to start DB activity here
                 } catch (IOException e) {
                     Log.e(LocationHelper.LOGTAG, CLASSTAG + " " + e.getMessage(), e);
