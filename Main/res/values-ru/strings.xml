@@ -19,6 +19,11 @@
     <string name="btn_accept_adress">Принять</string>
     <!--/SelectAddressActivity-->
 
+    <!-- DatabaseActivity -->
+    <string name="err_find_taxi_ser">Такой город не имеет такси агенств</string>
+    <string name="err_find_numbers">Такое такси агенство не имеет номеров</string>
+    <!-- DatabaseActivity -->
+
     <!--CallActivity-->
     <string name="lbl_ask">Вы уверены, что хотите позвонить по данному номеру?</string>
     <string name="btn_ok_text">Позвонить</string>
