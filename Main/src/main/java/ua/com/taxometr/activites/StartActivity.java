@@ -47,8 +47,8 @@ public class StartActivity extends Activity {
     private Button btnCalcRoute;
     private LocationManager locationManager;
 
-    private static String fromAddress;// = "Днепропетровск, пр. Карла Маркса 88";     //uncomment this for debug. If needed
-    private static String toAddress;// = "Днепропетровск, ул. Артема 3";
+    private static String fromAddress ;//= "Днепропетровск, пр. Карла Маркса 88";     //uncomment this for debug. If needed
+    private static String toAddress ;//= "Днепропетровск, ул. Артема 3";
 
     private final LocationListener locationTrackingListener = new LocationTrackingListener();
 
@@ -144,9 +144,14 @@ public class StartActivity extends Activity {
 
         @Override
         public void onClick(View v) {
+            //comment this 3 strings for debug
             progressDialog = ProgressDialog.show(StartActivity.this, "", getString(R.string.dlg_progress_obtaining_location), true);
             locationManager = (LocationManager) StartActivity.this.getSystemService(Context.LOCATION_SERVICE);
             LocationHelper.requestLocationUpdates(StartActivity.this, locationManager, locationTrackingListener);
+
+            //uncomment this for debug
+            //final Intent intent = new Intent(StartActivity.this, DatabaseActivity.class);
+            //startActivity(intent);
         }
     }
 
@@ -164,8 +169,8 @@ public class StartActivity extends Activity {
                 editor.putString(COUNTRY_KEY, address.getAddressLine(3));
                 editor.commit();
                 //TODO place code to start DB activity here
-//                final Intent intent = new Intent(StartActivity.this, TaxiServicesActivity.class);
-//                startActivity(intent);
+                final Intent intent = new Intent(StartActivity.this, DatabaseActivity.class);
+                startActivity(intent);
             } catch (IOException e) {
                 Log.e(LocationHelper.LOGTAG, CLASSTAG + " " + e.getMessage(), e);
                 Toast.makeText(StartActivity.this, getString(R.string.err_geocoder_not_available),
