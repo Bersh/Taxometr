@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Application-->
+    <string name="app_name">Taxometr</string>
+    <!--/Application-->
+
+    <!--StartActivity-->
+  	<string name="btn_from_text">Звідки</string>
+    <string name="btn_to_text">Куди</string>
+    <string name="btn_calc_route_text">Підрахувати вартість</string>
+    <string name="btn_call_text">Зателефонувати</string>
+    <string name="btn_taxi_services_list">Список служб</string>
+    <!--/StartActivity-->
+
+    <!-- SelectAddressActivity -->
+    <string name="btn_my_location">Поточне місцезнаходження</string>
+    <string name="btn_map_point">Вказати точку на мапі</string>
+    <string name="btn_accept_adress">Прийняти</string>
+    <!--/SelectAddressActivity-->
+
+    <!-- TaxiServicesListActivity -->	
+    <string name="err_find_taxi_ser">Це місто не має таксі агенств</string>
+    <string name="err_find_numbers">Це таксі агенство не має телефоних номерів</string>
+    <!-- TaxiServicesListActivity -->
+
+    <!--CallActivity-->
+    <string name="lbl_ask">Ви впевнені, що хочете зателефонувати за цим номером?</string>
+    <string name="btn_ok_text">Зателефонувати</string>
+    <string name="btn_cancel_text">Відміна</string>
+    <!--/CallActivity-->
+
+    <!--GoogleMapActivity-->
+    <string name="btn_accept">Прийняти</string>
+    <string name="err_cant_determine_coordinates_by_address">Неможливо визначити координати за цією адресою</string>
+    <string name="err_gps_location_provider_is_not_available">не має доступу до GPS location provider</string>
+    <!--/GoogleMapActivity-->
+
+    <!--Global-->
+    <string name="dlg_progress_obtaining_location">Визначення вашого місцезнаходження</string>
+    <string name="err_gps_not_available">Неможливо визначити ваше місцезнаходження, GPS недосяжен.</string>
+    <string name="err_geocoder_not_available">Неможливо визначити ваше місцезнаходження, Geocoder недосяжен.</string>
+    <!--/Global-->
+</resources>

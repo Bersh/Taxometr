@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <!--Application-->
@@ -19,10 +19,10 @@
     <string name="btn_accept_adress">Принять</string>
     <!--/SelectAddressActivity-->
 
-    <!-- DatabaseActivity -->
+    <!-- TaxiServiceListActivity -->
     <string name="err_find_taxi_ser">Такой город не имеет такси агенств</string>
     <string name="err_find_numbers">Такое такси агенство не имеет номеров</string>
-    <!-- DatabaseActivity -->
+    <!-- TaxiServiceListActivity -->
 
     <!--CallActivity-->
     <string name="lbl_ask">Вы уверены, что хотите позвонить по данному номеру?</string>

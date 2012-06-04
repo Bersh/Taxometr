@@ -17,7 +17,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param context instance of {@link android.content.Context}
      */
     public DBHelper(Context context) {
-        super(context, "Taxi", null, 1);
+        super(context, "Taxometr", null, 1);
     }
 
     @Override
@@ -25,110 +25,122 @@ public class DBHelper extends SQLiteOpenHelper {
         final String LOG_TAG = "myLogs:";
         Log.d(LOG_TAG, "--- onCreate database Taxi---");
         // create tables with fields
-        db.execSQL("create table Countries ("
+        db.execSQL("create table countries ("
                 + "_id integer primary key autoincrement,"
-                + "fullNameEN text,"
-                + "fullNameRU text"+");");
-        db.execSQL("create table Towns ("
+                + "name_rus text NOT NULL,"
+                + "name_ua text NOT NULL,"
+                + "name_en text NOT NULL"+");");
+        db.execSQL("create table cities ("
                 + "_id integer primary key autoincrement,"
-                + "fullNameEN text,"
-                + "fullNameRU text,"
-                + "countryId integer NOT NULL REFERENCES Countries ON DELETE CASCADE ON UPDATE CASCADE"+");");
-        db.execSQL("create table TaxiAgencies ("
+                + "name_rus text NOT NULL,"
+                + "name_ua text NOT NULL,"
+                + "name_en text NOT NULL,"
+                + "country_id integer NOT NULL REFERENCES countries ON DELETE CASCADE ON UPDATE CASCADE"+");");
+        db.execSQL("create table taxi_services ("
                 + "_id integer primary key autoincrement,"
-                + "fullNameEN text,"
-                + "fullNameRU text,"
-                + "costKM integer,"     //countries money
-                + "initCost integer,"   //countries money
-                + "KM_in_initCost,"      //countries money
-                + "townId integer NOT NULL REFERENCES Towns ON DELETE CASCADE ON UPDATE CASCADE" +");");
-        db.execSQL("create table TelephoneNumbers ("
+                + "name_rus text NOT NULL,"
+                + "name_ua text NOT NULL,"
+                + "name_en text NOT NULL,"
+                + "init_price integer NOT NULL,"            //countries money
+                + "price_per_km integer NOT NULL,"          //countries money
+                + "km_in_init_price integer NOT NULL,"      //countries money
+                + "city_id integer NOT NULL REFERENCES cities ON DELETE CASCADE ON UPDATE CASCADE" +");");
+        db.execSQL("create table phones ("
                 + "_id integer primary key autoincrement,"
-                + "telephoneNumber text,"
-                + "taxiAgencyId integer NOT NULL REFERENCES TaxiAgencies ON DELETE CASCADE ON UPDATE CASCADE"+");");
+                + "phone text NOT NULL,"
+                + "taxi_id integer NOT NULL REFERENCES taxi_services ON DELETE CASCADE ON UPDATE CASCADE"+");");
 
         // object for data
         final ContentValues cv = new ContentValues();
         //inserts
         Log.d(LOG_TAG, "--- Inserts: ---");
-        //Countries_________________________________________________________________________________________________
-        cv.put("fullNameEN", "Ukraine");
-        cv.put("fullNameRU", "Украина");
-        db.insert("Countries", null, cv);
-        Log.d(LOG_TAG, "Countries : row inserted");
+        //countries_________________________________________________________________________________________________
+        cv.put("name_rus", "Украина");
+        cv.put("name_ua","Україна");
+        cv.put("name_en", "Ukraine");
+        db.insert("countries", null, cv);
+        Log.d(LOG_TAG, "countries : row inserted");
         cv.clear();
-        cv.put("fullNameEN", "Russian Federation");
-        cv.put("fullNameRU", "Российская Федерация");
-        db.insert("Countries", null, cv);
-        Log.d(LOG_TAG, "Countries : row inserted");
+        cv.put("name_rus", "Российская Федерация");
+        cv.put("name_ua","Російська Федерація");
+        cv.put("name_en", "Russian Federation");
+        db.insert("countries", null, cv);
+        Log.d(LOG_TAG, "countries : row inserted");
         cv.clear();
-        cv.put("fullNameEN", "Belarus");
-        cv.put("fullNameRU", "Беларусь");
-        db.insert("Countries", null, cv);
-        Log.d(LOG_TAG, "Countries : row inserted");
+        cv.put("name_rus", "Беларусь");
+        cv.put("name_ua","Білорусь");
+        cv.put("name_en", "Belarus");
+        db.insert("countries", null, cv);
+        Log.d(LOG_TAG, "countries : row inserted");
         cv.clear();
-        //Towns_____________________________________________________________________________________________________
-        cv.put("fullNameEN", "Dnepropetrovsk");
-        cv.put("fullNameRU", "Днепропетровск");
-        cv.put("countryId", 1);
-        db.insert("Towns", null, cv);
-        Log.d(LOG_TAG, "Towns : row inserted");
+        //cities_____________________________________________________________________________________________________
+        cv.put("name_rus", "Днепропетровск");
+        cv.put("name_ua","Дніпропетровськ");
+        cv.put("name_en", "Dnepropetrovsk");
+        cv.put("country_id", 1);
+        db.insert("cities", null, cv);
+        Log.d(LOG_TAG, "cities : row inserted");
         cv.clear();
-        cv.put("fullNameEN", "Kiev");
-        cv.put("fullNameRU", "Киев");
-        cv.put("countryId", 1);
-        db.insert("Towns", null, cv);
-        Log.d(LOG_TAG, "Towns : row inserted");
+        cv.put("name_rus", "Киев");
+        cv.put("name_ua","Київ");
+        cv.put("name_en", "Kiev");
+        cv.put("country_id", 1);
+        db.insert("cities", null, cv);
+        Log.d(LOG_TAG, "cities : row inserted");
         cv.clear();
-        cv.put("fullNameEN", "Lviv");
-        cv.put("fullNameRU", "Львов");
-        cv.put("countryId", 1);
-        db.insert("Towns", null, cv);
-        Log.d(LOG_TAG, "Towns : row inserted");
+        cv.put("name_rus", "Львов");
+        cv.put("name_ua", "Львів");
+        cv.put("name_en", "Lviv");
+        cv.put("country_id", 1);
+        db.insert("cities", null, cv);
+        Log.d(LOG_TAG, "cities : row inserted");
         cv.clear();
-        //TaxiAgencies______________________________________________________________________________________________
-        cv.put("fullNameEN", "Allo");
-        cv.put("fullNameRU", "Алло");
-        cv.put("costKM", 3);
-        cv.put("initCost", 25);
-        cv.put("KM_in_initCost",10);
-        cv.put("townId", 1);
-        db.insert("TaxiAgencies", null, cv);
-        Log.d(LOG_TAG, "TaxiAgencies : row inserted");
+        //taxi_services______________________________________________________________________________________________
+        cv.put("name_rus", "Алло");
+        cv.put("name_ua","Алло");
+        cv.put("name_en", "Allo");
+        cv.put("init_price", 25);
+        cv.put("price_per_km", 3);
+        cv.put("km_in_init_price",10);
+        cv.put("city_id", 1);
+        db.insert("taxi_services", null, cv);
+        Log.d(LOG_TAG, "taxi_services : row inserted");
         cv.clear();
-        cv.put("fullNameEN", "Dnepr - Taxi");
-        cv.put("fullNameRU", "Днепр - Такси");
-        cv.put("costKM", 2);
-        cv.put("initCost", 20);
-        cv.put("KM_in_initCost",10);
-        cv.put("townId", 1);
-        db.insert("TaxiAgencies", null, cv);
-        Log.d(LOG_TAG, "TaxiAgencies : row inserted");
+        cv.put("name_rus", "Днепр - Такси");
+        cv.put("name_ua","Дніпро - Таксі");
+        cv.put("name_en", "Dnepr - Taxi");
+        cv.put("init_price", 20);
+        cv.put("price_per_km", 2);
+        cv.put("km_in_init_price",10);
+        cv.put("city_id", 1);
+        db.insert("taxi_services", null, cv);
+        Log.d(LOG_TAG, "taxi_services : row inserted");
         cv.clear();
-        cv.put("fullNameEN", "Eurotaxi");
-        cv.put("fullNameRU", "Евротакси");
-        cv.put("costKM", 1);
-        cv.put("initCost",20);
-        cv.put("KM_in_initCost",10);
-        cv.put("townId", 1);
-        db.insert("TaxiAgencies", null, cv);
-        Log.d(LOG_TAG, "TaxiAgencies : row inserted");
+        cv.put("name_rus", "Евротакси");
+        cv.put("name_ua","Євротаксі");
+        cv.put("name_en", "Eurotaxi");
+        cv.put("init_price", 20);
+        cv.put("price_per_km", 1);
+        cv.put("km_in_init_price",10);
+        cv.put("city_id", 1);
+        db.insert("taxi_services", null, cv);
+        Log.d(LOG_TAG, "taxi_services : row inserted");
         cv.clear();
-        //Telephones numbers________________________________________________________________________________________
-        cv.put("telephoneNumber", "380676605452");
-        cv.put("taxiAgencyId", 1);
-        db.insert("TelephoneNumbers", null, cv);
-        Log.d(LOG_TAG, "Telephonenumbers : row inserted");
+        //phones________________________________________________________________________________________
+        cv.put("phone", "380676605452");
+        cv.put("taxi_id", 1);
+        db.insert("phones", null, cv);
+        Log.d(LOG_TAG, "phones : row inserted");
         cv.clear();
-        cv.put("telephoneNumber", "380636855758");
-        cv.put("taxiAgencyId", 1);
-        db.insert("TelephoneNumbers", null, cv);
-        Log.d(LOG_TAG, "Telephonenumbers : row inserted");
+        cv.put("phone", "380636855758");
+        cv.put("taxi_id", 1);
+        db.insert("phones", null, cv);
+        Log.d(LOG_TAG, "phones : row inserted");
         cv.clear();
-        cv.put("telephoneNumber", "38056333111");
-        cv.put("taxiAgencyId", 1);
-        db.insert("TelephoneNumbers", null, cv);
-        Log.d(LOG_TAG, "Telephonenumbers : row inserted");
+        cv.put("phone", "38056333111");
+        cv.put("taxi_id", 1);
+        db.insert("phones", null, cv);
+        Log.d(LOG_TAG, "phones : row inserted");
         cv.clear();
     }
     @Override
