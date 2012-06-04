@@ -1,12 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:background="@drawable/mitem_background_normal">
+    <LinearLayout
+            android:layout_width="265dip"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:paddingBottom="2dip"
+            android:paddingLeft="4dip">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
-    <ListView
-            android:id="@+id/taxi_services_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-    </ListView>
+        <TextView android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/text1"
+                  android:textColor="@color/blackcolor"
+                  android:textSize="30dip"/>
 
+        <TextView android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:textColor="@color/blackcolor"
+                  android:id="@+id/text2"/>
+
+        <TextView android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:textColor="@color/blackcolor"
+                  android:id="@+id/text3"/>
+
+    </LinearLayout>
+
+    <ImageView android:layout_width="55dip"
+               android:layout_height="fill_parent"
+               android:id="@+id/img"
+               android:paddingRight="8dip"
+/>
 </LinearLayout>

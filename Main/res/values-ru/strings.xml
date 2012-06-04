@@ -22,6 +22,11 @@
     <!-- TaxiServiceListActivity -->
     <string name="err_find_taxi_ser">Такой город не имеет такси агенств</string>
     <string name="err_find_numbers">Такое такси агенство не имеет номеров</string>
+    <string name="price_for_km">Стоимость за км :</string>
+    <string name="init_price">Минимальная стоимость :</string>
+    <string name="km_in_init_price">километров</string>
+    <color name="whitecolor">#FFF</color>
+    <color name="blackcolor">#000</color>
     <!-- TaxiServiceListActivity -->
 
     <!--CallActivity-->

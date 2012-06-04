@@ -14,6 +14,10 @@ import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.DBHelper;
 import ua.com.taxometr.helpers.LocationHelper;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicReference;
+
 /**
  * Activity with taxi services from database
  *
@@ -22,6 +26,11 @@ import ua.com.taxometr.helpers.LocationHelper;
  */
 
 public class TaxiServicesListActivity extends ListActivity {
+
+    private static final String TAXISERVICE = "nameTS"; //name for taxi service
+    private static final String PRICEKM = "priceKM";        //price for 1 km
+    private static final String INITPRICE = "initPrice";    //price for sit into taxi
+    private static final String IMGKEY = "icon";
 
     //Check field for list listeners
     private boolean listener = true;
@@ -75,9 +84,33 @@ public class TaxiServicesListActivity extends ListActivity {
                 new String[]{country, town}, null, null, orderBy);
 
         if (agencies.moveToFirst()){
+            final ArrayList<HashMap<String, Object>> items = new ArrayList<HashMap<String, Object>>();
+
+            int count = 1;
+            do{
+                final AtomicReference<Object> img = new AtomicReference<Object>();
+                if (count%2==0){
+                    img.set(R.drawable.pass);
+                } else if (count%3==0){
+                    img.set(R.drawable.taxi);
+                } else {
+                    img.set(R.drawable.wait);
+                }
+                final HashMap<String, Object> hm = new HashMap<String, Object>();
+                hm.put(TAXISERVICE, agencies.getString(agencies.getColumnIndex(localName)));
+                hm.put(PRICEKM, getString(R.string.price_for_km)+" "+agencies.getInt(agencies.getColumnIndex("price_per_km"))+" uah");
+                hm.put(INITPRICE,getString(R.string.init_price)+" "+agencies.getInt(agencies.getColumnIndex("init_price"))
+                        +" uah ( "+ agencies.getInt(agencies.getColumnIndex("km_in_init_price"))+" "+getString(R.string.km_in_init_price)+" )");
+                hm.put(IMGKEY, img.get());
+                items.add(hm);
+                ++count;
+            }while (agencies.moveToNext());
+
             // create adapter for list view
-            final ListAdapter adapter = new SimpleCursorAdapter(this,
-                    android.R.layout.simple_list_item_1, agencies,new String[]{localName},new int[]{android.R.id.text1});
+            final ListAdapter adapter = new SimpleAdapter(this,
+                    items, R.layout.taxi_services_list_view,
+                    new String[]{ TAXISERVICE,PRICEKM,INITPRICE,IMGKEY },
+                    new int[]{R.id.text1,R.id.text2,R.id.text3,R.id.img});
             setListAdapter(adapter);
         } else {
             Toast.makeText(getApplicationContext(),R.string.err_find_taxi_ser, Toast.LENGTH_SHORT).show();
@@ -95,7 +128,7 @@ public class TaxiServicesListActivity extends ListActivity {
             // connect to DB
             db = dbHelper.getWritableDatabase();
             //find id from selected taxi agency
-            final String agencyName = ((Cursor)listView.getItemAtPosition(position)).getString(((Cursor)listView.getItemAtPosition(position)).getColumnIndex(localName));
+            final String agencyName = (String)((HashMap<String,Object>)listView.getItemAtPosition(position)).get(TAXISERVICE);
 
             //telephine numbers
             final Cursor numbers = db.query("phones a, taxi_services b", new String[] {"a.*"},
