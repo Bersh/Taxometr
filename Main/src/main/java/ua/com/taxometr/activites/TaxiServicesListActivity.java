@@ -35,7 +35,7 @@ public class TaxiServicesListActivity extends ListActivity {
 
     private static final String ISO_RUSSIAN = "ru";
 
-    private static final String ISO_UKRAINIAN = "ua";
+    private static final String ISO_UKRAINIAN = "uk";
 
     /** Called when the activity is first created. */
     @Override
