@@ -27,7 +27,7 @@
         <activity android:name="ua.com.taxometr.activites.SelectAddressActivity"
                   android:configChanges="orientation|keyboardHidden"/>
         <activity android:name="ua.com.taxometr.activites.CallActivity"/>
-        <activity android:name=".activites.DatabaseActivity"/>
+        <activity android:name=".activites.TaxiServicesListActivity"/>
 
         <uses-library android:name="com.google.android.maps"
                       android:required="true"/>

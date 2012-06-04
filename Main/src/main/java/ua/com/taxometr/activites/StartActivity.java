@@ -150,7 +150,7 @@ public class StartActivity extends Activity {
             LocationHelper.requestLocationUpdates(StartActivity.this, locationManager, locationTrackingListener);
 
             //uncomment this for debug
-            //final Intent intent = new Intent(StartActivity.this, DatabaseActivity.class);
+            //final Intent intent = new Intent(StartActivity.this, TaxiServicesListActivity.class);
             //startActivity(intent);
         }
     }
@@ -168,8 +168,7 @@ public class StartActivity extends Activity {
                 editor.putString(CITY_KEY, address.getAddressLine(1));
                 editor.putString(COUNTRY_KEY, address.getAddressLine(3));
                 editor.commit();
-                //TODO place code to start DB activity here
-                final Intent intent = new Intent(StartActivity.this, DatabaseActivity.class);
+                final Intent intent = new Intent(StartActivity.this, TaxiServicesListActivity.class);
                 startActivity(intent);
             } catch (IOException e) {
                 Log.e(LocationHelper.LOGTAG, CLASSTAG + " " + e.getMessage(), e);
@@ -190,7 +189,7 @@ public class StartActivity extends Activity {
         }
 
         @Override
-        public void onStatusChanged(String s, int i, Bundle b) {
+        public void onStatusChanged(String s, int i, Bundle bundle) {
         }
     }
 
