@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.*;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.DBHelper;
+import ua.com.taxometr.helpers.LocationHelper;
 
 /**
  * Activity with taxi services from database
@@ -57,7 +58,7 @@ public class TaxiServicesListActivity extends ListActivity {
             localName = "name_en";
         }
 
-        final String LOG_TAG = "myLogs:";
+        final String LOG_TAG = LocationHelper.LOGTAG;
         Log.d(LOG_TAG, language);
 
         listener = true;

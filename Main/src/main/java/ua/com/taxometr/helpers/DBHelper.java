@@ -22,7 +22,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        final String LOG_TAG = "myLogs:";
+        final String LOG_TAG = LocationHelper.LOGTAG;
         Log.d(LOG_TAG, "--- onCreate database Taxi---");
         // create tables with fields
         db.execSQL("create table countries ("
