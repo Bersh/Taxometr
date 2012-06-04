@@ -76,6 +76,8 @@ public class TaxiServicesListActivity extends ListActivity {
             setListAdapter(adapter);
         } else {
             Toast.makeText(getApplicationContext(),R.string.err_find_taxi_ser, Toast.LENGTH_SHORT).show();
+            final Intent intent = new Intent(TaxiServicesListActivity.this, StartActivity.class);
+            startActivity(intent);
         }
         // close DB connection
         dbHelper.close();
