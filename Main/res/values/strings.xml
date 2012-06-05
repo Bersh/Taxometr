@@ -21,11 +21,15 @@
     <!-- TaxiServiceListActivity -->
     <string name="err_find_taxi_ser">This town have not taxi agencies</string>
     <string name="err_find_numbers">This taxi agencies have not numbers</string>
-    <string name="price_for_km">Price per km :</string>
-    <string name="init_price">Minimum price :</string>
-    <string name="km_in_init_price">kilometers</string>
+    <string name="price_for_km">Price per km:</string>
+    <string name="init_price">Minimum price:</string>
+    <string name="km_in_init_price">km</string>
+    <string name="price_for_km_country">Outside city:</string>
+    <string name="currency">UAH</string>
+    <string name="price_length">Approx price of trip:</string>
     <color name="whitecolor">#FFF</color>
     <color name="blackcolor">#000</color>
+    <color name="bluecolor">#000080</color>
     <!-- TaxiServiceListActivity -->
 
     <!--CallActivity-->

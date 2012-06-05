@@ -22,11 +22,15 @@
     <!-- TaxiServicesListActivity -->	
     <string name="err_find_taxi_ser">Це місто не має таксі агенств</string>
     <string name="err_find_numbers">Це таксі агенство не має телефоних номерів</string>
-    <string name="price_for_km">Ціна за км :</string>
-    <string name="init_price">Мінімальна ціна :</string>
-    <string name="km_in_init_price">кілометрів</string>
+    <string name="price_for_km">Ціна за км:</string>
+    <string name="init_price">Мінімальна ціна:</string>
+    <string name="km_in_init_price">км</string>
+    <string name="price_for_km_country">Поза містом:</string>
+    <string name="currency">ГРН</string>
+    <string name="price_length">Приблизна ціна поїздки:</string>
     <color name="whitecolor">#FFF</color>
     <color name="blackcolor">#000</color>
+    <color name="bluecolor">#000080</color>
     <!-- TaxiServicesListActivity -->
 
     <!--CallActivity-->

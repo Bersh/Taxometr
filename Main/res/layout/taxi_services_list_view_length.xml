@@ -20,13 +20,18 @@
 
         <TextView android:layout_width="fill_parent"
                   android:layout_height="wrap_content"
-                  android:textColor="@color/blackcolor"
+                  android:textColor="@color/bluecolor"
                   android:id="@+id/text2"/>
 
         <TextView android:layout_width="fill_parent"
                   android:layout_height="wrap_content"
                   android:textColor="@color/blackcolor"
                   android:id="@+id/text3"/>
+
+        <TextView android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:textColor="@color/blackcolor"
+                  android:id="@+id/text4"/>
 
     </LinearLayout>
 

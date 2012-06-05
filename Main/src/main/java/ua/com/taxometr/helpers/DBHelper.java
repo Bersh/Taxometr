@@ -43,6 +43,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "name_en text NOT NULL,"
                 + "init_price integer NOT NULL,"            //countries money
                 + "price_per_km integer NOT NULL,"          //countries money
+                + "price_per_km_country integer,"           //countries money
                 + "km_in_init_price integer NOT NULL,"      //countries money
                 + "city_id integer NOT NULL REFERENCES cities ON DELETE CASCADE ON UPDATE CASCADE" +");");
         db.execSQL("create table phones ("
@@ -101,6 +102,7 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put("name_en", "Allo");
         cv.put("init_price", 25);
         cv.put("price_per_km", 3);
+        cv.put("price_per_km_country", 5);
         cv.put("km_in_init_price",10);
         cv.put("city_id", 1);
         db.insert("taxi_services", null, cv);

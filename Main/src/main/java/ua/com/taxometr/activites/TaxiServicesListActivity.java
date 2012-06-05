@@ -27,7 +27,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class TaxiServicesListActivity extends ListActivity {
 
-    private static final String TAXISERVICE = "nameTS"; //name for taxi service
+    private static final String TAXISERVICE = "nameTS";     //name for taxi service
+    private static final String COST_LENGTH = "cost";       //cost of travel
     private static final String PRICEKM = "priceKM";        //price for 1 km
     private static final String INITPRICE = "initPrice";    //price for sit into taxi
     private static final String IMGKEY = "icon";
@@ -73,12 +74,19 @@ public class TaxiServicesListActivity extends ListActivity {
         listener = true;
 
         final SharedPreferences prefs = getSharedPreferences(StartActivity.PREFS_NAME, Context.MODE_PRIVATE);
-        final String country = prefs.getString(StartActivity.CITY_KEY,"");//"Ukraine";     //uncomment this for debug
-        final String town = prefs.getString(StartActivity.COUNTRY_KEY,"");//"Dnepropetrovsk";
+        final String country = prefs.getString(StartActivity.COUNTRY_KEY,"");//"Ukraine";     //uncomment this for debug
+        final String town = prefs.getString(StartActivity.CITY_KEY,"");//"Dnepropetrovsk";
+        final float length = prefs.getFloat(GoogleMapActivity.ROUTE_LENGTH_KEY,0F);
 
         //taxiAgencies
         //data from queries
-        final String orderBy = "a.init_price + a.price_per_km * (11 - a.km_in_init_price)";
+        final String orderBy;
+        if(length<=10){
+            orderBy = "a.init_price + a.price_per_km * (11 - a.km_in_init_price)";
+        }else{
+            orderBy = "(a.init_price + a.price_per_km * (" + length + " - a.km_in_init_price))";
+        }
+
         final Cursor agencies = db.query("taxi_services a, cities b, countries c", new String[]{"a.*"},
                 "a.city_id = b._id and b.country_id = c._id and c." + localName + " = ? and b." + localName + " = ?",
                 new String[]{country, town}, null, null, orderBy);
@@ -96,21 +104,41 @@ public class TaxiServicesListActivity extends ListActivity {
                 } else {
                     img.set(R.drawable.wait);
                 }
+
+                final StringBuilder priceKM = new StringBuilder(getString(R.string.price_for_km)+" "+agencies.getInt(agencies.getColumnIndex("price_per_km"))+" "+getString(R.string.currency)+" ");
+                final int priceCountryKM = agencies.getInt(agencies.getColumnIndex("price_per_km_country"));
+                if (priceCountryKM!=0){
+                    priceKM.append("(").append(getString(R.string.price_for_km_country)).append(" ")
+                            .append(priceCountryKM).append(" ").append(getString(R.string.currency)).append(")");
+                }
+                final int cost = agencies.getInt(agencies.getColumnIndex("price_per_km"))*((new Float(length).intValue()));
                 final HashMap<String, Object> hm = new HashMap<String, Object>();
                 hm.put(TAXISERVICE, agencies.getString(agencies.getColumnIndex(localName)));
-                hm.put(PRICEKM, getString(R.string.price_for_km)+" "+agencies.getInt(agencies.getColumnIndex("price_per_km"))+" uah");
+                if(length!=0){
+                    hm.put(COST_LENGTH,new StringBuilder(getString(R.string.price_length))
+                            .append(" ").append(cost).append(" ").append(getString(R.string.currency)));
+                }
+                hm.put(PRICEKM, priceKM);
                 hm.put(INITPRICE,getString(R.string.init_price)+" "+agencies.getInt(agencies.getColumnIndex("init_price"))
-                        +" uah ( "+ agencies.getInt(agencies.getColumnIndex("km_in_init_price"))+" "+getString(R.string.km_in_init_price)+" )");
+                        +" "+getString(R.string.currency)+" ("+ agencies.getInt(agencies.getColumnIndex("km_in_init_price"))+" "+getString(R.string.km_in_init_price)+")");
                 hm.put(IMGKEY, img.get());
                 items.add(hm);
                 ++count;
             }while (agencies.moveToNext());
 
             // create adapter for list view
-            final ListAdapter adapter = new SimpleAdapter(this,
-                    items, R.layout.taxi_services_list_view,
-                    new String[]{ TAXISERVICE,PRICEKM,INITPRICE,IMGKEY },
-                    new int[]{R.id.text1,R.id.text2,R.id.text3,R.id.img});
+            final ListAdapter adapter;
+            if(length!=0){
+                adapter = new SimpleAdapter(this,
+                        items, R.layout.taxi_services_list_view_length,
+                        new String[]{ TAXISERVICE,COST_LENGTH,PRICEKM,INITPRICE,IMGKEY },
+                        new int[]{R.id.text1,R.id.text2,R.id.text3,R.id.text4,R.id.img});
+            }else{
+                adapter = new SimpleAdapter(this,
+                        items, R.layout.taxi_services_list_view,
+                        new String[]{ TAXISERVICE,PRICEKM,INITPRICE,IMGKEY },
+                        new int[]{R.id.text1,R.id.text2,R.id.text3,R.id.img});
+            }
             setListAdapter(adapter);
         } else {
             Toast.makeText(getApplicationContext(),R.string.err_find_taxi_ser, Toast.LENGTH_SHORT).show();

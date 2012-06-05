@@ -22,11 +22,15 @@
     <!-- TaxiServiceListActivity -->
     <string name="err_find_taxi_ser">Такой город не имеет такси агенств</string>
     <string name="err_find_numbers">Такое такси агенство не имеет номеров</string>
-    <string name="price_for_km">Стоимость за км :</string>
-    <string name="init_price">Минимальная стоимость :</string>
-    <string name="km_in_init_price">километров</string>
+    <string name="price_for_km">Цена за км:</string>
+    <string name="init_price">Минимальная цена:</string>
+    <string name="km_in_init_price">км</string>
+    <string name="price_for_km_country">Вне города:</string>
+    <string name="currency">ГРН</string>
+    <string name="price_length">Примерная цена поездки:</string>
     <color name="whitecolor">#FFF</color>
     <color name="blackcolor">#000</color>
+    <color name="bluecolor">#000080</color>
     <!-- TaxiServiceListActivity -->
 
     <!--CallActivity-->
