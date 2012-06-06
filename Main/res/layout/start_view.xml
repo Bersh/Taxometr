@@ -7,6 +7,7 @@
         android:layout_height="fill_parent">
     <Button
             android:id="@+id/btn_from"
+            android:layout_margin="2dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -14,6 +15,7 @@
     </Button>
     <Button
             android:id="@+id/btn_to"
+            android:layout_margin="2dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/btn_from"
@@ -21,6 +23,7 @@
     </Button>
     <Button
             android:id="@+id/btn_taxi_services_list"
+            android:layout_margin="2dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/btn_to"
@@ -28,6 +31,7 @@
     </Button>
     <Button
             android:id="@+id/btn_call"
+            android:layout_margin="2dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/btn_calc_route"
@@ -35,6 +39,7 @@
     </Button>
     <Button
             android:id="@+id/btn_calc_route"
+            android:layout_margin="2dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
