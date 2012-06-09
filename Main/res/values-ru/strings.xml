@@ -11,6 +11,9 @@
     <string name="btn_calc_route_text">Рассчитать стоимость</string>
     <string name="btn_call_text">Позвонить</string>
     <string name="btn_taxi_services_list">Список служб</string>
+    <string name="btn_language">Выберите язык</string>
+    <string name="exit">Выход</string>
+    <string name="confirmation_exit">Вы действительно желаете выйти ?</string>
     <!--/StartActivity-->
 
     <!-- SelectAddressActivity -->

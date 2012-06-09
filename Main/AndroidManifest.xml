@@ -28,6 +28,7 @@
                   android:configChanges="orientation|keyboardHidden"/>
         <activity android:name="ua.com.taxometr.activites.CallActivity"/>
         <activity android:name=".activites.TaxiServicesListActivity"/>
+        <activity android:name=".activites.LanguageListActivity"/>
 
         <uses-library android:name="com.google.android.maps"
                       android:required="true"/>

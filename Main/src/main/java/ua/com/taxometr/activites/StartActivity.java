@@ -1,8 +1,10 @@
 package ua.com.taxometr.activites;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Address;
@@ -24,6 +26,7 @@ import java.io.IOException;
  * @since 22.03.12
  */
 public class StartActivity extends Activity {
+
     private static final int BTN_FROM_REQUEST_CODE = 1;
     private static final int BTN_TO_REQUEST_CODE = 2;
     private static final String CLASSTAG = StartActivity.class.getSimpleName();
@@ -45,6 +48,9 @@ public class StartActivity extends Activity {
     private Button btnFrom;
     private Button btnTo;
     private Button btnCalcRoute;
+    private Button btnLang;
+    private Button btnCall;
+    private Button btnTaxiServicesList;
     private LocationManager locationManager;
 
     private static String fromAddress ;//= "Днепропетровск, пр. Карла Маркса 88";     //uncomment this for debug. If needed
@@ -79,7 +85,7 @@ public class StartActivity extends Activity {
                 startActivityForResult(intent, BTN_TO_REQUEST_CODE);
             }
         });
-        final Button btnCall = (Button) findViewById(R.id.btn_call);
+        btnCall = (Button) findViewById(R.id.btn_call);
         btnCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,8 +111,17 @@ public class StartActivity extends Activity {
         });
         btnCalcRoute.setEnabled(false);             //comment this for debug. If needed
 
-        final Button btnTaxiServicesList = (Button) findViewById(R.id.btn_taxi_services_list);
+        btnTaxiServicesList = (Button) findViewById(R.id.btn_taxi_services_list);
         btnTaxiServicesList.setOnClickListener(new BtnTaxiServicesListener());
+
+        btnLang = (Button) findViewById(R.id.btn_language);
+        btnLang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent(StartActivity.this, LanguageListActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @SuppressWarnings("AssignmentToStaticFieldFromInstanceMethod")
@@ -190,6 +205,39 @@ public class StartActivity extends Activity {
 
         @Override
         public void onStatusChanged(String s, int i, Bundle bundle) {
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.exit))
+                .setMessage(getString(R.string.confirmation_exit))
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        finish();
+                    }
+                }).create().show();
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        btnCall.setText(getString(R.string.btn_call_text));
+        btnTaxiServicesList.setText(getString(R.string.btn_taxi_services_list));
+        btnLang.setText(getString(R.string.btn_language));
+        btnCalcRoute.setText(getString(R.string.btn_calc_route_text));
+        if (fromAddress!=null) {
+            btnFrom.setText(getString(R.string.btn_from_text)+"\n"+fromAddress);
+        } else {
+            btnFrom.setText(getString(R.string.btn_from_text));
+        }
+        if (toAddress!=null) {
+            btnTo.setText(getString(R.string.btn_to_text)+"\n"+toAddress);
+        } else {
+            btnTo.setText(getString(R.string.btn_to_text));
         }
     }
 

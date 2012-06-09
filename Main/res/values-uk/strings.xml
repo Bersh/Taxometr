@@ -11,6 +11,9 @@
     <string name="btn_calc_route_text">Підрахувати вартість</string>
     <string name="btn_call_text">Зателефонувати</string>
     <string name="btn_taxi_services_list">Список служб</string>
+    <string name="btn_language">Оберіть мову</string>
+    <string name="exit">Вихід</string>
+    <string name="confirmation_exit">Ви дійсно бажаете вийти ?</string>
     <!--/StartActivity-->
 
     <!-- SelectAddressActivity -->

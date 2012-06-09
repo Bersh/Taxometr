@@ -10,6 +10,9 @@
     <string name="btn_calc_route_text">Calculate the cost</string>
     <string name="btn_call_text">Call</string>
     <string name="btn_taxi_services_list">Taxi services list</string>
+    <string name="btn_language">Select a language</string>
+    <string name="exit">Exit</string>
+    <string name="confirmation_exit">Do you really want to quit ?</string>
     <!--/StartActivity-->
 
     <!-- SelectAddressActivity -->

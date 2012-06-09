@@ -40,8 +40,19 @@ public class TaxiServicesListActivity extends ListActivity {
 
     private SQLiteDatabase db;
 
+    //data for taxi agencies
+    private Cursor agencies;
+
+    //data for telephone numbers
+    private Cursor numbers;
+
     //Locale name for choose database fields
     private String localName;
+
+    //adapters for ListView
+    private ListAdapter adapter;
+
+    private ListAdapter adapterNum;
 
     private static final String ISO_RUSSIAN = "ru";
 
@@ -87,7 +98,8 @@ public class TaxiServicesListActivity extends ListActivity {
             orderBy = "(a.init_price + a.price_per_km * (" + length + " - a.km_in_init_price))";
         }
 
-        final Cursor agencies = db.query("taxi_services a, cities b, countries c", new String[]{"a.*"},
+        agencies = db.query("taxi_services a, cities b, countries c",
+                new String[]{"a._id","a."+localName,"a.init_price","a.price_per_km","a.price_per_km_country","a.km_in_init_price"},
                 "a.city_id = b._id and b.country_id = c._id and c." + localName + " = ? and b." + localName + " = ?",
                 new String[]{country, town}, null, null, orderBy);
 
@@ -111,10 +123,14 @@ public class TaxiServicesListActivity extends ListActivity {
                     priceKM.append("(").append(getString(R.string.price_for_km_country)).append(" ")
                             .append(priceCountryKM).append(" ").append(getString(R.string.currency)).append(")");
                 }
-                final int cost = agencies.getInt(agencies.getColumnIndex("price_per_km"))*((new Float(length).intValue()));
                 final HashMap<String, Object> hm = new HashMap<String, Object>();
                 hm.put(TAXISERVICE, agencies.getString(agencies.getColumnIndex(localName)));
                 if(length!=0){
+                    int cost = new Float(agencies.getInt(agencies.getColumnIndex("price_per_km"))*length).intValue();
+                    final int initPrice = agencies.getInt(agencies.getColumnIndex("init_price"));
+                    if ( cost < initPrice) {
+                        cost = initPrice;
+                    }
                     hm.put(COST_LENGTH,new StringBuilder(getString(R.string.price_length))
                             .append(" ").append(cost).append(" ").append(getString(R.string.currency)));
                 }
@@ -127,7 +143,6 @@ public class TaxiServicesListActivity extends ListActivity {
             }while (agencies.moveToNext());
 
             // create adapter for list view
-            final ListAdapter adapter;
             if(length!=0){
                 adapter = new SimpleAdapter(this,
                         items, R.layout.taxi_services_list_view_length,
@@ -142,30 +157,27 @@ public class TaxiServicesListActivity extends ListActivity {
             setListAdapter(adapter);
         } else {
             Toast.makeText(getApplicationContext(),R.string.err_find_taxi_ser, Toast.LENGTH_SHORT).show();
-            final Intent intent = new Intent(TaxiServicesListActivity.this, StartActivity.class);
-            startActivity(intent);
+            final Intent intent = new Intent();
+            setResult(RESULT_OK, intent);
+            finish();
         }
-        // close DB connection
-        dbHelper.close();
     }
 
     @Override
     protected void onListItemClick(final ListView listView, View v, final int position, long id) {
 
         if (listener){
-            // connect to DB
-            db = dbHelper.getWritableDatabase();
             //find id from selected taxi agency
             final String agencyName = (String)((HashMap<String,Object>)listView.getItemAtPosition(position)).get(TAXISERVICE);
 
             //telephine numbers
-            final Cursor numbers = db.query("phones a, taxi_services b", new String[] {"a.*"},
+            numbers = db.query("phones a, taxi_services b", new String[] {"a._id","a.phone"},
                     "a.taxi_id = b._id and b."+ localName + " = ?" ,
                     new String[] {agencyName}, null, null, null);
 
             if (numbers.moveToFirst()){
                 // create adapter
-                final ListAdapter adapterNum = new SimpleCursorAdapter(TaxiServicesListActivity.this,
+                adapterNum = new SimpleCursorAdapter(TaxiServicesListActivity.this,
                         android.R.layout.simple_list_item_1, numbers,
                         new String[]{"phone"},new int[]{android.R.id.text1});
                 setListAdapter(adapterNum);
@@ -184,8 +196,37 @@ public class TaxiServicesListActivity extends ListActivity {
             } else {
                 Toast.makeText(getApplicationContext(),R.string.err_find_numbers, Toast.LENGTH_SHORT).show();
             }
-            // close DB connection
-            dbHelper.close();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getListAdapter().equals(adapterNum)){
+            setListAdapter(adapter);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        if (this.dbHelper != null){
+            this.dbHelper.close();
+            this.dbHelper = null;
+        }
+        if (this.db != null) {
+            this.db.close();
+            this.db = null;
+        }
+        if (this.agencies != null){
+            this.agencies.close();
+            this.agencies = null;
+        }
+        if (this.numbers != null){
+            this.numbers.close();
+            this.numbers = null;
+        }
+
     }
 }

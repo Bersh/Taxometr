@@ -30,6 +30,14 @@
             android:text="@string/btn_taxi_services_list">
     </Button>
     <Button
+            android:id="@+id/btn_language"
+            android:layout_margin="2dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_taxi_services_list"
+            android:text="@string/btn_language">
+    </Button>
+    <Button
             android:id="@+id/btn_call"
             android:layout_margin="2dp"
             android:layout_width="fill_parent"
@@ -38,12 +46,12 @@
             android:text="@string/btn_call_text">
     </Button>
     <Button
-            android:id="@+id/btn_calc_route"
-            android:layout_margin="2dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:text="@string/btn_calc_route_text">
+        android:id="@+id/btn_calc_route"
+        android:layout_margin="2dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/btn_calc_route_text">
     </Button>
 </RelativeLayout>
 
