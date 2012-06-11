@@ -7,7 +7,10 @@
     <!--StartActivity-->
   	<string name="btn_from_text">From</string>
     <string name="btn_to_text">To</string>
-    <string name="btn_calc_route_text">Calculate the cost</string>
+    <string name="adress_info">Specify the location</string>
+    <string name="taxi_info">Select a service</string>
+    <string name="btn_calc_route_text">Calculate</string>
+    <string name="calc_info">Calculate the cost of ride</string>
     <string name="btn_call_text">Call</string>
     <string name="btn_taxi_services_list">Taxi services list</string>
     <string name="btn_language">Select a language</string>

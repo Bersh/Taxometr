@@ -4,6 +4,12 @@
         <item name="android:background">@drawable/title</item>
     </style>
 
+    <color name="custom_theme_color">#cccccc</color>
+
+    <style name="custom_listview_style" parent="android:Widget.ListView">
+        <item name="android:divider">@color/custom_theme_color</item>
+    </style>
+
     <style name="ButtonText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -29,9 +35,11 @@
     </style>
 
 
-    <style name="CustomTheme" parent="android:Theme">
+    <style name="CustomTheme" parent="android:Theme.Light">
+        <item name="android:windowBackground">@color/custom_theme_color</item>
         <item name="android:windowTitleSize">24dip</item>
         <item name="android:windowTitleBackgroundStyle">@style/CustomWindowTitleBackground</item>
         <item name="android:buttonStyle">@style/CustomButtonStyle</item>
+        <item name="android:listViewStyle">@style/custom_listview_style</item>
     </style>
 </resources>

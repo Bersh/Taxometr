@@ -5,7 +5,14 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-    <Button
+
+    <ListView android:id="@+id/menu_list"
+              android:layout_height="wrap_content"
+              android:layout_width="match_parent"
+              android:layout_alignParentTop="true"
+            >
+    </ListView>
+    <!--Button
             android:id="@+id/btn_from"
             android:layout_margin="2dp"
             android:layout_width="fill_parent"
@@ -52,6 +59,25 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:text="@string/btn_calc_route_text">
+    </Button-->
+
+    <Button
+            android:id="@+id/btn_language"
+            android:layout_margin="2dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btn_call"
+            android:text="@string/btn_language">
     </Button>
+
+    <Button
+            android:id="@+id/btn_call"
+            android:layout_margin="2dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="@string/btn_call_text">
+    </Button>
+
 </RelativeLayout>
 

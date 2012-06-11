@@ -8,7 +8,10 @@
     <!--StartActivity-->
   	<string name="btn_from_text">Звідки</string>
     <string name="btn_to_text">Куди</string>
-    <string name="btn_calc_route_text">Підрахувати вартість</string>
+    <string name="adress_info">Оберіть місцезнаходження</string>
+    <string name="taxi_info">Оберіть службу</string>
+    <string name="btn_calc_route_text">Підрахувати</string>
+    <string name="calc_info">Підрахувати вартість поїздки</string>
     <string name="btn_call_text">Зателефонувати</string>
     <string name="btn_taxi_services_list">Список служб</string>
     <string name="btn_language">Оберіть мову</string>
