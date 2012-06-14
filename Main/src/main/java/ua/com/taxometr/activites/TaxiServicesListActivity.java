@@ -7,12 +7,10 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.DBHelper;
-import ua.com.taxometr.helpers.LocationHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,9 +47,6 @@ public class TaxiServicesListActivity extends ListActivity {
     //Locale name for choose database fields
     private String localName;
 
-    //adapters for ListView
-    private ListAdapter adapter;
-
     private ListAdapter adapterNum;
 
     private static final String ISO_RUSSIAN = "ru";
@@ -69,18 +64,7 @@ public class TaxiServicesListActivity extends ListActivity {
         //connect to DB
         db = dbHelper.getWritableDatabase();
 
-        //get language and set names of cities,countries,taxi services
-        final String language = getApplicationContext().getResources().getConfiguration().locale.getLanguage();
-        if (language.equals(ISO_RUSSIAN)) {
-            localName = "name_rus";
-        } else if(language.equals(ISO_UKRAINIAN)){
-            localName = "name_ua";
-        } else {
-            localName = "name_en";
-        }
-
-        final String LOG_TAG = LocationHelper.LOGTAG;
-        Log.d(LOG_TAG, language);
+        localName = getLocaleName(this);
 
         listener = true;
 
@@ -143,6 +127,7 @@ public class TaxiServicesListActivity extends ListActivity {
             }while (agencies.moveToNext());
 
             // create adapter for list view
+            final ListAdapter adapter;
             if(length!=0){
                 adapter = new SimpleAdapter(this,
                         items, R.layout.taxi_services_list_view_length,
@@ -191,7 +176,6 @@ public class TaxiServicesListActivity extends ListActivity {
                         startActivity(intent);
                     }
                 });
-
                 listener = false;
             } else {
                 Toast.makeText(getApplicationContext(),R.string.err_find_numbers, Toast.LENGTH_SHORT).show();
@@ -199,10 +183,29 @@ public class TaxiServicesListActivity extends ListActivity {
         }
     }
 
+    /**
+     * get locale name for database operations
+     * @param context instance of android.content.Context
+     * @return locale name in country language
+     */
+    public static String getLocaleName(Context context){
+        //get language and set names of cities,countries,taxi services
+        final String language = context.getApplicationContext().getResources().getConfiguration().locale.getLanguage();
+        if (language.equals(ISO_RUSSIAN)) {
+            return "name_rus";
+        } else if(language.equals(ISO_UKRAINIAN)){
+            return "name_ua";
+        } else {
+            return "name_en";
+        }
+    }
+
     @Override
     public void onBackPressed() {
         if (getListAdapter().equals(adapterNum)){
-            setListAdapter(adapter);
+            final Intent intent = new Intent(TaxiServicesListActivity.this, TaxiServicesListActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         } else {
             super.onBackPressed();
         }

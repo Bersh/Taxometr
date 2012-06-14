@@ -29,6 +29,7 @@
         <activity android:name="ua.com.taxometr.activites.CallActivity"/>
         <activity android:name=".activites.TaxiServicesListActivity"/>
         <activity android:name=".activites.LanguageListActivity"/>
+        <activity android:name=".activites.CitiesActivity"/>
 
         <uses-library android:name="com.google.android.maps"
                       android:required="true"/>

@@ -1,6 +1,7 @@
 package ua.com.taxometr.activites;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
@@ -68,7 +69,9 @@ public class LanguageListActivity extends ListActivity {
             default:
         }
         setLanguage(language);
-        finish();
+        final Intent intent = new Intent(LanguageListActivity.this,StartActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     /**
