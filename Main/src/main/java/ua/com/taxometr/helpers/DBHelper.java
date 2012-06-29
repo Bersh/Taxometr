@@ -54,7 +54,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "name_en text NOT NULL,"
                 + "init_price currency NOT NULL,"            //countries money
                 + "price_per_km currency NOT NULL,"          //countries money
-                + "price_per_km_country currency NOT NULL, "
+                + "price_per_km_country currency , "
                 + "price_downtime currency NOT NULL,"
                 + "km_in_init_price integer NOT NULL,"
                 + "city_id integer NOT NULL REFERENCES cities ON DELETE CASCADE ON UPDATE CASCADE" + ");");
@@ -122,13 +122,13 @@ public class DBHelper extends SQLiteOpenHelper {
 		db.execSQL("insert into taxi_services (_id, name_rus, name_ua, name_en, city_id, init_price, price_per_km, price_per_km_country, price_downtime, km_in_init_price) "
                 + "values(17, \"Славута-такси\", \"Славута-таксі\", \"Slavuta-taxi\", 1, 25, 2, 2.2, 0.5, 5)");
 		db.execSQL("insert into taxi_services (_id, name_rus, name_ua, name_en, city_id, init_price, price_per_km, price_per_km_country, price_downtime, km_in_init_price) "
-                + "values(18, \"Справедливое такси\", \"Справедливе таксі\", \"Fair taxi\", 1, 24, 2.5, 3.5 0.6, 5)");
+                + "values(18, \"Справедливое такси\", \"Справедливе таксі\", \"Fair taxi\", 1, 24, 2.5, 3.5 , 0.6, 5)");
 		db.execSQL("insert into taxi_services (_id, name_rus, name_ua, name_en, city_id, init_price, price_per_km, price_per_km_country, price_downtime, km_in_init_price) "
-                + "values(19, \"Такси Welcom\", \"Таксі Welcom\", \"Taxi Welcom\", 1, 25, 2, 2.5 0.5, 5)");
+                + "values(19, \"Такси Welcom\", \"Таксі Welcom\", \"Taxi Welcom\", 1, 25, 2, 2.5, 0.5, 5)");
 		db.execSQL("insert into taxi_services (_id, name_rus, name_ua, name_en, city_id, init_price, price_per_km, price_per_km_country, price_downtime, km_in_init_price) "
-                + "values(20, \"Такси Девяточка\", \"Таксі Дев'яточка\", \"Taxi Devyatochka\", 1, 20, 2, 3.6 0.5, 5)");
+                + "values(20, \"Такси Девяточка\", \"Таксі Дев'яточка\", \"Taxi Devyatochka\", 1, 20, 2, 3.6, 0.5, 5)");
 		db.execSQL("insert into taxi_services (_id, name_rus, name_ua, name_en, city_id, init_price, price_per_km, price_per_km_country, price_downtime, km_in_init_price) "
-                + "values(21, \"Такси Каприз\", \"Таксі Каприз\", \"Taxi Kapriz\", 1, 20, 1.8, 2.8 0.42, 5)");
+                + "values(21, \"Такси Каприз\", \"Таксі Каприз\", \"Taxi Kapriz\", 1, 20, 1.8, 2.8, 0.42, 5)");
 		db.execSQL("insert into taxi_services (_id, name_rus, name_ua, name_en, city_id, init_price, price_per_km, price_per_km_country, price_downtime, km_in_init_price) "
                 + "values(22, \"Такси Лига\", \"Таксі Ліга\", \"Taxi Liga\", 1, 22, 2.2, null, 0.6, 5)");
 		db.execSQL("insert into taxi_services (_id, name_rus, name_ua, name_en, city_id, init_price, price_per_km, price_per_km_country, price_downtime, km_in_init_price) "
@@ -141,7 +141,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		db.execSQL("insert into taxi_services (_id, name_rus, name_ua, name_en, city_id, init_price, price_per_km, price_per_km_country, price_downtime, km_in_init_price) "
                 + "values(26, \" Такси Абсолют\", \"Таксі Абсолют\", \"Taxi Absolute\", 0, 35, 3, 3.2, 0.4, 5)");
 		db.execSQL("insert into taxi_services (_id, name_rus, name_ua, name_en, city_id, init_price, price_per_km, price_per_km_country, price_downtime, km_in_init_price) "
-                + "values(27, \" Такси Авалон\", \"Таксі Авалон\", \"Taxi Avalon\", 0, 25, 2.5 3.5, 0.5, 5)");
+                + "values(27, \" Такси Авалон\", \"Таксі Авалон\", \"Taxi Avalon\", 0, 25, 2.5, 3.5, 0.5, 5)");
 		db.execSQL("insert into taxi_services (_id, name_rus, name_ua, name_en, city_id, init_price, price_per_km, price_per_km_country, price_downtime, km_in_init_price) "
                 + "values(28, \" Такси Авеню\", \"Таксі Авеню\", \"Taxi Avenue\", 0, 25, 3.4, 4, 0.6, 5)");
 		db.execSQL("insert into taxi_services (_id, name_rus, name_ua, name_en, city_id, init_price, price_per_km, price_per_km_country, price_downtime, km_in_init_price) "
@@ -530,25 +530,25 @@ public class DBHelper extends SQLiteOpenHelper {
 		db.execSQL("insert into phones (phone, taxi_id) values(\"+380638501222\", 61)");
 		//Municipalnoe Taxi
 		db.execSQL("insert into phones (phone, taxi_id) values(\"+380951111119\", 62)");
-		db.execSQL("insert into phones (phone, taxi_id) values(\"+380952222229\", 62");
+		db.execSQL("insert into phones (phone, taxi_id) values(\"+380952222229\", 62)");
 		db.execSQL("insert into phones (phone, taxi_id) values(\"+380953333339\", 62)");
 		//Perviy taxopark
 		db.execSQL("insert into phones (phone, taxi_id) values(\"+380623859292\", 63)");
-		db.execSQL("insert into phones (phone, taxi_id) values(\"+380503489392\", 63");
+		db.execSQL("insert into phones (phone, taxi_id) values(\"+380503489392\", 63)");
 		db.execSQL("insert into phones (phone, taxi_id) values(\"+380503289292\", 63)");
 		db.execSQL("insert into phones (phone, taxi_id) values(\"+380676259292\", 63)");
-		db.execSQL("insert into phones (phone, taxi_id) values(\"+380633332323\", 63");
+		db.execSQL("insert into phones (phone, taxi_id) values(\"+380633332323\", 63)");
 		db.execSQL("insert into phones (phone, taxi_id) values(\"+380633399992\", 63)");
 		db.execSQL("insert into phones (phone, taxi_id) values(\"+380933151555\", 63)");
 		//ReAn-Taxi
-		db.execSQL("insert into phones (phone, taxi_id) values(\"+380623854444\", 64");
+		db.execSQL("insert into phones (phone, taxi_id) values(\"+380623854444\", 64)");
 		db.execSQL("insert into phones (phone, taxi_id) values(\"+380505251434\", 64)");
-		db.execSQL("insert into phones (phone, taxi_id) values(\"+380983141239\", 64");
+		db.execSQL("insert into phones (phone, taxi_id) values(\"+380983141239\", 64)");
 		db.execSQL("insert into phones (phone, taxi_id) values(\"+380936970734\", 64)");
 		//Taxi Alfa
-		db.execSQL("insert into phones (phone, taxi_id) values(\"+380951707770\", 65");
+		db.execSQL("insert into phones (phone, taxi_id) values(\"+380951707770\", 65)");
 		db.execSQL("insert into phones (phone, taxi_id) values(\"+380508875016\", 65)");
-		db.execSQL("insert into phones (phone, taxi_id) values(\"+380933151577\", 65");
+		db.execSQL("insert into phones (phone, taxi_id) values(\"+380933151577\", 65)");
 		//Taxi Blus
 		db.execSQL("insert into phones (phone, taxi_id) values(\"+380623810403\", 66)");
 		db.execSQL("insert into phones (phone, taxi_id) values(\"+380623810102\", 66)");

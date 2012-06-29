@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.location.*;
 import android.os.Bundle;
 import android.view.View;
@@ -338,13 +339,15 @@ public class StartActivity extends Activity {
                     startActivityForResult(intent, BTN_TO_REQUEST_CODE);
                     break;
                 case 2:
-                    locationManager = (LocationManager) StartActivity.this.getSystemService(Context.LOCATION_SERVICE);
-                    if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-                        intent = new Intent(StartActivity.this, CitiesActivity.class);
-                        startActivity(intent);
-                    }else{
+                    final PackageManager pm = getPackageManager();
+                    final boolean hasGPS = pm.hasSystemFeature(PackageManager.FEATURE_LOCATION_GPS);
+                    if (hasGPS){
+                        locationManager = (LocationManager) StartActivity.this.getSystemService(Context.LOCATION_SERVICE);
                         progressDialog = ProgressDialog.show(StartActivity.this, "", getString(R.string.dlg_progress_obtaining_location), true);
                         LocationHelper.requestLocationUpdates(StartActivity.this, locationManager, locationTrackingListener);
+                    }else{
+                        intent = new Intent(StartActivity.this, CitiesActivity.class);
+                        startActivity(intent);
                     }
                     break;
                 case 3:

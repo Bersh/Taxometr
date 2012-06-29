@@ -102,27 +102,30 @@ public class TaxiServicesListActivity extends ListActivity {
                 }
 
                 final StringBuilder priceKM = new StringBuilder(getString(R.string.price_for_km)+" "+agencies.getInt(agencies.getColumnIndex("price_per_km"))+" "+getString(R.string.currency)+" ");
-                final int priceCountryKM = agencies.getInt(agencies.getColumnIndex("price_per_km_country"));
+                final float priceCountryKM = agencies.getFloat(agencies.getColumnIndex("price_per_km_country"));
                 if (priceCountryKM!=0){
                     priceKM.append("(").append(getString(R.string.price_for_km_country)).append(" ")
-                            .append(priceCountryKM).append(" ").append(getString(R.string.currency)).append(")");
+                            .append(priceCountryKM).append(")");
                 }
                 final HashMap<String, Object> hm = new HashMap<String, Object>();
                 hm.put(TAXISERVICE, agencies.getString(agencies.getColumnIndex(localName)));
                 if(length!=0){
-                    int cost = new Float(agencies.getInt(agencies.getColumnIndex("price_per_km"))*length).intValue();
-                    final int initPrice = agencies.getInt(agencies.getColumnIndex("init_price"));
+                    int cost = new Float(agencies.getFloat(agencies.getColumnIndex("price_per_km"))*length).intValue();
+                    final Float initPrice = agencies.getFloat(agencies.getColumnIndex("init_price"));
                     if ( cost < initPrice) {
-                        cost = initPrice;
+                        cost = initPrice.intValue();
                     }
                     hm.put(COST_LENGTH,new StringBuilder(getString(R.string.price_length))
                             .append(" ").append(cost).append(" ").append(getString(R.string.currency)));
                 }
                 hm.put(PRICEKM, priceKM);
-                hm.put(INITPRICE,getString(R.string.init_price)+" "+agencies.getInt(agencies.getColumnIndex("init_price"))
+                hm.put(INITPRICE,getString(R.string.init_price)+" "+agencies.getFloat(agencies.getColumnIndex("init_price"))
                         +" "+getString(R.string.currency)+" ("+ agencies.getInt(agencies.getColumnIndex("km_in_init_price"))+" "+getString(R.string.km_in_init_price)+")");
                 hm.put(IMGKEY, img.get());
                 items.add(hm);
+                if (count==3) {
+                    count = 0;
+                }
                 ++count;
             }while (agencies.moveToNext());
 
