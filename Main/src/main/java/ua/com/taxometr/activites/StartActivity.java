@@ -8,7 +8,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.*;
+import android.location.Address;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
@@ -47,10 +50,10 @@ public class StartActivity extends Activity {
     //private Button btnTaxiServicesList;
     private LocationManager locationManager;
 
-    private static String fromAddress ;//= "Днепропетровск, пр. Карла Маркса 88";     //uncomment this for debug. If needed
-    private static String toAddress ;//= "Днепропетровск, ул. Артема 3";
+    private static String fromAddress;//= "Днепропетровск, пр. Карла Маркса 88";     //uncomment this for debug. If needed
+    private static String toAddress;//= "Днепропетровск, ул. Артема 3";
 
-    final private ArrayList<HashMap<String, Object>> menuItems = new ArrayList<HashMap<String,Object>>();
+    final private ArrayList<HashMap<String, Object>> menuItems = new ArrayList<HashMap<String, Object>>();
     private static final String ITEMKEY = "menu_item";
     private static final String SUBITEMKEY = "menu_subitem";
     private static final String IMGKEY = "iconfromraw";
@@ -69,7 +72,7 @@ public class StartActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_view);
 
-        final ListView listView = (ListView)findViewById(R.id.menu_list);
+        final ListView listView = (ListView) findViewById(R.id.menu_list);
 
         HashMap<String, Object> hm = new HashMap<String, Object>();
         hm.put(ITEMKEY, getString(R.string.btn_from_text));
@@ -81,21 +84,21 @@ public class StartActivity extends Activity {
         hm = new HashMap<String, Object>();
         hm.put(ITEMKEY, getString(R.string.btn_to_text));
         hm.put(SUBITEMKEY, getString(R.string.adress_info));
-        hm.put(IMGKEY,  R.drawable.where_icon_s); //тут мы её добавляем для отображения
+        hm.put(IMGKEY, R.drawable.where_icon_s); //тут мы её добавляем для отображения
 
         menuItems.add(hm);
 
         hm = new HashMap<String, Object>();
         hm.put(ITEMKEY, getString(R.string.btn_taxi_services_list));
         hm.put(SUBITEMKEY, getString(R.string.taxi_info));
-        hm.put(IMGKEY,  R.drawable.taxi_icon_s); //тут мы её добавляем для отображения
+        hm.put(IMGKEY, R.drawable.taxi_icon_s); //тут мы её добавляем для отображения
 
         menuItems.add(hm);
 
         hm = new HashMap<String, Object>();
         hm.put(ITEMKEY, getString(R.string.btn_calc_route_text));
         hm.put(SUBITEMKEY, getString(R.string.calc_info));
-        hm.put(IMGKEY,  R.drawable.calc_icon_s); //тут мы её добавляем для отображения
+        hm.put(IMGKEY, R.drawable.calc_icon_s); //тут мы её добавляем для отображения
 
         menuItems.add(hm);
 
@@ -116,7 +119,7 @@ public class StartActivity extends Activity {
 
         listView.setOnItemClickListener(new MainListOnItemClickListener());
 
-         final Button btnCall = (Button) findViewById(R.id.btn_call);
+        final Button btnCall = (Button) findViewById(R.id.btn_call);
         btnCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,13 +202,13 @@ public class StartActivity extends Activity {
             case 1:
                 fromAddress = data.getStringExtra("address");
                 //btnFrom.setText(getString(R.string.btn_from_text) + "\n" + fromAddress);
-                menuItems.get(0).put(SUBITEMKEY,fromAddress);
+                menuItems.get(0).put(SUBITEMKEY, fromAddress);
                 break;
             case 2:
                 toAddress = data.getStringExtra("address");
 
                 //btnTo.setText(getString(R.string.btn_to_text) + "\n" + toAddress);
-                menuItems.get(1).put(SUBITEMKEY,toAddress);
+                menuItems.get(1).put(SUBITEMKEY, toAddress);
                 break;
             default:
         }
@@ -221,24 +224,6 @@ public class StartActivity extends Activity {
         }
     }
 
-    /**
-     * OnClickListener for btn_taxi_services_list
-     */
-    /*
-    private class BtnTaxiServicesListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            //comment this 3 strings for debug
-            progressDialog = ProgressDialog.show(StartActivity.this, "", getString(R.string.dlg_progress_obtaining_location), true);
-            locationManager = (LocationManager) StartActivity.this.getSystemService(Context.LOCATION_SERVICE);
-            LocationHelper.requestLocationUpdates(StartActivity.this, locationManager, locationTrackingListener);
-
-            //uncomment this for debug
-            //final Intent intent = new Intent(StartActivity.this, TaxiServicesListActivity.class);
-            //startActivity(intent);
-        }
-    } */
 
     /**
      * LocationListener to track location changes
@@ -293,43 +278,59 @@ public class StartActivity extends Activity {
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         //btnTaxiServicesList.setText(getString(R.string.btn_taxi_services_list));
-        menuItems.get(0).put(ITEMKEY,getString(R.string.btn_from_text));
-        menuItems.get(1).put(ITEMKEY,getString(R.string.btn_to_text));
-        menuItems.get(2).put(ITEMKEY,getString(R.string.btn_taxi_services_list));
-        menuItems.get(2).put(SUBITEMKEY,getString(R.string.taxi_info));
+        menuItems.get(0).put(ITEMKEY, getString(R.string.btn_from_text));
+        menuItems.get(1).put(ITEMKEY, getString(R.string.btn_to_text));
+        menuItems.get(2).put(ITEMKEY, getString(R.string.btn_taxi_services_list));
+        menuItems.get(2).put(SUBITEMKEY, getString(R.string.taxi_info));
         //btnCalcRoute.setText(getString(R.string.btn_calc_route_text));
-        menuItems.get(3).put(ITEMKEY,getString(R.string.btn_calc_route_text));
-        menuItems.get(3).put(SUBITEMKEY,getString(R.string.calc_info));
-        if (fromAddress!=null) {
-            menuItems.get(0).put(SUBITEMKEY,fromAddress);
+        menuItems.get(3).put(ITEMKEY, getString(R.string.btn_calc_route_text));
+        menuItems.get(3).put(SUBITEMKEY, getString(R.string.calc_info));
+        if (fromAddress != null) {
+            menuItems.get(0).put(SUBITEMKEY, fromAddress);
         } else {
 
-            menuItems.get(0).put(SUBITEMKEY,getString(R.string.adress_info));
+            menuItems.get(0).put(SUBITEMKEY, getString(R.string.adress_info));
         }
 
-        if (toAddress!=null) {
-            menuItems.get(1).put(SUBITEMKEY,toAddress);
+        if (toAddress != null) {
+            menuItems.get(1).put(SUBITEMKEY, toAddress);
         } else {
 
-            menuItems.get(1).put(SUBITEMKEY,getString(R.string.adress_info));
+            menuItems.get(1).put(SUBITEMKEY, getString(R.string.adress_info));
         }
     }
 
     /**
      * Listener for main menu
+     *
      * @author Ilya Lisovyy <a href="mailto:ip.lisoviy@gmail.com">Ilya Lisovyy</a>
      * @since 14.06.12
      */
     private class MainListOnItemClickListener implements AdapterView.OnItemClickListener {
+        /**
+         * Tests is GPS available
+         *
+         * @return true if GPS available
+         */
+        private boolean testGpsAvailable() {
+            final PackageManager pm = getPackageManager();
+            final boolean hasGPS = pm.hasSystemFeature(PackageManager.FEATURE_LOCATION_GPS);
+
+            //On some devices without GPS hasGPS might be true
+            if (hasGPS) {
+                locationManager = (LocationManager) StartActivity.this.getSystemService(Context.LOCATION_SERVICE);
+            }
+
+            return ((locationManager != null) && (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)));
+        }
+
         @Override
         public void onItemClick(AdapterView<?> parent, View view,
-                                int position, long id)
-        {
-            switch (position)
-            {
+                                int position, long id) {
+            switch (position) {
                 case 0:
                     Intent intent = new Intent(StartActivity.this, SelectAddressActivity.class);
                     startActivityForResult(intent, BTN_FROM_REQUEST_CODE);
@@ -339,20 +340,16 @@ public class StartActivity extends Activity {
                     startActivityForResult(intent, BTN_TO_REQUEST_CODE);
                     break;
                 case 2:
-                    final PackageManager pm = getPackageManager();
-                    final boolean hasGPS = pm.hasSystemFeature(PackageManager.FEATURE_LOCATION_GPS);
-                    if (hasGPS){
-                        locationManager = (LocationManager) StartActivity.this.getSystemService(Context.LOCATION_SERVICE);
+                    if (testGpsAvailable()) {
                         progressDialog = ProgressDialog.show(StartActivity.this, "", getString(R.string.dlg_progress_obtaining_location), true);
                         LocationHelper.requestLocationUpdates(StartActivity.this, locationManager, locationTrackingListener);
-                    }else{
+                    } else {
                         intent = new Intent(StartActivity.this, CitiesActivity.class);
                         startActivity(intent);
                     }
                     break;
                 case 3:
-                    if (calcEnabled)
-                    {
+                    if (calcEnabled) {
                         intent = new Intent(StartActivity.this, GoogleMapActivity.class);
                         intent.putExtra("isRouteMode", true);
                         intent.putExtra("fromAddress", fromAddress);

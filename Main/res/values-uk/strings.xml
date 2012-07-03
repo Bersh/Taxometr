@@ -16,7 +16,10 @@
     <string name="btn_taxi_services_list">Список служб</string>
     <string name="btn_language">Оберіть мову</string>
     <string name="exit">Вихід</string>
-    <string name="confirmation_exit">Ви дійсно бажаете вийти ?</string>
+    <string name="confirmation_exit">Ви дійсно бажаете вийти?</string>
+    <string name="ask_to_enable_gps_message">GPS у данный момент вимкнено. Ви бажєте увімкнути GPS?</string>
+    <string name="ask_to_enable_gps_positive_button_text">Так</string>
+    <string name="ask_to_enable_gps_negative_button_text">Ні</string>
     <!--/StartActivity-->
 
     <!-- SelectAddressActivity -->

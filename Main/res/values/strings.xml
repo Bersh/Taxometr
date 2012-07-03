@@ -15,7 +15,10 @@
     <string name="btn_taxi_services_list">Taxi services list</string>
     <string name="btn_language">Select a language</string>
     <string name="exit">Exit</string>
-    <string name="confirmation_exit">Do you really want to quit ?</string>
+    <string name="confirmation_exit">Do you really want to quit?</string>
+    <string name="ask_to_enable_gps_message">GPS is disabled now. Would you like to enable GPS?</string>
+    <string name="ask_to_enable_gps_positive_button_text">Yes</string>
+    <string name="ask_to_enable_gps_negative_button_text">No</string>
     <!--/StartActivity-->
 
     <!-- SelectAddressActivity -->
