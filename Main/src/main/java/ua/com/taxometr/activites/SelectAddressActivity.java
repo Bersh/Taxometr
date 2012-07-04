@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -95,6 +96,23 @@ public class SelectAddressActivity extends Activity {
             progressDialog = ProgressDialog.show(SelectAddressActivity.this, "", getString(R.string.dlg_progress_obtaining_location), true);
             locationManager = (LocationManager) SelectAddressActivity.this.getSystemService(Context.LOCATION_SERVICE);
             LocationHelper.requestLocationUpdates(SelectAddressActivity.this, locationManager, locationTrackingListener);
+            new CountDownTimer(LocationHelper.GPS_TIMEOUT, LocationHelper.GPS_TIMEOUT) {
+                @Override
+                public void onTick(long l) {
+                }
+
+                public void onFinish() {
+                    if (progressDialog != null) {
+                        progressDialog.dismiss();
+
+                        if (locationManager != null && locationTrackingListener != null) {
+                            locationManager.removeUpdates(locationTrackingListener);
+                        }
+                        Toast.makeText(SelectAddressActivity.this, getString(R.string.err_gps_not_available),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }.start();
         }
     }
 

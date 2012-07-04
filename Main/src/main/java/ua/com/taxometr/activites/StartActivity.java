@@ -13,6 +13,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.*;
 import de.akquinet.android.androlog.Log;
@@ -310,6 +311,7 @@ public class StartActivity extends Activity {
      * @since 14.06.12
      */
     private class MainListOnItemClickListener implements AdapterView.OnItemClickListener {
+
         /**
          * Tests is GPS available
          *
@@ -343,9 +345,25 @@ public class StartActivity extends Activity {
                     if (testGpsAvailable()) {
                         progressDialog = ProgressDialog.show(StartActivity.this, "", getString(R.string.dlg_progress_obtaining_location), true);
                         LocationHelper.requestLocationUpdates(StartActivity.this, locationManager, locationTrackingListener);
+
+                        new CountDownTimer(LocationHelper.GPS_TIMEOUT, LocationHelper.GPS_TIMEOUT) {
+                            @Override
+                            public void onTick(long l) {
+                            }
+
+                            public void onFinish() {
+                                if (progressDialog != null) {
+                                    progressDialog.dismiss();
+
+                                    if (locationManager != null && locationTrackingListener != null) {
+                                        locationManager.removeUpdates(locationTrackingListener);
+                                    }
+                                    startCitiesActivity();
+                                }
+                            }
+                        }.start();
                     } else {
-                        intent = new Intent(StartActivity.this, CitiesActivity.class);
-                        startActivity(intent);
+                        startCitiesActivity();
                     }
                     break;
                 case 3:
@@ -363,6 +381,12 @@ public class StartActivity extends Activity {
 
             android.util.Log.d("TestTag", "itemClick: position = " + position + ", id = "
                     + id);
+        }
+
+        private void startCitiesActivity() {
+            Intent intent;
+            intent = new Intent(StartActivity.this, CitiesActivity.class);
+            startActivity(intent);
         }
     }
 }

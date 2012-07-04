@@ -56,6 +56,11 @@ public class LocationHelper {
     public static final int MIN_DISTANCE = 10;
 
     /**
+     * Timeout for determining location in milliseconds
+     */
+    public static final int GPS_TIMEOUT = 30000;
+
+    /**
      * Default constructor
      */
     private LocationHelper() {
