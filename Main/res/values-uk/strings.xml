@@ -3,6 +3,14 @@
 
     <!--Application-->
     <string name="app_name">Taxometr</string>
+    <string name="about">Інфо</string>
+    <string name="lang">Мова</string>
+    <string name="close">Закрити</string>
+    <string name="about_taxometr">Taxometr - додаток для швидкого визову таксі \n\n
+        Розробники : \n
+        \t Бершадський Ілля \n
+        \t Горбунов Дмитро \n
+        \t Лісовий Ілля \n </string>
     <!--/Application-->
 
     <!--StartActivity-->

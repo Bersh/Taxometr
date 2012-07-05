@@ -7,10 +7,14 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.DBHelper;
+import ua.com.taxometr.helpers.MenuHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -233,6 +237,19 @@ public class TaxiServicesListActivity extends ListActivity {
             this.numbers.close();
             this.numbers = null;
         }
-
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        final MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.layout.menu_about_only, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        final MenuHelper menu = new MenuHelper();
+        return menu.optionsItemSelected(item,this);
+    }
+
 }

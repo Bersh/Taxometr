@@ -14,11 +14,15 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import de.akquinet.android.androlog.Log;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.LocationHelper;
+import ua.com.taxometr.helpers.MenuHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -129,16 +133,6 @@ public class StartActivity extends Activity {
                 intent.putExtra("phoneNumber", phoneNumber);
                 startActivity(intent);
 
-            }
-        });
-
-        final Button btnLang = (Button) findViewById(R.id.btn_language);
-        btnLang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent(StartActivity.this, LanguageListActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
             }
         });
 
@@ -273,7 +267,7 @@ public class StartActivity extends Activity {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-                        finish();
+                        android.os.Process.killProcess(android.os.Process.myPid());
                     }
                 }).create().show();
     }
@@ -351,6 +345,7 @@ public class StartActivity extends Activity {
                             public void onTick(long l) {
                             }
 
+                            @Override
                             public void onFinish() {
                                 if (progressDialog != null) {
                                     progressDialog.dismiss();
@@ -384,9 +379,25 @@ public class StartActivity extends Activity {
         }
 
         private void startCitiesActivity() {
-            Intent intent;
+            final Intent intent;
             intent = new Intent(StartActivity.this, CitiesActivity.class);
             startActivity(intent);
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        final MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.layout.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        final MenuHelper menu = new MenuHelper();
+        return menu.optionsItemSelected(item,this);
+    }
+
+
+
 }

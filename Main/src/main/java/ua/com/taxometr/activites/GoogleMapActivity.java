@@ -10,8 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
+import android.view.*;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -19,6 +18,7 @@ import android.widget.Toast;
 import com.google.android.maps.*;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.LocationHelper;
+import ua.com.taxometr.helpers.MenuHelper;
 import ua.com.taxometr.helpers.RoadHelper;
 import ua.com.taxometr.mapOverlays.AddressItemizedOverlay;
 import ua.com.taxometr.mapOverlays.RouteOverlay;
@@ -335,4 +335,18 @@ public class GoogleMapActivity extends MapActivity {
         public void onStatusChanged(String s, int i, Bundle bundle) {
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        final MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.layout.menu_about_only, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        final MenuHelper menu = new MenuHelper();
+        return menu.optionsItemSelected(item,this);
+    }
+
 }

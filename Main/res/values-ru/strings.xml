@@ -3,6 +3,14 @@
 
     <!--Application-->
     <string name="app_name">Taxometr</string>
+    <string name="about">Инфо</string>
+    <string name="lang">Язык</string>
+    <string name="close">Закрыть</string>
+    <string name="about_taxometr">Taxometr - приложение для быстрого вызова такси \n\n
+        Разработчики : \n
+        \t Бершадский Илья \n
+        \t Горбунов Дмитрий \n
+        \t Лисовой Илья \n </string>
     <!--/Application-->
 
     <!--StartActivity-->

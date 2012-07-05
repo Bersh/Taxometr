@@ -5,12 +5,16 @@ import android.app.Activity;
 import android.net.Uri;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import ua.com.taxometr.R;
 import android.util.Log;
 import android.content.ActivityNotFoundException;
+import ua.com.taxometr.helpers.MenuHelper;
 
 /**
  * Date: 02.04.12
@@ -60,6 +64,19 @@ public class CallActivity extends Activity{
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        final MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.layout.menu_about_only, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        final MenuHelper menu = new MenuHelper();
+        return menu.optionsItemSelected(item,this);
     }
 
 }

@@ -2,6 +2,14 @@
 <resources>
     <!--Application-->
     <string name="app_name">Taxometr</string>
+    <string name="about">About</string>
+    <string name="lang">Language</string>
+    <string name="close">Close</string>
+    <string name="about_taxometr">Taxometr - application for quickly call taxi \n\n
+                                    Developers : \n
+                                    \t Bershadskii Ilya \n
+                                    \t Gorbynov Dmitrii \n
+                                    \t Lisovyy Ilya \n </string>
     <!--/Application-->
 
     <!--StartActivity-->
