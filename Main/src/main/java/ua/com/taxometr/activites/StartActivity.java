@@ -52,7 +52,7 @@ public class StartActivity extends Activity {
      * key for country data
      */
     public static final String COUNTRY_KEY = "COUNTRY";
-    //private Button btnTaxiServicesList;
+
     private LocationManager locationManager;
 
     private static String fromAddress;//= "Днепропетровск, пр. Карла Маркса 88";     //uncomment this for debug. If needed
@@ -63,15 +63,15 @@ public class StartActivity extends Activity {
     private static final String SUBITEMKEY = "menu_subitem";
     private static final String IMGKEY = "iconfromraw";
 
-    private boolean calcEnabled = false;
-
     private final LocationListener locationTrackingListener = new LocationTrackingListener();
+    private Button btnCalcRoute;
 
     /**
      * Shown when determining city
      */
     private ProgressDialog progressDialog;
 
+    @SuppressWarnings("ReuseOfLocalVariable")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,14 +97,6 @@ public class StartActivity extends Activity {
         hm.put(ITEMKEY, getString(R.string.btn_taxi_services_list));
         hm.put(SUBITEMKEY, getString(R.string.taxi_info));
         hm.put(IMGKEY, R.drawable.taxi_icon_s); //тут мы её добавляем для отображения
-
-        menuItems.add(hm);
-
-        hm = new HashMap<String, Object>();
-        hm.put(ITEMKEY, getString(R.string.btn_calc_route_text));
-        hm.put(SUBITEMKEY, getString(R.string.calc_info));
-        hm.put(IMGKEY, R.drawable.calc_icon_s); //тут мы её добавляем для отображения
-
         menuItems.add(hm);
 
         final ListAdapter adapter = new SimpleAdapter(this,
@@ -120,51 +112,8 @@ public class StartActivity extends Activity {
 
         listView.setAdapter(adapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        calcEnabled = false;
 
         listView.setOnItemClickListener(new MainListOnItemClickListener());
-
-        final Button btnCall = (Button) findViewById(R.id.btn_call);
-        btnCall.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent(StartActivity.this, CallActivity.class);
-                final String phoneNumber = "tel:" + "0000000000";
-                intent.putExtra("phoneNumber", phoneNumber);
-                startActivity(intent);
-
-            }
-        });
-
-        /*
-        btnFrom = (Button) findViewById(R.id.btn_from);
-        btnFrom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent(StartActivity.this, SelectAddressActivity.class);
-                startActivityForResult(intent, BTN_FROM_REQUEST_CODE);
-            }
-        });
-
-        btnTo = (Button) findViewById(R.id.btn_to);
-        btnTo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent(StartActivity.this, SelectAddressActivity.class);
-                startActivityForResult(intent, BTN_TO_REQUEST_CODE);
-            }
-        });
-        btnCall = (Button) findViewById(R.id.btn_call);
-        btnCall.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent(StartActivity.this, CallActivity.class);
-                final String phoneNumber = "tel:" + "0000000000";
-                intent.putExtra("phoneNumber", phoneNumber);
-                startActivity(intent);
-
-            }
-        });
 
         btnCalcRoute = (Button) findViewById(R.id.btn_calc_route);
         btnCalcRoute.setOnClickListener(new View.OnClickListener() {
@@ -178,13 +127,8 @@ public class StartActivity extends Activity {
 
             }
         });
-        btnCalcRoute.setEnabled(false);             //comment this for debug. If needed
+        btnCalcRoute.setEnabled(false);
 
-        btnTaxiServicesList = (Button) findViewById(R.id.btn_taxi_services_list);
-        btnTaxiServicesList.setOnClickListener(new BtnTaxiServicesListener());
-
-
-        */
     }
 
     @SuppressWarnings("AssignmentToStaticFieldFromInstanceMethod")
@@ -196,19 +140,16 @@ public class StartActivity extends Activity {
         switch (requestCode) {
             case 1:
                 fromAddress = data.getStringExtra("address");
-                //btnFrom.setText(getString(R.string.btn_from_text) + "\n" + fromAddress);
                 menuItems.get(0).put(SUBITEMKEY, fromAddress);
                 break;
             case 2:
                 toAddress = data.getStringExtra("address");
-
-                //btnTo.setText(getString(R.string.btn_to_text) + "\n" + toAddress);
                 menuItems.get(1).put(SUBITEMKEY, toAddress);
                 break;
             default:
         }
-        calcEnabled = (!"".equals(fromAddress) && !"".equals(toAddress));
-        //btnCalcRoute.setEnabled(!"".equals(fromAddress) && !"".equals(toAddress));
+
+        btnCalcRoute.setEnabled(!"".equals(fromAddress) && !"".equals(toAddress));
     }
 
     @Override
@@ -275,25 +216,19 @@ public class StartActivity extends Activity {
     @Override
     public void onStart() {
         super.onStart();
-        //btnTaxiServicesList.setText(getString(R.string.btn_taxi_services_list));
         menuItems.get(0).put(ITEMKEY, getString(R.string.btn_from_text));
         menuItems.get(1).put(ITEMKEY, getString(R.string.btn_to_text));
         menuItems.get(2).put(ITEMKEY, getString(R.string.btn_taxi_services_list));
         menuItems.get(2).put(SUBITEMKEY, getString(R.string.taxi_info));
-        //btnCalcRoute.setText(getString(R.string.btn_calc_route_text));
-        menuItems.get(3).put(ITEMKEY, getString(R.string.btn_calc_route_text));
-        menuItems.get(3).put(SUBITEMKEY, getString(R.string.calc_info));
         if (fromAddress != null) {
             menuItems.get(0).put(SUBITEMKEY, fromAddress);
         } else {
-
             menuItems.get(0).put(SUBITEMKEY, getString(R.string.adress_info));
         }
 
         if (toAddress != null) {
             menuItems.get(1).put(SUBITEMKEY, toAddress);
         } else {
-
             menuItems.get(1).put(SUBITEMKEY, getString(R.string.adress_info));
         }
     }
@@ -361,15 +296,6 @@ public class StartActivity extends Activity {
                         startCitiesActivity();
                     }
                     break;
-                case 3:
-                    if (calcEnabled) {
-                        intent = new Intent(StartActivity.this, GoogleMapActivity.class);
-                        intent.putExtra("isRouteMode", true);
-                        intent.putExtra("fromAddress", fromAddress);
-                        intent.putExtra("toAddress", toAddress);
-                        startActivity(intent);
-                    }
-                    break;
                 default:
                     break;
             }
@@ -378,9 +304,11 @@ public class StartActivity extends Activity {
                     + id);
         }
 
+        /**
+         * Just starts {@link CitiesActivity}
+         */
         private void startCitiesActivity() {
-            final Intent intent;
-            intent = new Intent(StartActivity.this, CitiesActivity.class);
+            final Intent intent = new Intent(StartActivity.this, CitiesActivity.class);
             startActivity(intent);
         }
     }
@@ -395,9 +323,7 @@ public class StartActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         final MenuHelper menu = new MenuHelper();
-        return menu.optionsItemSelected(item,this);
+        return menu.optionsItemSelected(item, this);
     }
-
-
 
 }

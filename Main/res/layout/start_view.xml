@@ -12,62 +12,14 @@
               android:layout_alignParentTop="true"
             >
     </ListView>
-    <!--Button
-            android:id="@+id/btn_from"
-            android:layout_margin="2dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:text="@string/btn_from_text">
-    </Button>
-    <Button
-            android:id="@+id/btn_to"
-            android:layout_margin="2dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/btn_from"
-            android:text="@string/btn_to_text">
-    </Button>
-    <Button
-            android:id="@+id/btn_taxi_services_list"
-            android:layout_margin="2dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/btn_to"
-            android:text="@string/btn_taxi_services_list">
-    </Button>
-    <Button
-            android:id="@+id/btn_language"
-            android:layout_margin="2dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/btn_taxi_services_list"
-            android:text="@string/btn_language">
-    </Button>
-    <Button
-            android:id="@+id/btn_call"
-            android:layout_margin="2dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/btn_calc_route"
-            android:text="@string/btn_call_text">
-    </Button>
-    <Button
-        android:id="@+id/btn_calc_route"
-        android:layout_margin="2dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="@string/btn_calc_route_text">
-    </Button-->
 
     <Button
-            android:id="@+id/btn_call"
+            android:id="@+id/btn_calc_route"
             android:layout_margin="2dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:text="@string/btn_call_text">
+            android:text="@string/btn_calc_route_text">
     </Button>
 
 </RelativeLayout>
