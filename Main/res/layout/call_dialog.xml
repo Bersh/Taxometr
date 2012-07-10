@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+    <TextView
+            android:id="@+id/ask"
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lbl_ask"
+            />
+
+    <TextView
+            android:id="@+id/call_number"
+            android:layout_below="@+id/ask"
+            android:textSize="30sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            />
+
+    <ImageView android:id="@+id/ic_phone"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_below="@+id/call_number"
+               android:layout_centerHorizontal="true"
+               android:src="@drawable/london_phone"
+               />
+
+    <Button android:id="@+id/btn_call"
+            android:layout_below="@+id/ic_phone"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_ok_text" />
+
+    <Button android:id="@+id/btn_cancel"
+            android:layout_below="@+id/btn_call"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_cancel_text"
+            />
+
+</RelativeLayout>

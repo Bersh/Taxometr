@@ -1,12 +1,16 @@
 package ua.com.taxometr.activites;
 
+import android.app.Dialog;
 import android.app.ListActivity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -178,9 +182,10 @@ public class TaxiServicesListActivity extends ListActivity {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         final String phoneNumber = ((Cursor)listView.getItemAtPosition(i)).getString(((Cursor)listView.getItemAtPosition(i)).getColumnIndex("phone"));
-                        final Intent intent = new Intent(TaxiServicesListActivity.this, CallActivity.class);
-                        intent.putExtra("phoneNumber", phoneNumber);
-                        startActivity(intent);
+                        //final Intent intent = new Intent(TaxiServicesListActivity.this, CallActivity.class);
+                        //intent.putExtra("phoneNumber", phoneNumber);
+                        //startActivity(intent);
+                        createCallDialog(phoneNumber);
                     }
                 });
                 listener = false;
@@ -250,6 +255,44 @@ public class TaxiServicesListActivity extends ListActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         final MenuHelper menu = new MenuHelper();
         return menu.optionsItemSelected(item,this);
+    }
+
+    private void createCallDialog(final String phoneNumber){
+        final Dialog callDialog = new Dialog(this);
+        callDialog.setContentView(R.layout.call_dialog);
+        callDialog.setTitle(getString(R.string.app_name));
+        callDialog.setCancelable(true);
+
+        final TextView lblNumber = (TextView) callDialog.findViewById(R.id.call_number);
+        lblNumber.setText(phoneNumber);
+
+        final Button callButton = (Button) callDialog.findViewById(R.id.btn_call);
+        callButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try
+                {
+                    final Intent callIntent = new Intent(Intent.ACTION_CALL);
+                    callIntent.setData(Uri.parse("tel:" + phoneNumber));
+                    TaxiServicesListActivity.this.startActivity(callIntent);
+                }
+                catch (ActivityNotFoundException activityException)
+                {
+                    Log.e("Error", "Call failed", activityException);
+                }
+                finally {
+                    callDialog.cancel();
+                }
+            }
+        });
+        final Button cancelButton = (Button) callDialog.findViewById(R.id.btn_cancel);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callDialog.cancel();
+            }
+        });
+        callDialog.show();
     }
 
 }
