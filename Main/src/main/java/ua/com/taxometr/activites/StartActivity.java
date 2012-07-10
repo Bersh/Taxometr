@@ -65,6 +65,7 @@ public class StartActivity extends Activity {
 
     private final LocationListener locationTrackingListener = new LocationTrackingListener();
     private Button btnCalcRoute;
+    private ListView menuListView;
 
     /**
      * Shown when determining city
@@ -77,43 +78,43 @@ public class StartActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_view);
 
-        final ListView listView = (ListView) findViewById(R.id.menu_list);
+        menuListView = (ListView) findViewById(R.id.menu_list);
 
         HashMap<String, Object> hm = new HashMap<String, Object>();
-        hm.put(ITEMKEY, getString(R.string.btn_from_text));
-        hm.put(SUBITEMKEY, getString(R.string.adress_info));
-        hm.put(IMGKEY, R.drawable.from_icon_s); //тут мы её добавляем для отображения
+        hm.put(ITEMKEY, getString(R.string.btn_from_text));//add title for current row
+        hm.put(SUBITEMKEY, getString(R.string.adress_info));//add text for current row
+        hm.put(IMGKEY, R.drawable.from_icon_s); //add icon for current row
 
         menuItems.add(hm);
 
         hm = new HashMap<String, Object>();
         hm.put(ITEMKEY, getString(R.string.btn_to_text));
         hm.put(SUBITEMKEY, getString(R.string.adress_info));
-        hm.put(IMGKEY, R.drawable.where_icon_s); //тут мы её добавляем для отображения
+        hm.put(IMGKEY, R.drawable.where_icon_s);
 
         menuItems.add(hm);
 
         hm = new HashMap<String, Object>();
         hm.put(ITEMKEY, getString(R.string.btn_taxi_services_list));
         hm.put(SUBITEMKEY, getString(R.string.taxi_info));
-        hm.put(IMGKEY, R.drawable.taxi_icon_s); //тут мы её добавляем для отображения
+        hm.put(IMGKEY, R.drawable.taxi_icon_s);
         menuItems.add(hm);
 
         final ListAdapter adapter = new SimpleAdapter(this,
                 menuItems,
                 R.layout.list_item, new String[]{
-                ITEMKEY,         //верхний текст
-                SUBITEMKEY,        //нижний теккт
-                IMGKEY          //наша картинка
+                ITEMKEY,         //title
+                SUBITEMKEY,        //text
+                IMGKEY          //icon
         }, new int[]{
-                R.id.text1, //ссылка на объект отображающий текст
-                R.id.text2, //ссылка на объект отображающий текст
-                R.id.img}); //добавили ссылку в чем отображать картинки из list.xml
+                R.id.text1, //object that displays title
+                R.id.text2, //object that displays text
+                R.id.img}); //object that displays item icon
 
-        listView.setAdapter(adapter);
-        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        menuListView.setAdapter(adapter);
+        menuListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        listView.setOnItemClickListener(new MainListOnItemClickListener());
+        menuListView.setOnItemClickListener(new MainListOnItemClickListener());
 
         btnCalcRoute = (Button) findViewById(R.id.btn_calc_route);
         btnCalcRoute.setOnClickListener(new View.OnClickListener() {
@@ -141,10 +142,12 @@ public class StartActivity extends Activity {
             case 1:
                 fromAddress = data.getStringExtra("address");
                 menuItems.get(0).put(SUBITEMKEY, fromAddress);
+                menuListView.invalidateViews();
                 break;
             case 2:
                 toAddress = data.getStringExtra("address");
                 menuItems.get(1).put(SUBITEMKEY, toAddress);
+                menuListView.invalidateViews();
                 break;
             default:
         }
