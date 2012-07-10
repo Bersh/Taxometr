@@ -21,7 +21,7 @@
             />
 
     <ImageView android:id="@+id/ic_phone"
-               android:layout_width="wrap_content"
+               android:layout_width="fill_parent"
                android:layout_height="wrap_content"
                android:layout_below="@+id/call_number"
                android:layout_centerHorizontal="true"
