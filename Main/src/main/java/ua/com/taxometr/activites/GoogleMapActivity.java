@@ -156,15 +156,17 @@ public class GoogleMapActivity extends MapActivity {
     @Override
     public void onResume() {
         super.onResume();
-        final Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        criteria.setSpeedRequired(false);
-        final String locationProviderType = locationManager.getBestProvider(criteria, true);
-        final LocationProvider locationProvider = locationManager.getProvider(locationProviderType);
-        if (locationProvider != null) {
-            myLocationBtn.setEnabled(true);
-            locationManager.requestLocationUpdates(locationProvider.getName(), LocationHelper.MIN_UPDATE_TIME, LocationHelper.MIN_DISTANCE,
-                    locationTrackingListener);
+        if (LocationHelper.testGpsAvailable(GoogleMapActivity.this)) {
+            final Criteria criteria = new Criteria();
+            criteria.setAccuracy(Criteria.ACCURACY_FINE);
+            criteria.setSpeedRequired(false);
+            final String locationProviderType = locationManager.getBestProvider(criteria, true);
+            final LocationProvider locationProvider = locationManager.getProvider(locationProviderType);
+            if (locationProvider != null) {
+                myLocationBtn.setEnabled(true);
+                locationManager.requestLocationUpdates(locationProvider.getName(), LocationHelper.MIN_UPDATE_TIME, LocationHelper.MIN_DISTANCE,
+                        locationTrackingListener);
+            }
         } else {
             myLocationBtn.setEnabled(false);
             Toast.makeText(this, getString(R.string.err_gps_location_provider_is_not_available), Toast.LENGTH_SHORT).show();
@@ -346,7 +348,7 @@ public class GoogleMapActivity extends MapActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         final MenuHelper menu = new MenuHelper();
-        return menu.optionsItemSelected(item,this);
+        return menu.optionsItemSelected(item, this);
     }
 
 }

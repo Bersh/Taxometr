@@ -59,7 +59,7 @@
     <!--GoogleMapActivity-->
     <string name="btn_accept">Принять</string>
     <string name="err_cant_determine_coordinates_by_address">Невозможно определиить координаты по заданному адресу.</string>
-    <string name="err_gps_location_provider_is_not_available">GPS location provider не доступен</string>
+    <string name="err_gps_location_provider_is_not_available">GPS location provider недоступен</string>
     <!--/GoogleMapActivity-->
 
     <!--Global-->

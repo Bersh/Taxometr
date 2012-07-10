@@ -1,20 +1,16 @@
 package ua.com.taxometr.helpers;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.*;
+import android.util.Log;
+import android.widget.Toast;
+import com.google.android.maps.GeoPoint;
+import ua.com.taxometr.R;
+
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
-import com.google.android.maps.GeoPoint;
-import android.content.Context;
-import android.location.Address;
-import android.location.Criteria;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.location.LocationProvider;
-import android.util.Log;
-import android.widget.Toast;
-import ua.com.taxometr.R;
 
 /**
  * useful functions and constants for location
@@ -297,5 +293,24 @@ public class LocationHelper {
                         listener);
             }
         }
+    }
+
+    /**
+     * Tests is GPS available
+     *
+     * @param context context
+     * @return true if GPS available
+     */
+    public static boolean testGpsAvailable(Context context) {
+        final PackageManager pm = context.getPackageManager();
+        final boolean hasGPS = pm.hasSystemFeature(PackageManager.FEATURE_LOCATION_GPS);
+        LocationManager locationManager = null;
+
+        //On some devices without GPS hasGPS might be true
+        if (hasGPS) {
+            locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        }
+
+        return ((locationManager != null) && (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)));
     }
 }

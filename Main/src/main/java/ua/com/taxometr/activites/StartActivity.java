@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Location;
 import android.location.LocationListener;
@@ -55,8 +54,8 @@ public class StartActivity extends Activity {
 
     private LocationManager locationManager;
 
-    private static String fromAddress;//= "Днепропетровск, пр. Карла Маркса 88";     //uncomment this for debug. If needed
-    private static String toAddress;//= "Днепропетровск, ул. Артема 3";
+    private static String fromAddress = "Днепропетровск, пр. Карла Маркса 88";     //uncomment this for debug. If needed
+    private static String toAddress = "Днепропетровск, ул. Артема 3";
 
     final private ArrayList<HashMap<String, Object>> menuItems = new ArrayList<HashMap<String, Object>>();
     private static final String ITEMKEY = "menu_item";
@@ -128,7 +127,7 @@ public class StartActivity extends Activity {
 
             }
         });
-        btnCalcRoute.setEnabled(false);
+       // btnCalcRoute.setEnabled(false);
 
     }
 
@@ -244,23 +243,6 @@ public class StartActivity extends Activity {
      */
     private class MainListOnItemClickListener implements AdapterView.OnItemClickListener {
 
-        /**
-         * Tests is GPS available
-         *
-         * @return true if GPS available
-         */
-        private boolean testGpsAvailable() {
-            final PackageManager pm = getPackageManager();
-            final boolean hasGPS = pm.hasSystemFeature(PackageManager.FEATURE_LOCATION_GPS);
-
-            //On some devices without GPS hasGPS might be true
-            if (hasGPS) {
-                locationManager = (LocationManager) StartActivity.this.getSystemService(Context.LOCATION_SERVICE);
-            }
-
-            return ((locationManager != null) && (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)));
-        }
-
         @Override
         public void onItemClick(AdapterView<?> parent, View view,
                                 int position, long id) {
@@ -274,7 +256,7 @@ public class StartActivity extends Activity {
                     startActivityForResult(intent, BTN_TO_REQUEST_CODE);
                     break;
                 case 2:
-                    if (testGpsAvailable()) {
+                    if (LocationHelper.testGpsAvailable(StartActivity.this)) {
                         progressDialog = ProgressDialog.show(StartActivity.this, "", getString(R.string.dlg_progress_obtaining_location), true);
                         LocationHelper.requestLocationUpdates(StartActivity.this, locationManager, locationTrackingListener);
 
