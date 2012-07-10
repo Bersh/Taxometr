@@ -162,7 +162,7 @@ public class TaxiServicesListActivity extends ListActivity {
             //find id from selected taxi agency
             final String agencyName = (String)((HashMap<String,Object>)listView.getItemAtPosition(position)).get(TAXISERVICE);
 
-            //telephine numbers
+            //telephone numbers
             numbers = db.query("phones a, taxi_services b", new String[] {"a._id","a.phone"},
                     "a.taxi_id = b._id and b."+ localName + " = ?" ,
                     new String[] {agencyName}, null, null, null);
