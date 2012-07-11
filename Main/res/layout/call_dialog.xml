@@ -29,15 +29,15 @@
                />
 
     <Button android:id="@+id/btn_call"
-            android:layout_below="@+id/ic_phone"
+            android:layout_above="@+id/btn_cancel"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/btn_ok_text" />
 
     <Button android:id="@+id/btn_cancel"
-            android:layout_below="@+id/btn_call"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:text="@string/btn_cancel_text"
             />
 
