@@ -140,7 +140,7 @@ public class GoogleMapActivity extends MapActivity {
                 toPoint = getGeoPointByAddressString(toAddress, this);
             } catch (IOException e) {
                 Toast.makeText(this, getString(R.string.err_geocoder_not_available),
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_LONG).show();
                 Log.e(CLASSTAG, e.getMessage());
                 return;
             }
@@ -156,7 +156,7 @@ public class GoogleMapActivity extends MapActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if (LocationHelper.testGpsAvailable(GoogleMapActivity.this)) {
+        if (LocationHelper.isGpsAvailable(GoogleMapActivity.this)) {
             final Criteria criteria = new Criteria();
             criteria.setAccuracy(Criteria.ACCURACY_FINE);
             criteria.setSpeedRequired(false);
@@ -169,7 +169,7 @@ public class GoogleMapActivity extends MapActivity {
             }
         } else {
             myLocationBtn.setEnabled(false);
-            Toast.makeText(this, getString(R.string.err_gps_location_provider_is_not_available), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.err_gps_location_provider_is_not_available), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -285,7 +285,7 @@ public class GoogleMapActivity extends MapActivity {
                 } catch (IOException e) {
                     Log.e(LocationHelper.LOGTAG, CLASSTAG + " " + e.getMessage(), e);
                     Toast.makeText(GoogleMapActivity.this, getString(R.string.err_geocoder_not_available),
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_LONG).show();
                 }
             } else {  //activity was started to select point in map
                 final Intent resultIntent = new Intent();

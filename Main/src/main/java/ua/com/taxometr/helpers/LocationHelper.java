@@ -3,6 +3,7 @@ package ua.com.taxometr.helpers;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.*;
+import android.net.ConnectivityManager;
 import android.util.Log;
 import android.widget.Toast;
 import com.google.android.maps.GeoPoint;
@@ -271,7 +272,7 @@ public class LocationHelper {
     public static void requestLocationUpdates(Context context, LocationManager locationManager, LocationListener listener) {
         if (locationManager == null) {
             Toast.makeText(context, context.getString(R.string.err_gps_not_available),
-                    Toast.LENGTH_SHORT).show();
+                    Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -301,7 +302,7 @@ public class LocationHelper {
      * @param context context
      * @return true if GPS available
      */
-    public static boolean testGpsAvailable(Context context) {
+    public static boolean isGpsAvailable(Context context) {
         final PackageManager pm = context.getPackageManager();
         final boolean hasGPS = pm.hasSystemFeature(PackageManager.FEATURE_LOCATION_GPS);
         LocationManager locationManager = null;
@@ -313,4 +314,16 @@ public class LocationHelper {
 
         return ((locationManager != null) && (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)));
     }
+
+    /**
+     * Check if internet is present
+     * @param context context
+     * @return true if internet is present
+     */
+    public static boolean isInternetPresent(Context context) {
+        final ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting();
+    }
+
 }

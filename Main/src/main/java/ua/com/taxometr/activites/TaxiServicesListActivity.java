@@ -152,7 +152,7 @@ public class TaxiServicesListActivity extends ListActivity {
             }
             setListAdapter(adapter);
         } else {
-            Toast.makeText(getApplicationContext(),R.string.err_find_taxi_ser, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),R.string.err_find_taxi_ser, Toast.LENGTH_LONG).show();
             final Intent intent = new Intent();
             setResult(RESULT_OK, intent);
             finish();
@@ -190,7 +190,7 @@ public class TaxiServicesListActivity extends ListActivity {
                 });
                 listener = false;
             } else {
-                Toast.makeText(getApplicationContext(),R.string.err_find_numbers, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),R.string.err_find_numbers, Toast.LENGTH_LONG).show();
             }
         }
     }

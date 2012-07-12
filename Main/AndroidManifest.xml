@@ -13,8 +13,11 @@
     <!--NETWORK_PROVIDER-->
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
     <!--Call_function-->
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+
+    <!--To check is internet available-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application android:icon="@drawable/icon" android:label="@string/app_name" android:theme="@style/CustomTheme">
         <activity android:name="ua.com.taxometr.activites.StartActivity"

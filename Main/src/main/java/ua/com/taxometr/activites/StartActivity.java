@@ -54,8 +54,8 @@ public class StartActivity extends Activity {
 
     private LocationManager locationManager;
 
-    private static String fromAddress = "Днепропетровск, пр. Карла Маркса 88";     //uncomment this for debug. If needed
-    private static String toAddress = "Днепропетровск, ул. Артема 3";
+    private static String fromAddress;// "Днепропетровск, пр. Карла Маркса 88";     //uncomment this for debug. If needed
+    private static String toAddress;// = "Днепропетровск, ул. Артема 3";
 
     final private ArrayList<HashMap<String, Object>> menuItems = new ArrayList<HashMap<String, Object>>();
     private static final String ITEMKEY = "menu_item";
@@ -127,8 +127,8 @@ public class StartActivity extends Activity {
 
             }
         });
-       // btnCalcRoute.setEnabled(false);
 
+//       btnCalcRoute.setEnabled(false);
     }
 
     @SuppressWarnings("AssignmentToStaticFieldFromInstanceMethod")
@@ -151,7 +151,7 @@ public class StartActivity extends Activity {
             default:
         }
 
-        btnCalcRoute.setEnabled(!"".equals(fromAddress) && !"".equals(toAddress));
+        btnCalcRoute.setEnabled(!"".equals(fromAddress) && !"".equals(toAddress) && LocationHelper.isInternetPresent(this) && LocationHelper.isGpsAvailable(this));
     }
 
     @Override
@@ -181,7 +181,7 @@ public class StartActivity extends Activity {
             } catch (IOException e) {
                 Log.e(LocationHelper.LOGTAG, CLASSTAG + " " + e.getMessage(), e);
                 Toast.makeText(StartActivity.this, getString(R.string.err_geocoder_not_available),
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_LONG).show();
             } finally {
                 locationManager.removeUpdates(this);
                 progressDialog.dismiss();
@@ -256,7 +256,7 @@ public class StartActivity extends Activity {
                     startActivityForResult(intent, BTN_TO_REQUEST_CODE);
                     break;
                 case 2:
-                    if (LocationHelper.testGpsAvailable(StartActivity.this)) {
+                    if (LocationHelper.isGpsAvailable(StartActivity.this)) {
                         progressDialog = ProgressDialog.show(StartActivity.this, "", getString(R.string.dlg_progress_obtaining_location), true);
                         LocationHelper.requestLocationUpdates(StartActivity.this, locationManager, locationTrackingListener);
 

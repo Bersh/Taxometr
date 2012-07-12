@@ -114,7 +114,7 @@ public class SelectAddressActivity extends Activity {
                             locationManager.removeUpdates(locationTrackingListener);
                         }
                         Toast.makeText(SelectAddressActivity.this, getString(R.string.err_gps_not_available),
-                                Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_LONG).show();
                     }
                 }
             }.start();
@@ -132,7 +132,7 @@ public class SelectAddressActivity extends Activity {
             } catch (IOException e) {
                 Log.e(LocationHelper.LOGTAG, CLASSTAG + " " + e.getMessage(), e);
                 Toast.makeText(SelectAddressActivity.this, getString(R.string.err_geocoder_not_available),
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_LONG).show();
             } finally {
                 locationManager.removeUpdates(this);
                 progressDialog.dismiss();
