@@ -3,14 +3,14 @@
 
     <item>
         <shape>
-
-            <gradient android:startColor="#449def" android:endColor="#2f6699"  android:angle="-90.0"/>
+            <solid android:color="#ffa800"/>
         </shape>
     </item>
     <item android:bottom="12dip">
         <shape>
             <padding android:left="4dip"></padding>
-            <solid android:color="#33bbbbbb"/>
+            <gradient android:startColor="#ffa800" android:endColor="#77eeeeee"  android:angle="-90.0"/>
+
         </shape>
     </item>
 </layer-list>

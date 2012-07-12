@@ -82,21 +82,21 @@ public class StartActivity extends Activity {
         HashMap<String, Object> hm = new HashMap<String, Object>();
         hm.put(ITEMKEY, getString(R.string.btn_from_text));//add title for current row
         hm.put(SUBITEMKEY, getString(R.string.adress_info));//add text for current row
-        hm.put(IMGKEY, R.drawable.from_icon_s); //add icon for current row
+        hm.put(IMGKEY, R.drawable.from_icon); //add icon for current row
 
         menuItems.add(hm);
 
         hm = new HashMap<String, Object>();
         hm.put(ITEMKEY, getString(R.string.btn_to_text));
         hm.put(SUBITEMKEY, getString(R.string.adress_info));
-        hm.put(IMGKEY, R.drawable.where_icon_s);
+        hm.put(IMGKEY, R.drawable.where_icon);
 
         menuItems.add(hm);
 
         hm = new HashMap<String, Object>();
         hm.put(ITEMKEY, getString(R.string.btn_taxi_services_list));
         hm.put(SUBITEMKEY, getString(R.string.taxi_info));
-        hm.put(IMGKEY, R.drawable.taxi_icon_s);
+        hm.put(IMGKEY, R.drawable.taxi_icon);
         menuItems.add(hm);
 
         final ListAdapter adapter = new SimpleAdapter(this,

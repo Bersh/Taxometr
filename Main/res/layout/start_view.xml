@@ -10,14 +10,25 @@
               android:layout_height="wrap_content"
               android:layout_width="match_parent"
               android:layout_alignParentTop="true"
+              android:dividerHeight="0dip"
             >
     </ListView>
+
+    <View
+            android:id="@+id/shade_view"
+            android:layout_height="10dip"
+            android:layout_width="match_parent"
+            android:layout_below="@id/menu_list"
+            android:background="@drawable/shade">
+
+    </View>
 
     <Button
             android:id="@+id/btn_calc_route"
             android:layout_margin="2dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+
             android:layout_alignParentBottom="true"
             android:text="@string/btn_calc_route_text">
     </Button>

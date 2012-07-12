@@ -8,7 +8,7 @@
     </item>
     <item android:bottom="12dip">
         <shape>
-            <padding android:left="4dip"></padding>
+            <padding android:left="4dip"/>
             <gradient android:startColor="#ffa800" android:endColor="#77eeeeee"  android:angle="-90.0"/>
 
         </shape>

@@ -11,7 +11,7 @@
                android:layout_margin="10dp"
             />
         <LinearLayout
-                android:layout_width="265dip"
+                android:layout_width="fill_parent"
                 android:orientation="vertical"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dip"
@@ -21,14 +21,14 @@
             <TextView android:layout_width="fill_parent"
                       android:layout_height="wrap_content"
                       android:id="@+id/text1"
-
+                      android:textColor="#ffffff"
                       android:textSize="22dip"
                       android:text="This is text1"/>
 
             <TextView android:layout_width="fill_parent"
                       android:layout_height="wrap_content"
                       android:id="@+id/text2"
-                      android:textColor="#2f6699"
+                      android:textColor="#ffa800"
                       android:text="Text2"/>
 
         </LinearLayout>
