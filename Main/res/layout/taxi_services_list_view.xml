@@ -15,17 +15,17 @@
         <TextView android:layout_width="fill_parent"
                   android:layout_height="wrap_content"
                   android:id="@+id/text1"
-                  android:textColor="@color/bluecolor"
+                  android:textColor="@color/whitecolor"
                   android:textSize="30dip"/>
 
         <TextView android:layout_width="fill_parent"
                   android:layout_height="wrap_content"
-                  android:textColor="@color/blackcolor"
+                  android:textColor="#ffa800"
                   android:id="@+id/text2"/>
 
         <TextView android:layout_width="fill_parent"
                   android:layout_height="wrap_content"
-                  android:textColor="@color/blackcolor"
+                  android:textColor="#ffa800"
                   android:id="@+id/text3"/>
 
     </LinearLayout>
