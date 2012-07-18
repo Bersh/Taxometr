@@ -9,6 +9,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/lbl_ask"
+            android:layout_margin="10dip"
             />
 
     <TextView
@@ -17,28 +18,35 @@
             android:textSize="30sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:text=""
             />
 
-    <ImageView android:id="@+id/ic_phone"
+    <!--ImageView android:id="@+id/ic_phone"
                android:layout_width="fill_parent"
                android:layout_height="wrap_content"
                android:layout_below="@+id/call_number"
                android:layout_centerHorizontal="true"
                android:src="@drawable/london_phone"
-               />
+               /-->
 
     <Button android:id="@+id/btn_call"
             android:layout_above="@+id/btn_cancel"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/btn_ok_text" />
+            android:text="@string/btn_ok_text"
+            android:background="@drawable/green_button"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:layout_marginTop="10dip"/>
 
     <Button android:id="@+id/btn_cancel"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:text="@string/btn_cancel_text"
+            android:background="@drawable/red_button"
+            android:layout_margin="10dip"
             />
 
 </RelativeLayout>
