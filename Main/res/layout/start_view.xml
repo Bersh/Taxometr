@@ -26,21 +26,12 @@
             android:background="@drawable/shade">
 
     </View>
-    <!--RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
-                     android:orientation="vertical"
-                     android:layout_width="fill_parent"
-                     android:layout_height="60dip"
-                     android:background="@drawable/title"
-                     android:layout_alignParentBottom="true"
-                     android:id="@+id/down_bar"
-            >
 
-    </RelativeLayout-->
     <Button
             android:id="@+id/btn_calc_route"
             android:layout_margin="5dp"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height= "20pt"
 
             android:layout_alignParentBottom="true"
             android:text="@string/btn_calc_route_text">

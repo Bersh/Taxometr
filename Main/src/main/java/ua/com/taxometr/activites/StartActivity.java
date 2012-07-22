@@ -7,10 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Address;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
+import android.location.*;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Menu;
@@ -54,8 +51,8 @@ public class StartActivity extends Activity {
 
     private LocationManager locationManager;
 
-    private static String fromAddress;// "Днепропетровск, пр. Карла Маркса 88";     //uncomment this for debug. If needed
-    private static String toAddress;// = "Днепропетровск, ул. Артема 3";
+    private static String fromAddress = "Днепропетровск, пр. Карла Маркса 88";     //uncomment this for debug. If needed
+    private static String toAddress = "Днепропетровск, ул. Артема 3";
 
     final private ArrayList<HashMap<String, Object>> menuItems = new ArrayList<HashMap<String, Object>>();
     private static final String ITEMKEY = "menu_item";
@@ -151,7 +148,7 @@ public class StartActivity extends Activity {
             default:
         }
 
-        btnCalcRoute.setEnabled(!"".equals(fromAddress) && !"".equals(toAddress) && LocationHelper.isInternetPresent(this) && LocationHelper.isGpsAvailable(this));
+        btnCalcRoute.setEnabled(!"".equals(fromAddress) && !"".equals(toAddress) /*&& Geocoder.isPresent()*/ && LocationHelper.isInternetPresent(this) && LocationHelper.isGpsAvailable(this));
     }
 
     @Override
