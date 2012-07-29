@@ -48,7 +48,7 @@ public class MenuHelper extends Activity {
                 final ImageView img = (ImageView) aboutDialog.findViewById(R.id.ic_about);
                 img.setImageResource(R.drawable.taxi);
 
-                final Button button = (Button) aboutDialog.findViewById(R.id.btn_about);
+                final Button button = (Button) aboutDialog.findViewById(R.id.about);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

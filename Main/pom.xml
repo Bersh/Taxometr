@@ -44,8 +44,8 @@
         <profile>
             <id>release</id>
             <build>
-                <plugins>
-                    <plugin>
+               <plugins>
+<!--                    <plugin>
                         <groupId>com.pyx4me</groupId>
                         <artifactId>proguard-maven-plugin</artifactId>
                         <executions>
@@ -56,12 +56,17 @@
                                     <goal>proguard</goal>
                                 </goals>
                                 <configuration>
-                                    <proguardVersion>4.4</proguardVersion>
+                                    <proguardVersion>4.5.1</proguardVersion>
                                     <maxMemory>256m</maxMemory>
-                                    <injar>android-classes</injar>
-                                    <libs>
+                                    &lt;!&ndash;<injar>android-classes</injar>&ndash;&gt;
+                                    <injar>classes_proguard_base</injar>
+&lt;!&ndash;                                    <libs>
                                         <lib>${rt.jar.path}</lib>
                                         <lib>${jsse.jar.path}</lib>
+                                    </libs>&ndash;&gt;
+                                    <libs>
+                                            <lib>${java.home}/lib/rt.jar</lib>
+                                            <lib>${java.home}/lib/jsse.jar</lib>
                                     </libs>
                                     <obfuscate>true</obfuscate>
                                     <addMavenDescriptor>false</addMavenDescriptor>
@@ -77,7 +82,7 @@
                                 <scope>runtime</scope>
                             </dependency>
                         </dependencies>
-                    </plugin>
+                    </plugin>-->
                     <plugin>
                         <artifactId>maven-jarsigner-plugin</artifactId>
                         <executions>
