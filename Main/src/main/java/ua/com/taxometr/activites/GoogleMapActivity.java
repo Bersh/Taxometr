@@ -24,8 +24,7 @@ import ua.com.taxometr.mapOverlays.AddressItemizedOverlay;
 import ua.com.taxometr.mapOverlays.RouteOverlay;
 import ua.com.taxometr.routes.Road;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -63,13 +62,14 @@ public class GoogleMapActivity extends MapActivity {
         @Override
         public void handleMessage(Message msg) {
             final TextView routeInfo = (TextView) findViewById(R.id.txt_route_info);
-            routeInfo.setText(road.name + " " + road.description);
+            routeInfo.setText(road.description);
             routeInfo.setTextColor(Color.BLACK);
             final RouteOverlay routeOverlay = new RouteOverlay(road, mapView);
             final List<Overlay> listOfOverlays = mapView.getOverlays();
             listOfOverlays.clear();
             listOfOverlays.add(routeOverlay);
             mapView.invalidate();
+            mapController.animateTo(road.route.get(0));
             acceptBtn.setEnabled(true);
         }
     };
@@ -164,8 +164,10 @@ public class GoogleMapActivity extends MapActivity {
             final LocationProvider locationProvider = locationManager.getProvider(locationProviderType);
             if (locationProvider != null) {
                 myLocationBtn.setEnabled(true);
-                locationManager.requestLocationUpdates(locationProvider.getName(), LocationHelper.MIN_UPDATE_TIME, LocationHelper.MIN_DISTANCE,
-                        locationTrackingListener);
+                if (!isInRouteMode) {
+                    locationManager.requestLocationUpdates(locationProvider.getName(), LocationHelper.MIN_UPDATE_TIME, LocationHelper.MIN_DISTANCE,
+                            locationTrackingListener);
+                }
             }
         } else {
             myLocationBtn.setEnabled(false);
@@ -211,8 +213,32 @@ public class GoogleMapActivity extends MapActivity {
                     toPoint.getLatitudeE6() / LocationHelper.MILLION,
                     toPoint.getLongitudeE6() / LocationHelper.MILLION, GoogleMapActivity.this);
             final InputStream inputStream = getConnection(url);
-            road = RoadHelper.getRoute(inputStream);
+            road = RoadHelper.getRoute(readInputStream(inputStream));
             routeHandler.sendEmptyMessage(0);
+        }
+
+        private String readInputStream(InputStream inputStream) {
+            BufferedReader buf = null;
+            try {
+                buf = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+
+            } catch (UnsupportedEncodingException e) {
+
+            }
+            final StringBuilder sb = new StringBuilder();
+            while (true) {
+                String s = null;
+                try {
+                    s = buf.readLine();
+                } catch (IOException e) {
+
+                }
+                if (s == null || s.length() == 0) {
+                    break;
+                }
+                sb.append(s);
+            }
+            return sb.toString();
         }
 
         /**
@@ -271,7 +297,8 @@ public class GoogleMapActivity extends MapActivity {
             if (isInRouteMode) { // if rote was displayed
                 try {
                     //determine current city and country
-                    final Address address = LocationHelper.getAddressByCoordinates(road.points[0].getLatitude(), road.points[0].getLongitude(), GoogleMapActivity.this);
+                    final Address address = LocationHelper.getAddressByCoordinates(road.route.get(0).getLatitudeE6() / LocationHelper.MILLION,
+                            road.route.get(0).getLongitudeE6() / LocationHelper.MILLION, GoogleMapActivity.this);
                     final SharedPreferences prefs = getSharedPreferences(StartActivity.PREFS_NAME, Context.MODE_PRIVATE);
                     final SharedPreferences.Editor editor = prefs.edit();
                     //put city and country in SharedPreferences

@@ -8,6 +8,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
 import android.content.Context;
 import de.akquinet.android.androlog.Log;
+import ua.com.taxometr.routes.GoogleDirectionsJsonParser;
 import ua.com.taxometr.routes.KMLHandler;
 import ua.com.taxometr.routes.Road;
 
@@ -26,22 +27,12 @@ public class RoadHelper {
 
     /**
      * Parse KML file
-     * @param is input stream
+     * @param is input string
      * @return {@link ua.com.taxometr.routes.Road} object
      */
-    public static Road getRoute(InputStream is) {
-        final KMLHandler handler = new KMLHandler();
-        try {
-            final SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
-            parser.parse(is, handler);
-        } catch (ParserConfigurationException e) {
-            Log.e(e.getMessage());
-        } catch (SAXException e) {
-            Log.e(e.getMessage());
-        } catch (IOException e) {
-            Log.e(e.getMessage());
-        }
-        return handler.getRoad();
+    public static Road getRoute(String is) {
+        final GoogleDirectionsJsonParser jsonParser = new GoogleDirectionsJsonParser();
+        return jsonParser.getRoad(is);
     }
 
     /**
@@ -56,17 +47,17 @@ public class RoadHelper {
     public static String getUrl(double fromLat, double fromLon, double toLat, double toLon, Context context) {// connect to map web service
         final StringBuilder urlString = new StringBuilder();
         final String currentLanguage = context.getResources().getConfiguration().locale.getLanguage();
-        urlString.append("http://maps.google.com/maps?f=d&hl=");
+        urlString.append("http://maps.googleapis.com/maps/api/directions/json?language=");
         urlString.append(currentLanguage); //current language
-        urlString.append("&saddr=");// from
+        urlString.append("&origin=");// from
         urlString.append(Double.toString(fromLat));
         urlString.append(",");
         urlString.append(Double.toString(fromLon));
-        urlString.append("&daddr=");// to
+        urlString.append("&destination=");// to
         urlString.append(Double.toString(toLat));
         urlString.append(",");
         urlString.append(Double.toString(toLon));
-        urlString.append("&ie=UTF8&0&om=0&output=kml");
+        urlString.append("&ie=UTF8&mode=driving&sensor=true");
         return urlString.toString();
     }
 

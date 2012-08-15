@@ -1,9 +1,10 @@
 package ua.com.taxometr.routes;
 
-import java.util.Stack;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import java.util.Stack;
 
 /**
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
@@ -73,7 +74,7 @@ public class KMLHandler extends DefaultHandler {
                             }
                         } else if ("coordinates".equalsIgnoreCase(localName)) {
                             if (isPlacemark) {
-                                if (!isRoute) {
+/*                                if (!isRoute) {
                                     final String[] xyParsed = split(tmpString, ",");
                                     road.points[road.points.length - 1].latitude = Double.parseDouble(xyParsed[1]);
                                     road.points[road.points.length - 1].longitude = Double.parseDouble(xyParsed[0]);
@@ -91,7 +92,7 @@ public class KMLHandler extends DefaultHandler {
                                         }
                                     }
                                     road.route = temp;
-                                }
+                                }*/
                             }
                         }
                     } else {

@@ -35,25 +35,10 @@ public class RouteOverlay extends Overlay {
     @SuppressWarnings("NumericCastThatLosesPrecision")
     public RouteOverlay(Road road, MapView mv) {
         this.road = road;
-        if (road.route.length > 0) {
-            points = new ArrayList<GeoPoint>();
-            for (int i = 0; i < road.route.length; i++) {
-                points.add(new GeoPoint((int) (road.route[i][1] * LocationHelper.MILLION),
-                        (int) (road.route[i][0] * LocationHelper.MILLION)));
-            }
+        if (!road.route.isEmpty()) {
+            points = road.route;
 
-            double length = 0;
-            for(int i = 0; i < (points.size() - 1); ++i) {
-                final double lat1 = toRadians(points.get(i).getLatitudeE6() / LocationHelper.MILLION);
-                final double lat2 = toRadians(points.get(i + 1).getLatitudeE6() / LocationHelper.MILLION);
-                final double lon1 = toRadians(points.get(i).getLongitudeE6() / LocationHelper.MILLION);
-                final double lon2 = toRadians(points.get(i + 1).getLongitudeE6() / LocationHelper.MILLION);
-
-                length += acos(sin(lat1) * sin(lat2) + cos(lat1) * cos(lat2)
-                        * cos(lon2 - lon1)) * EARTH_RADIUS;
-            }
-            road.length = round(length, 2, BigDecimal.ROUND_HALF_UP);
-            final GeoPoint startPoint = new GeoPoint(points.get(0).getLatitudeE6(), points.get(0).getLongitudeE6());
+            final GeoPoint startPoint = points.get(0);
 
             final MapController mapController = mv.getController();
             mapController.animateTo(startPoint);
