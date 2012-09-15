@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:orientation="horizontal"
         android:layout_height="wrap_content"
         android:background="@drawable/mitem_background_normal">
     <LinearLayout
-            android:layout_width="265dip"
-            android:orientation="vertical"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="8"
             android:paddingBottom="2dip"
             android:paddingLeft="4dip">
 
@@ -16,7 +17,7 @@
                   android:layout_height="wrap_content"
                   android:id="@+id/text1"
                   android:textColor="@color/whitecolor"
-                  android:textSize="30dip"/>
+                  android:textSize="30sp"/>
 
         <TextView android:layout_width="fill_parent"
                   android:layout_height="wrap_content"
@@ -28,6 +29,7 @@
                   android:textColor="#ffa800"
                   android:id="@+id/text3"/>
 
+
         <TextView android:layout_width="fill_parent"
                   android:layout_height="wrap_content"
                   android:textColor="#ffa800"
@@ -35,9 +37,10 @@
 
     </LinearLayout>
 
-    <ImageView android:layout_width="55dip"
+    <ImageView android:layout_width="wrap_content"
                android:layout_height="fill_parent"
+               android:layout_weight="1"
                android:id="@+id/img"
                android:paddingRight="8dip"
-/>
+            />
 </LinearLayout>
