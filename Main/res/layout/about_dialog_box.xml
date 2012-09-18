@@ -7,7 +7,7 @@
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:layout_centerHorizontal="true"
-               android:contentDescription="taxi image"/>
+               android:background="@drawable/taxi"/>
 
     <ScrollView android:id="@+id/scroll_about"
                 android:layout_width="wrap_content"
@@ -18,7 +18,6 @@
                   android:text="@string/about_taxometr"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content" />
-
     </ScrollView>
 
 </RelativeLayout>

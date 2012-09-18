@@ -5,8 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import ua.com.taxometr.R;
 import ua.com.taxometr.activites.LanguageListActivity;
@@ -49,8 +47,8 @@ public class MenuHelper extends Activity {
                 aboutDialog.setTitle(activityContext.getString(R.string.app_name));
                 aboutDialog.setCancelable(true);
 
-                final ImageView img = (ImageView) aboutDialog.findViewById(R.id.ic_about);
-                img.setImageResource(R.drawable.taxi);
+                /*final ImageView img = (ImageView) aboutDialog.findViewById(R.id.ic_about);
+                img.setImageResource(R.drawable.taxi); */
 
                 aboutDialog.show();
                 return true;
