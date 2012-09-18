@@ -51,8 +51,8 @@ public class StartActivity extends Activity {
 
     private LocationManager locationManager;
 
-    private static String fromAddress;// = "Днепропетровск, пр. Карла Маркса 88";     //uncomment this for debug. If needed
-    private static String toAddress;// = "Днепропетровск, ул. Артема 3";
+    private static String fromAddress = "Днепропетровск, пр. Карла Маркса 88";     //uncomment this for debug. If needed
+    private static String toAddress = "Днепропетровск, ул. Артема 3";
 
     final private ArrayList<HashMap<String, Object>> menuItems = new ArrayList<HashMap<String, Object>>();
     private static final String ITEMKEY = "menu_item";
@@ -125,7 +125,7 @@ public class StartActivity extends Activity {
             }
         });
 
-       btnCalcRoute.setEnabled(false);
+//       btnCalcRoute.setEnabled(false);
     }
 
     @SuppressWarnings("AssignmentToStaticFieldFromInstanceMethod")

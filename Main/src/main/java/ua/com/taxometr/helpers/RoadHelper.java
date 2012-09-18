@@ -1,15 +1,7 @@
 package ua.com.taxometr.helpers;
 
-import java.io.IOException;
-import java.io.InputStream;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-import org.xml.sax.SAXException;
 import android.content.Context;
-import de.akquinet.android.androlog.Log;
 import ua.com.taxometr.routes.GoogleDirectionsJsonParser;
-import ua.com.taxometr.routes.KMLHandler;
 import ua.com.taxometr.routes.Road;
 
 /**

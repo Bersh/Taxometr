@@ -3,10 +3,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-<!--    <ImageView android:id="@+id/ic_about"
+    <ImageView android:id="@+id/ic_about"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:layout_centerHorizontal="true" />-->
+               android:layout_centerHorizontal="true"
+               android:contentDescription="taxi image"/>
 
     <ScrollView android:id="@+id/scroll_about"
                 android:layout_width="wrap_content"
@@ -19,12 +20,5 @@
                   android:layout_height="wrap_content" />
 
     </ScrollView>
-
-<!--    <Button android:id="@+id/btn_about"
-            android:layout_below="@id/scroll_about"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="@string/close" />-->
 
 </RelativeLayout>
