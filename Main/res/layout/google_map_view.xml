@@ -21,7 +21,8 @@
     <Button
             android:id="@+id/btn_accept"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
+            android:layout_margin="2dip"
             android:layout_alignParentBottom="true"
             android:text="@string/btn_accept"
             android:enabled="false"/>
