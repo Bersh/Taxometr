@@ -39,29 +39,29 @@ public class CitiesActivity extends ListActivity {
         db = dbHelper.getWritableDatabase();
         localeName = TaxiServicesListActivity.getLocaleName(this);
         cities = db.query("cities a",
-                new String[]{"a._id","a."+localeName,"a.country_id"},null,null, null, null, "a."+localeName);
-        if (cities.moveToFirst()){
-        final ListAdapter citiesAdapter = new SimpleCursorAdapter(this,
-                R.layout.simple_list_item_1, cities,
-                new String[]{"a."+localeName},new int[]{R.id.text1});
-        setListAdapter(citiesAdapter);
-        }else{
+                new String[]{"a._id", "a." + localeName, "a.country_id"}, null, null, null, null, "a." + localeName);
+        if (cities.moveToFirst()) {
+            final ListAdapter citiesAdapter = new SimpleCursorAdapter(this,
+                    R.layout.simple_list_item_1, cities,
+                    new String[]{"a." + localeName}, new int[]{R.id.text1});
+            setListAdapter(citiesAdapter);
+        } else {
             finish();
         }
     }
 
     @Override
     protected void onListItemClick(final ListView listView, View v, final int position, long id) {
-        final String city = ((Cursor)listView.getItemAtPosition(position))
-                .getString(((Cursor)listView.getItemAtPosition(position)).getColumnIndex(localeName));
-        final int country_id = ((Cursor)listView.getItemAtPosition(position))
+        final String city = ((Cursor) listView.getItemAtPosition(position))
+                .getString(((Cursor) listView.getItemAtPosition(position)).getColumnIndex(localeName));
+        final int country_id = ((Cursor) listView.getItemAtPosition(position))
                 .getInt(((Cursor) listView.getItemAtPosition(position)).getColumnIndex("country_id"));
-        final Cursor countries = db.query("countries a", new String[]{"a._id","a." + localeName}, "a._id = ? ",
+        final Cursor countries = db.query("countries a", new String[]{"a._id", "a." + localeName}, "a._id = ? ",
                 new String[]{String.valueOf(country_id)}, null, null, null);
         String country = "";
-        if (countries.moveToFirst()){
+        if (countries.moveToFirst()) {
             country = countries.getString(countries.getColumnIndex(localeName));
-        }else{
+        } else {
             finish();
         }
 
@@ -75,9 +75,9 @@ public class CitiesActivity extends ListActivity {
     }
 
     @Override
-    protected void onDestroy(){
+    protected void onDestroy() {
         super.onDestroy();
-        if (this.dbHelper != null){
+        if (this.dbHelper != null) {
             this.dbHelper.close();
             this.dbHelper = null;
         }
@@ -85,7 +85,7 @@ public class CitiesActivity extends ListActivity {
             this.db.close();
             this.db = null;
         }
-        if (this.cities != null){
+        if (this.cities != null) {
             this.cities.close();
             this.cities = null;
         }
@@ -101,6 +101,6 @@ public class CitiesActivity extends ListActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         final MenuHelper menu = new MenuHelper();
-        return menu.optionsItemSelected(item,this);
+        return menu.optionsItemSelected(item, this);
     }
 }

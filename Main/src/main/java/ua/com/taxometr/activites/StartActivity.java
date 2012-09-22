@@ -7,7 +7,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.*;
+import android.location.Address;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Menu;
@@ -49,6 +52,8 @@ public class StartActivity extends Activity {
      */
     public static final String COUNTRY_KEY = "COUNTRY";
 
+    public static final String IS_CALLED_FROM_START_ACTIVITY_KEY = "IS_CALLED_FROM_START_ACTIVITY";
+
     private LocationManager locationManager;
 
     private static String fromAddress = "Днепропетровск, пр. Карла Маркса 88";     //uncomment this for debug. If needed
@@ -73,6 +78,12 @@ public class StartActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_view);
+
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager == null) {
+            this.finish();
+            return;
+        }
 
         menuListView = (ListView) findViewById(R.id.menu_list);
 
@@ -110,7 +121,7 @@ public class StartActivity extends Activity {
         menuListView.setAdapter(adapter);
         menuListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        menuListView.setOnItemClickListener(new MainListOnItemClickListener());
+        menuListView.setOnItemClickListener(new MainMenuOnItemClickListener());
 
         btnCalcRoute = (Button) findViewById(R.id.btn_calc_route);
         btnCalcRoute.setOnClickListener(new View.OnClickListener() {
@@ -172,6 +183,7 @@ public class StartActivity extends Activity {
                 final SharedPreferences.Editor editor = prefs.edit();
                 editor.putString(CITY_KEY, address.getAddressLine(1));
                 editor.putString(COUNTRY_KEY, address.getAddressLine(3));
+                editor.putBoolean(IS_CALLED_FROM_START_ACTIVITY_KEY, true);
                 editor.commit();
                 final Intent intent = new Intent(StartActivity.this, TaxiServicesListActivity.class);
                 startActivity(intent);
@@ -238,14 +250,15 @@ public class StartActivity extends Activity {
      * @author Ilya Lisovyy <a href="mailto:ip.lisoviy@gmail.com">Ilya Lisovyy</a>
      * @since 14.06.12
      */
-    private class MainListOnItemClickListener implements AdapterView.OnItemClickListener {
+    private class MainMenuOnItemClickListener implements AdapterView.OnItemClickListener {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view,
                                 int position, long id) {
+            Intent intent = null;
             switch (position) {
                 case 0:
-                    Intent intent = new Intent(StartActivity.this, SelectAddressActivity.class);
+                    intent = new Intent(StartActivity.this, SelectAddressActivity.class);
                     startActivityForResult(intent, BTN_FROM_REQUEST_CODE);
                     break;
                 case 1:
@@ -257,23 +270,7 @@ public class StartActivity extends Activity {
                         progressDialog = ProgressDialog.show(StartActivity.this, "", getString(R.string.dlg_progress_obtaining_location), true);
                         LocationHelper.requestLocationUpdates(StartActivity.this, locationManager, locationTrackingListener);
 
-                        new CountDownTimer(LocationHelper.GPS_TIMEOUT, LocationHelper.GPS_TIMEOUT) {
-                            @Override
-                            public void onTick(long l) {
-                            }
-
-                            @Override
-                            public void onFinish() {
-                                if (progressDialog != null) {
-                                    progressDialog.dismiss();
-
-                                    if (locationManager != null && locationTrackingListener != null) {
-                                        locationManager.removeUpdates(locationTrackingListener);
-                                    }
-                                    startCitiesActivity();
-                                }
-                            }
-                        }.start();
+                        new GpsTimeoutTimer().start();
                     } else {
                         startCitiesActivity();
                     }
@@ -292,6 +289,31 @@ public class StartActivity extends Activity {
         private void startCitiesActivity() {
             final Intent intent = new Intent(StartActivity.this, CitiesActivity.class);
             startActivity(intent);
+        }
+
+        /**
+         * Timer for wait {@link ua.com.taxometr.helpers.LocationHelper#GPS_TIMEOUT} time if GPS doesn't respond
+         */
+        private class GpsTimeoutTimer extends CountDownTimer {
+            private GpsTimeoutTimer() {
+                super(LocationHelper.GPS_TIMEOUT, LocationHelper.GPS_TIMEOUT);
+            }
+
+            @Override
+            public void onTick(long l) {
+            }
+
+            @Override
+            public void onFinish() {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+
+                    if (locationManager != null && locationTrackingListener != null) {
+                        locationManager.removeUpdates(locationTrackingListener);
+                    }
+                    startCitiesActivity();
+                }
+            }
         }
     }
 

@@ -82,9 +82,9 @@ public class TaxiServicesListActivity extends ListActivity {
         final String country = prefs.getString(StartActivity.COUNTRY_KEY, "");//"Ukraine";     //uncomment this for debug
         final String town = prefs.getString(StartActivity.CITY_KEY, "");//"Dnepropetrovsk";
         final float length = prefs.getFloat(GoogleMapActivity.ROUTE_LENGTH_KEY, 0F);
+        final Boolean isCalledFromStartActivity = prefs.getBoolean(StartActivity.IS_CALLED_FROM_START_ACTIVITY_KEY, false);
 
-        //taxiAgencies
-        //data from queries
+        //make query for taxi agencies
         final String orderBy;
         if (length <= 10) {
             orderBy = "a.init_price + a.price_per_km * (11 - a.km_in_init_price)";
@@ -154,9 +154,15 @@ public class TaxiServicesListActivity extends ListActivity {
             }
             setListAdapter(adapter);
         } else {
-            Toast.makeText(getApplicationContext(), R.string.err_find_taxi_ser, Toast.LENGTH_LONG).show();
-            final Intent intent = new Intent();
-            setResult(RESULT_OK, intent);
+            final Intent intent;
+            if (isCalledFromStartActivity) {
+                intent = new Intent(this, CitiesActivity.class);
+                startActivity(intent);
+            } else {
+                intent = new Intent();
+                setResult(RESULT_OK, intent);
+                Toast.makeText(getApplicationContext(), R.string.err_find_taxi_ser, Toast.LENGTH_LONG).show();
+            }
             finish();
         }
     }
@@ -265,7 +271,8 @@ public class TaxiServicesListActivity extends ListActivity {
 
     /**
      * Creates and shows call dialog
-     * @param phoneNumber  phone number
+     *
+     * @param phoneNumber phone number
      */
     private void createCallDialog(final String phoneNumber) {
         final Dialog callDialog = new Dialog(this);
