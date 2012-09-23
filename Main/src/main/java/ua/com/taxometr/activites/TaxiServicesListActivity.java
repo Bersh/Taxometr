@@ -154,15 +154,18 @@ public class TaxiServicesListActivity extends ListActivity {
             }
             setListAdapter(adapter);
         } else {
-            final Intent intent;
+/*            Intent intent = new Intent();
+            setResult(RESULT_OK, intent);
             if (isCalledFromStartActivity) {
                 intent = new Intent(this, CitiesActivity.class);
                 startActivity(intent);
             } else {
-                intent = new Intent();
-                setResult(RESULT_OK, intent);
                 Toast.makeText(getApplicationContext(), R.string.err_find_taxi_ser, Toast.LENGTH_LONG).show();
             }
+            finish();*/
+            Toast.makeText(getApplicationContext(), R.string.err_find_taxi_ser, Toast.LENGTH_LONG).show();
+            final Intent intent = new Intent();
+            setResult(RESULT_OK, intent);
             finish();
         }
     }
@@ -231,6 +234,7 @@ public class TaxiServicesListActivity extends ListActivity {
             propsEditor.remove(StartActivity.COUNTRY_KEY);
             propsEditor.remove(StartActivity.CITY_KEY);
             propsEditor.remove(GoogleMapActivity.ROUTE_LENGTH_KEY);
+            propsEditor.remove(StartActivity.IS_CALLED_FROM_START_ACTIVITY_KEY);
             propsEditor.commit();
         }
     }

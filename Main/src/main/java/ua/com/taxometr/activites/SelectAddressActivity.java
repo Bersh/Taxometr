@@ -55,7 +55,7 @@ public class SelectAddressActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if((resultCode == RESULT_OK) && (requestCode == MAP_ACTIVITY_REQUEST_CODE)) {
+        if ((resultCode == RESULT_OK) && (requestCode == MAP_ACTIVITY_REQUEST_CODE)) {
             address.setText(data.getExtras().get("address").toString());
         }
     }
@@ -162,7 +162,7 @@ public class SelectAddressActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         final MenuHelper menu = new MenuHelper();
-        return menu.optionsItemSelected(item,this);
+        return menu.optionsItemSelected(item, this);
     }
 
 }

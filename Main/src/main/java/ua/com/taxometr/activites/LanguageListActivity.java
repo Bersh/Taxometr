@@ -36,23 +36,23 @@ public class LanguageListActivity extends ListActivity {
         final ArrayList<HashMap<String, Object>> languages = new ArrayList<HashMap<String, Object>>();
         HashMap<String, Object> hm = new HashMap<String, Object>();
 
-        hm.put(LOCALEKEY,"English");
+        hm.put(LOCALEKEY, "English");
         hm.put(IMGKEY, R.drawable.gb);
         languages.add(hm);
 
         hm = new HashMap<String, Object>();
-        hm.put(LOCALEKEY,"Українська");
+        hm.put(LOCALEKEY, "Українська");
         hm.put(IMGKEY, R.drawable.ukraine);
         languages.add(hm);
 
         hm = new HashMap<String, Object>();
-        hm.put(LOCALEKEY,"Русский");
+        hm.put(LOCALEKEY, "Русский");
         hm.put(IMGKEY, R.drawable.russia);
         languages.add(hm);
 
         final ListAdapter adapter = new SimpleAdapter(this,
                 languages, R.layout.language_list_view,
-                new String[]{ LOCALEKEY,IMGKEY },
+                new String[]{LOCALEKEY, IMGKEY},
                 new int[]{R.id.text1, R.id.img});
         setListAdapter(adapter);
     }
@@ -60,29 +60,30 @@ public class LanguageListActivity extends ListActivity {
     @Override
     protected void onListItemClick(final ListView listView, View v, final int position, long id) {
         String language = "en";
-        switch (position){
-            case 0 :
+        switch (position) {
+            case 0:
                 language = "en";
                 break;
-            case 1 :
+            case 1:
                 language = "uk";
                 break;
-            case 2 :
+            case 2:
                 language = "ru";
                 break;
             default:
         }
         setLanguage(language);
-        final Intent intent = new Intent(LanguageListActivity.this,StartActivity.class);
+        final Intent intent = new Intent(LanguageListActivity.this, StartActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 
     /**
      * set locale
+     *
      * @param language instance of {@link java.lang.String}
      */
-    public  void setLanguage(String language){
+    public void setLanguage(String language) {
         final Locale locale = new Locale(language);
         Locale.setDefault(locale);
         final Configuration config = new Configuration();
@@ -100,7 +101,7 @@ public class LanguageListActivity extends ListActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         final MenuHelper menu = new MenuHelper();
-        return menu.optionsItemSelected(item,this);
+        return menu.optionsItemSelected(item, this);
     }
 
 }

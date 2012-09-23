@@ -1,10 +1,13 @@
 package ua.com.taxometr.activites;
 
 //import java.lang.*;
+
 import android.app.Activity;
-import android.net.Uri;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,16 +15,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import ua.com.taxometr.R;
-import android.util.Log;
-import android.content.ActivityNotFoundException;
 import ua.com.taxometr.helpers.MenuHelper;
 
 /**
  * Date: 02.04.12
+ *
  * @author divgorbunov <a href="mailto:divgorbunov@gmail.com">Dmitriy Gorbunov</a>
  * @since 02.04.12
  */
-public class CallActivity extends Activity{
+public class CallActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,14 +38,11 @@ public class CallActivity extends Activity{
             @Override
             public void onClick(View v) {
                 //call();
-                try
-                {
+                try {
                     final Intent callIntent = new Intent(Intent.ACTION_CALL);
                     callIntent.setData(Uri.parse("tel:" + phoneNumber));
                     startActivity(callIntent);
-                }
-                catch (ActivityNotFoundException activityException)
-                {
+                } catch (ActivityNotFoundException activityException) {
                     Log.e("Error", "Call failed", activityException);
                 }
 
@@ -76,7 +75,7 @@ public class CallActivity extends Activity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         final MenuHelper menu = new MenuHelper();
-        return menu.optionsItemSelected(item,this);
+        return menu.optionsItemSelected(item, this);
     }
 
 }
