@@ -189,7 +189,7 @@ public class GoogleMapActivity extends MapActivity {
     }
 
     /**
-     * Tread for obtaining route in KML format from google service
+     * Tread for obtaining route in JSON format from google service
      */
     private class RouteCalculationThread implements Runnable {
         private final GeoPoint fromPoint;
