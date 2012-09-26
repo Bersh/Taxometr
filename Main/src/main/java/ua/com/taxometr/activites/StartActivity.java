@@ -153,12 +153,12 @@ public class StartActivity extends Activity {
             return;
         }
         switch (requestCode) {
-            case 1:
+            case BTN_FROM_REQUEST_CODE:
                 fromAddress = data.getStringExtra("address");
                 menuItems.get(0).put(SUBITEMKEY, fromAddress);
                 menuListView.invalidateViews();
                 break;
-            case 2:
+            case BTN_TO_REQUEST_CODE:
                 toAddress = data.getStringExtra("address");
                 menuItems.get(1).put(SUBITEMKEY, toAddress);
                 menuListView.invalidateViews();
@@ -166,7 +166,8 @@ public class StartActivity extends Activity {
             default:
         }
 
-        btnCalcRoute.setEnabled(!"".equals(fromAddress) && !"".equals(toAddress) /*&& Geocoder.isPresent()*/ && LocationHelper.isInternetPresent(this) && LocationHelper.isGpsAvailable(this));
+        btnCalcRoute.setEnabled(fromAddress != null && toAddress != null && !"".equals(fromAddress) && !"".equals(toAddress)
+        /*&& Geocoder.isPresent()*/ && LocationHelper.isInternetPresent(this) && LocationHelper.isGpsAvailable(this));
     }
 
     @Override
