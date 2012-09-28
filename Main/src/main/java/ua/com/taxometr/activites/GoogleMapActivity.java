@@ -6,9 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.*;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.*;
 import android.widget.Button;
@@ -30,6 +29,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 
+import static ua.com.taxometr.helpers.LocationHelper.LOGTAG;
 import static ua.com.taxometr.helpers.LocationHelper.getGeoPointByAddressString;
 
 /**
@@ -57,22 +57,6 @@ public class GoogleMapActivity extends MapActivity {
     private Road road;
     private ProgressDialog progressDialog;
     private ImageButton myLocationBtn;
-
-    private final Handler routeHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            final TextView routeInfo = (TextView) findViewById(R.id.txt_route_info);
-            routeInfo.setText(road.description);
-            routeInfo.setTextColor(Color.BLACK);
-            final RouteOverlay routeOverlay = new RouteOverlay(road, mapView);
-            final List<Overlay> listOfOverlays = mapView.getOverlays();
-            listOfOverlays.clear();
-            listOfOverlays.add(routeOverlay);
-            mapView.invalidate();
-            mapController.animateTo(road.route.get(0));
-            acceptBtn.setEnabled(true);
-        }
-    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -144,7 +128,7 @@ public class GoogleMapActivity extends MapActivity {
                 Log.e(CLASSTAG, e.getMessage());
                 return;
             }
-            (new Thread(new RouteCalculationThread(fromPoint, toPoint))).start();
+            new RouteCalculationTask().execute(fromPoint, toPoint);
         } else {  //activity started to select address
             addressItemizedOverlay = new AddressItemizedOverlay(getResources().getDrawable(R.drawable.red_pin));
             mapView.getOverlays().add(addressItemizedOverlay);
@@ -188,33 +172,35 @@ public class GoogleMapActivity extends MapActivity {
         return isInRouteMode;
     }
 
-    /**
-     * Tread for obtaining route in JSON format from google service
-     */
-    private class RouteCalculationThread implements Runnable {
-        private final GeoPoint fromPoint;
-        private final GeoPoint toPoint;
-
-        /**
-         * Constructor for {@link ua.com.taxometr.activites.GoogleMapActivity.RouteCalculationThread}
-         *
-         * @param fromPoint start point
-         * @param toPoint   end point
-         */
-        private RouteCalculationThread(GeoPoint fromPoint, GeoPoint toPoint) {
-            this.fromPoint = fromPoint;
-            this.toPoint = toPoint;
-        }
+    private class RouteCalculationTask extends AsyncTask<GeoPoint, Void, Void> {
+        private GeoPoint fromPoint;
+        private GeoPoint toPoint;
 
         @Override
-        public void run() {
+        protected Void doInBackground(GeoPoint[] points) {
+            fromPoint = points[0];
+            toPoint = points[1];
             final String url = RoadHelper.getUrl(fromPoint.getLatitudeE6() / LocationHelper.MILLION,
                     fromPoint.getLongitudeE6() / LocationHelper.MILLION,
                     toPoint.getLatitudeE6() / LocationHelper.MILLION,
                     toPoint.getLongitudeE6() / LocationHelper.MILLION, GoogleMapActivity.this);
             final InputStream inputStream = getConnection(url);
             road = RoadHelper.getRoute(readInputStream(inputStream));
-            routeHandler.sendEmptyMessage(0);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            final TextView routeInfo = (TextView) findViewById(R.id.txt_route_info);
+            routeInfo.setText(road.description);
+            routeInfo.setTextColor(Color.BLACK);
+            final RouteOverlay routeOverlay = new RouteOverlay(road, mapView);
+            final List<Overlay> listOfOverlays = mapView.getOverlays();
+            listOfOverlays.clear();
+            listOfOverlays.add(routeOverlay);
+            mapView.invalidate();
+            mapController.animateTo(road.route.get(0));
+            acceptBtn.setEnabled(true);
         }
 
         private String readInputStream(InputStream inputStream) {
@@ -223,15 +209,17 @@ public class GoogleMapActivity extends MapActivity {
                 buf = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 
             } catch (UnsupportedEncodingException e) {
-
+                Log.e(LOGTAG, e.getMessage());
             }
+            if (buf == null) return "";
+
             final StringBuilder sb = new StringBuilder();
             while (true) {
                 String s = null;
                 try {
                     s = buf.readLine();
                 } catch (IOException e) {
-
+                    Log.e(LOGTAG, e.getMessage());
                 }
                 if (s == null || s.length() == 0) {
                     break;
