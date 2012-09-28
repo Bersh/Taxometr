@@ -1,15 +1,32 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--Application-->
     <string name="app_name">Taxometr</string>
+    <string name="about">About</string>
+    <string name="lang">Language</string>
+    <string name="close">Close</string>
+    <string name="about_taxometr">Taxometr - application for quickly call taxi \n\n
+                                    Developers : \n
+                                    \t Bershadskii Ilya \n
+                                    \t Gorbynov Dmitrii \n
+                                    \t Lisovyy Ilya \n </string>
     <!--/Application-->
 
     <!--StartActivity-->
   	<string name="btn_from_text">From</string>
     <string name="btn_to_text">To</string>
-    <string name="btn_calc_route_text">Calculate the cost</string>
+    <string name="adress_info">Specify the location</string>
+    <string name="taxi_info">Select a service</string>
+    <string name="btn_calc_route_text">Calculate</string>
+    <string name="calc_info">Calculate the cost of ride</string>
     <string name="btn_call_text">Call</string>
     <string name="btn_taxi_services_list">Taxi services list</string>
+    <string name="btn_language">Select a language</string>
+    <string name="exit">Exit</string>
+    <string name="confirmation_exit">Do you really want to quit?</string>
+    <string name="ask_to_enable_gps_message">GPS is disabled now. Would you like to enable GPS?</string>
+    <string name="ask_to_enable_gps_positive_button_text">Yes</string>
+    <string name="ask_to_enable_gps_negative_button_text">No</string>
     <!--/StartActivity-->
 
     <!-- SelectAddressActivity -->
@@ -17,6 +34,20 @@
     <string name="btn_map_point">Specify a point on the map</string>
     <string name="btn_accept_adress">Accept</string>
     <!--/SelectAddressActivity-->
+
+    <!-- TaxiServiceListActivity -->
+    <string name="err_find_taxi_ser">This town have not taxi agencies</string>
+    <string name="err_find_numbers">This taxi agencies have not numbers</string>
+    <string name="price_for_km">Price per km:</string>
+    <string name="init_price">Minimum price:</string>
+    <string name="km_in_init_price">km</string>
+    <string name="price_for_km_country">Outside city:</string>
+    <string name="currency">UAH</string>
+    <string name="price_length">Approx price of trip:</string>
+    <color name="whitecolor">#FFF</color>
+    <color name="blackcolor">#000</color>
+    <color name="bluecolor">#000080</color>
+    <!-- TaxiServiceListActivity -->
 
     <!--CallActivity-->
     <string name="lbl_ask">Are you sure you want to call this number?</string>

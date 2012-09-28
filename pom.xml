@@ -122,7 +122,7 @@
                         <keypass>${sign.keypass}</keypass>
                     </configuration>
                 </plugin>
-                <plugin>
+<!--                <plugin>
                     <groupId>com.pyx4me</groupId>
                     <artifactId>proguard-maven-plugin</artifactId>
                     <version>2.0.4</version>
@@ -130,14 +130,14 @@
                         <dependency>
                             <groupId>net.sf.proguard</groupId>
                             <artifactId>proguard</artifactId>
-                            <version>4.4</version>
+                            <version>4.5.1</version>
                             <scope>runtime</scope>
                         </dependency>
                     </dependencies>
                     <configuration>
                         <proguardVersion>4.4</proguardVersion>
                     </configuration>
-                </plugin>
+                </plugin>-->
             </plugins>
         </pluginManagement>
     </build>
@@ -151,6 +151,12 @@
                     <value>true</value>
                 </property>
             </activation>
+            <properties>
+                <sign.keystore>bersh-release-key.keystore</sign.keystore>
+                <sign.alias>bersh_alias</sign.alias>
+                <sign.keypass>sd2jEY4</sign.keypass>
+                <sign.storepass>sd2jEY4</sign.storepass>
+            </properties>
             <build>
                 <plugins>
                     <plugin>

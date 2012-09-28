@@ -1,20 +1,17 @@
 package ua.com.taxometr.helpers;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.*;
+import android.net.ConnectivityManager;
+import android.util.Log;
+import android.widget.Toast;
+import com.google.android.maps.GeoPoint;
+import ua.com.taxometr.R;
+
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
-import com.google.android.maps.GeoPoint;
-import android.content.Context;
-import android.location.Address;
-import android.location.Criteria;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.location.LocationProvider;
-import android.util.Log;
-import android.widget.Toast;
-import ua.com.taxometr.R;
 
 /**
  * useful functions and constants for location
@@ -54,6 +51,11 @@ public class LocationHelper {
      * the minimum distance interval for notifications, in meters
      */
     public static final int MIN_DISTANCE = 10;
+
+    /**
+     * Timeout for determining location in milliseconds
+     */
+    public static final int GPS_TIMEOUT = 30000;
 
     /**
      * Default constructor
@@ -270,7 +272,7 @@ public class LocationHelper {
     public static void requestLocationUpdates(Context context, LocationManager locationManager, LocationListener listener) {
         if (locationManager == null) {
             Toast.makeText(context, context.getString(R.string.err_gps_not_available),
-                    Toast.LENGTH_SHORT).show();
+                    Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -293,4 +295,35 @@ public class LocationHelper {
             }
         }
     }
+
+    /**
+     * Tests is GPS available
+     *
+     * @param context context
+     * @return true if GPS available
+     */
+    public static boolean isGpsAvailable(Context context) {
+        final PackageManager pm = context.getPackageManager();
+        final boolean hasGPS = pm.hasSystemFeature(PackageManager.FEATURE_LOCATION_GPS);
+        LocationManager locationManager = null;
+
+        //On some devices without GPS hasGPS might be true
+        if (hasGPS) {
+            locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        }
+
+        return ((locationManager != null) && (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)));
+    }
+
+    /**
+     * Check if internet is present
+     * @param context context
+     * @return true if internet is present
+     */
+    public static boolean isInternetPresent(Context context) {
+        final ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting();
+    }
+
 }

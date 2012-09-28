@@ -1,5 +1,9 @@
 package ua.com.taxometr.routes;
 
+import com.google.android.maps.GeoPoint;
+
+import java.util.ArrayList;
+
 /**
  * Representation of route
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
@@ -35,10 +39,5 @@ public class Road {
     /**
      * Route points
      */
-    public double[][] route = new double[][]{};
-
-    /**
-     *  HZ
-     */
-    public Point[] points = new Point[]{};
+    public ArrayList<GeoPoint> route;
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/lang"
+          android:icon="@drawable/globe"
+          android:height="40dip"
+          android:width="40dip"
+          android:title="@string/lang"/>
+    <item android:id="@+id/about"
+          android:icon="@drawable/info"
+          android:height="40dip"
+          android:width="40dip"
+          android:title="@string/about" />
+</menu>

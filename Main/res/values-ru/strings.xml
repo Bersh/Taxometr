@@ -1,16 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <!--Application-->
     <string name="app_name">Taxometr</string>
+    <string name="about">Инфо</string>
+    <string name="lang">Язык</string>
+    <string name="close">Закрыть</string>
+    <string name="about_taxometr">Taxometr - приложение для быстрого вызова такси \n\n
+        Разработчики : \n
+        \t Бершадский Илья \n
+        \t Горбунов Дмитрий \n
+        \t Лисовой Илья \n </string>
     <!--/Application-->
 
     <!--StartActivity-->
   	<string name="btn_from_text">Откуда</string>
     <string name="btn_to_text">Куда</string>
-    <string name="btn_calc_route_text">Рассчитать стоимость</string>
+    <string name="adress_info">Выберите местоположение</string>
+    <string name="taxi_info">Выберите службу</string>
+    <string name="btn_calc_route_text">Стоимость</string>
+    <string name="calc_info">Посчитать стоимость поездки</string>
     <string name="btn_call_text">Позвонить</string>
     <string name="btn_taxi_services_list">Список служб</string>
+    <string name="btn_language">Выберите язык</string>
+    <string name="exit">Выход</string>
+    <string name="confirmation_exit">Вы действительно желаете выйти?</string>
+    <string name="ask_to_enable_gps_message">GPS в данный момент отключен. Вы хотите включить GPS?</string>
+    <string name="ask_to_enable_gps_positive_button_text">Да</string>
+    <string name="ask_to_enable_gps_negative_button_text">Нет</string>
     <!--/StartActivity-->
 
     <!-- SelectAddressActivity -->
@@ -18,6 +35,20 @@
     <string name="btn_map_point">Указать точку на карте</string>
     <string name="btn_accept_adress">Принять</string>
     <!--/SelectAddressActivity-->
+
+    <!-- TaxiServiceListActivity -->
+    <string name="err_find_taxi_ser">Такой город не имеет такси агенств</string>
+    <string name="err_find_numbers">Такое такси агенство не имеет номеров</string>
+    <string name="price_for_km">Цена за км:</string>
+    <string name="init_price">Минимальная цена:</string>
+    <string name="km_in_init_price">км</string>
+    <string name="price_for_km_country">Вне города:</string>
+    <string name="currency">ГРН</string>
+    <string name="price_length">Примерная цена поездки:</string>
+    <color name="whitecolor">#FFF</color>
+    <color name="blackcolor">#000</color>
+    <color name="bluecolor">#000080</color>
+    <!-- TaxiServiceListActivity -->
 
     <!--CallActivity-->
     <string name="lbl_ask">Вы уверены, что хотите позвонить по данному номеру?</string>
@@ -28,7 +59,7 @@
     <!--GoogleMapActivity-->
     <string name="btn_accept">Принять</string>
     <string name="err_cant_determine_coordinates_by_address">Невозможно определиить координаты по заданному адресу.</string>
-    <string name="err_gps_location_provider_is_not_available">GPS location provider не доступен</string>
+    <string name="err_gps_location_provider_is_not_available">GPS location provider недоступен</string>
     <!--/GoogleMapActivity-->
 
     <!--Global-->

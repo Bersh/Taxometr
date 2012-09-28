@@ -1,8 +1,10 @@
 package ua.com.taxometr.test;
 
+import android.app.LauncherActivity;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.TouchUtils;
 import android.widget.Button;
+import android.widget.ListView;
 import ua.com.taxometr.R;
 import ua.com.taxometr.activites.StartActivity;
 
@@ -28,18 +30,15 @@ public class StartActivityTest extends ActivityInstrumentationTestCase2<StartAct
         assertNotNull(startActivity);
         assertEquals(startActivity.getClass(), StartActivity.class);
 
-        final Button btnFrom = (Button) startActivity.findViewById(R.id.btn_from);
-        final Button btnTo = (Button) startActivity.findViewById(R.id.btn_to);
+        final ListView menuItems = (ListView) startActivity.findViewById(R.id.menu_list);
         final Button btnCalcRoute = (Button) startActivity.findViewById(R.id.btn_calc_route);
-
-        assertNotNull(btnFrom);
-        assertNotNull(btnTo);
+        assertNotNull(menuItems);
         assertNotNull(btnCalcRoute);
 
-        assertEquals(btnFrom.getText(), startActivity.getString(R.string.btn_from_text));
-        assertEquals(btnTo.getText(), startActivity.getString(R.string.btn_to_text));
+        assertEquals(menuItems.getItemAtPosition(0).toString(), startActivity.getString(R.string.btn_from_text));
+        assertEquals(menuItems.getItemAtPosition(1).toString(), startActivity.getString(R.string.btn_to_text));
         assertEquals(btnCalcRoute.getText(), startActivity.getString(R.string.btn_calc_route_text));
-        TouchUtils.clickView(this, btnFrom);
+//        TouchUtils.clickView(this, btnFrom);
     }
 }
 

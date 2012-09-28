@@ -6,12 +6,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.*;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
+import android.view.*;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -19,18 +17,19 @@ import android.widget.Toast;
 import com.google.android.maps.*;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.LocationHelper;
+import ua.com.taxometr.helpers.MenuHelper;
 import ua.com.taxometr.helpers.RoadHelper;
 import ua.com.taxometr.mapOverlays.AddressItemizedOverlay;
 import ua.com.taxometr.mapOverlays.RouteOverlay;
 import ua.com.taxometr.routes.Road;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 
+import static ua.com.taxometr.helpers.LocationHelper.LOGTAG;
 import static ua.com.taxometr.helpers.LocationHelper.getGeoPointByAddressString;
 
 /**
@@ -58,21 +57,6 @@ public class GoogleMapActivity extends MapActivity {
     private Road road;
     private ProgressDialog progressDialog;
     private ImageButton myLocationBtn;
-
-    private final Handler routeHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            final TextView routeInfo = (TextView) findViewById(R.id.txt_route_info);
-            routeInfo.setText(road.name + " " + road.description);
-            routeInfo.setTextColor(Color.BLACK);
-            final RouteOverlay routeOverlay = new RouteOverlay(road, mapView);
-            final List<Overlay> listOfOverlays = mapView.getOverlays();
-            listOfOverlays.clear();
-            listOfOverlays.add(routeOverlay);
-            mapView.invalidate();
-            acceptBtn.setEnabled(true);
-        }
-    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -140,11 +124,11 @@ public class GoogleMapActivity extends MapActivity {
                 toPoint = getGeoPointByAddressString(toAddress, this);
             } catch (IOException e) {
                 Toast.makeText(this, getString(R.string.err_geocoder_not_available),
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_LONG).show();
                 Log.e(CLASSTAG, e.getMessage());
                 return;
             }
-            (new Thread(new RouteCalculationThread(fromPoint, toPoint))).start();
+            new RouteCalculationTask().execute(fromPoint, toPoint);
         } else {  //activity started to select address
             addressItemizedOverlay = new AddressItemizedOverlay(getResources().getDrawable(R.drawable.red_pin));
             mapView.getOverlays().add(addressItemizedOverlay);
@@ -156,18 +140,22 @@ public class GoogleMapActivity extends MapActivity {
     @Override
     public void onResume() {
         super.onResume();
-        final Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        criteria.setSpeedRequired(false);
-        final String locationProviderType = locationManager.getBestProvider(criteria, true);
-        final LocationProvider locationProvider = locationManager.getProvider(locationProviderType);
-        if (locationProvider != null) {
-            myLocationBtn.setEnabled(true);
-            locationManager.requestLocationUpdates(locationProvider.getName(), LocationHelper.MIN_UPDATE_TIME, LocationHelper.MIN_DISTANCE,
-                    locationTrackingListener);
+        if (LocationHelper.isGpsAvailable(GoogleMapActivity.this)) {
+            final Criteria criteria = new Criteria();
+            criteria.setAccuracy(Criteria.ACCURACY_FINE);
+            criteria.setSpeedRequired(false);
+            final String locationProviderType = locationManager.getBestProvider(criteria, true);
+            final LocationProvider locationProvider = locationManager.getProvider(locationProviderType);
+            if (locationProvider != null) {
+                myLocationBtn.setEnabled(true);
+                if (!isInRouteMode) {
+                    locationManager.requestLocationUpdates(locationProvider.getName(), LocationHelper.MIN_UPDATE_TIME, LocationHelper.MIN_DISTANCE,
+                            locationTrackingListener);
+                }
+            }
         } else {
             myLocationBtn.setEnabled(false);
-            Toast.makeText(this, getString(R.string.err_gps_location_provider_is_not_available), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.err_gps_location_provider_is_not_available), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -184,33 +172,61 @@ public class GoogleMapActivity extends MapActivity {
         return isInRouteMode;
     }
 
-    /**
-     * Tread for obtaining route in KML format from google service
-     */
-    private class RouteCalculationThread implements Runnable {
-        private final GeoPoint fromPoint;
-        private final GeoPoint toPoint;
-
-        /**
-         * Constructor for {@link ua.com.taxometr.activites.GoogleMapActivity.RouteCalculationThread}
-         *
-         * @param fromPoint start point
-         * @param toPoint   end point
-         */
-        private RouteCalculationThread(GeoPoint fromPoint, GeoPoint toPoint) {
-            this.fromPoint = fromPoint;
-            this.toPoint = toPoint;
-        }
+    private class RouteCalculationTask extends AsyncTask<GeoPoint, Void, Void> {
+        private GeoPoint fromPoint;
+        private GeoPoint toPoint;
 
         @Override
-        public void run() {
+        protected Void doInBackground(GeoPoint[] points) {
+            fromPoint = points[0];
+            toPoint = points[1];
             final String url = RoadHelper.getUrl(fromPoint.getLatitudeE6() / LocationHelper.MILLION,
                     fromPoint.getLongitudeE6() / LocationHelper.MILLION,
                     toPoint.getLatitudeE6() / LocationHelper.MILLION,
                     toPoint.getLongitudeE6() / LocationHelper.MILLION, GoogleMapActivity.this);
             final InputStream inputStream = getConnection(url);
-            road = RoadHelper.getRoute(inputStream);
-            routeHandler.sendEmptyMessage(0);
+            road = RoadHelper.getRoute(readInputStream(inputStream));
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            final TextView routeInfo = (TextView) findViewById(R.id.txt_route_info);
+            routeInfo.setText(road.description);
+            routeInfo.setTextColor(Color.BLACK);
+            final RouteOverlay routeOverlay = new RouteOverlay(road, mapView);
+            final List<Overlay> listOfOverlays = mapView.getOverlays();
+            listOfOverlays.clear();
+            listOfOverlays.add(routeOverlay);
+            mapView.invalidate();
+            mapController.animateTo(road.route.get(0));
+            acceptBtn.setEnabled(true);
+        }
+
+        private String readInputStream(InputStream inputStream) {
+            BufferedReader buf = null;
+            try {
+                buf = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+
+            } catch (UnsupportedEncodingException e) {
+                Log.e(LOGTAG, e.getMessage());
+            }
+            if (buf == null) return "";
+
+            final StringBuilder sb = new StringBuilder();
+            while (true) {
+                String s = null;
+                try {
+                    s = buf.readLine();
+                } catch (IOException e) {
+                    Log.e(LOGTAG, e.getMessage());
+                }
+                if (s == null || s.length() == 0) {
+                    break;
+                }
+                sb.append(s);
+            }
+            return sb.toString();
         }
 
         /**
@@ -269,7 +285,8 @@ public class GoogleMapActivity extends MapActivity {
             if (isInRouteMode) { // if rote was displayed
                 try {
                     //determine current city and country
-                    final Address address = LocationHelper.getAddressByCoordinates(road.points[0].getLatitude(), road.points[0].getLongitude(), GoogleMapActivity.this);
+                    final Address address = LocationHelper.getAddressByCoordinates(road.route.get(0).getLatitudeE6() / LocationHelper.MILLION,
+                            road.route.get(0).getLongitudeE6() / LocationHelper.MILLION, GoogleMapActivity.this);
                     final SharedPreferences prefs = getSharedPreferences(StartActivity.PREFS_NAME, Context.MODE_PRIVATE);
                     final SharedPreferences.Editor editor = prefs.edit();
                     //put city and country in SharedPreferences
@@ -277,13 +294,13 @@ public class GoogleMapActivity extends MapActivity {
                     editor.putString(StartActivity.COUNTRY_KEY, address.getAddressLine(3));
                     editor.putFloat(ROUTE_LENGTH_KEY, (float) road.length);
                     editor.commit();
-                    //start TaxiServicesActivity
-                    final Intent intent = new Intent(GoogleMapActivity.this, TaxiServicesActivity.class);
+                    //start TaxiServiceListActivity
+                    final Intent intent = new Intent(GoogleMapActivity.this, TaxiServicesListActivity.class);
                     startActivity(intent);
                 } catch (IOException e) {
                     Log.e(LocationHelper.LOGTAG, CLASSTAG + " " + e.getMessage(), e);
                     Toast.makeText(GoogleMapActivity.this, getString(R.string.err_geocoder_not_available),
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_LONG).show();
                 }
             } else {  //activity was started to select point in map
                 final Intent resultIntent = new Intent();
@@ -332,7 +349,21 @@ public class GoogleMapActivity extends MapActivity {
         }
 
         @Override
-        public void onStatusChanged(String s, int i, Bundle b) {
+        public void onStatusChanged(String s, int i, Bundle bundle) {
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        final MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.layout.menu_about_only, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        final MenuHelper menu = new MenuHelper();
+        return menu.optionsItemSelected(item, this);
+    }
+
 }

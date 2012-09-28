@@ -3,33 +3,39 @@
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        >
     <EditText
+
             android:id="@+id/address"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
             android:inputType="text"
-            android:layout_alignParentTop="true">
+            android:layout_alignParentTop="true"
+            android:layout_margin="2dip">
     </EditText>
     <Button
             android:id="@+id/btn_my_location"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
             android:layout_below="@+id/address"
-            android:text="@string/btn_my_location">
+            android:text="@string/btn_my_location"
+            android:layout_margin="2dip">
     </Button>
     <Button
             android:id="@+id/btn_map_point"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
             android:layout_below="@+id/btn_my_location"
-            android:text="@string/btn_map_point">
+            android:text="@string/btn_map_point"
+            android:layout_margin="2dip">
     </Button>
     <Button
             android:id="@+id/btn_accept_address"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
             android:layout_alignParentBottom="true"
-            android:text="@string/btn_accept_adress">
+            android:text="@string/btn_accept_adress"
+            android:layout_margin="2dip">
     </Button>
 </RelativeLayout>

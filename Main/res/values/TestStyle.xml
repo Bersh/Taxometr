@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CustomWindowTitleBackground">
+        <item name="android:background">@drawable/title</item>
+    </style>
+
+    <color name="custom_theme_color">#aaaaaa</color>
+
+    <style name="custom_listview_style" parent="android:Widget.ListView">
+        <item name="android:divider">@color/custom_theme_color</item>
+    </style>
+
+    <style name="ButtonText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textStyle">bold</item>
+        <!--item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">0</item>
+        <item name="android:shadowRadius">5</item-->
+    </style>
+    <style name="CustomButtonStyle" parent="android:Widget.Button">
+        <item name="android:background">@drawable/button_selector</item>
+        <item name="android:clickable">true</item>
+        <item name="android:textAppearance">@style/ButtonText</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:gravity">center</item>
+        <item name = "android:layout_width">fill_parent</item>
+        <item name = "android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="CustomEditTextStyle" parent="android:Widget.EditText">
+        <!--item name="android:background">@drawable/edit_box_dr</item>
+        <item name="android:clickable">true</item>
+        <item name="android:textAppearance">@style/ButtonText</item-->
+
+        <item name="android:background">@drawable/edit_text_selector</item>
+        <item name="android:clickable">true</item>
+        <!--item name="android:textAppearance">@style/ButtonText</item-->
+
+        <item name="android:layout_margin">10px</item>
+        <item name="android:gravity">center</item>
+        <item name = "android:layout_width">fill_parent</item>
+        <item name = "android:layout_height">wrap_content</item>
+    </style>
+
+
+    <style name="CustomTheme" parent="android:Theme.Light">
+        <item name="android:windowBackground">@drawable/bitmap</item>
+        <item name="android:windowTitleSize">24dip</item>
+        <item name="android:windowTitleBackgroundStyle">@style/CustomWindowTitleBackground</item>
+        <item name="android:buttonStyle">@style/CustomButtonStyle</item>
+        <item name="android:listViewStyle">@style/custom_listview_style</item>
+        <item name="android:editTextStyle">@style/CustomEditTextStyle</item>
+    </style>
+</resources>

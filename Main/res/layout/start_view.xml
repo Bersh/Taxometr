@@ -5,40 +5,37 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-    <Button
-            android:id="@+id/btn_from"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:text="@string/btn_from_text">
-    </Button>
-    <Button
-            android:id="@+id/btn_to"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/btn_from"
-            android:text="@string/btn_to_text">
-    </Button>
-    <Button
-            android:id="@+id/btn_taxi_services_list"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/btn_to"
-            android:text="@string/btn_taxi_services_list">
-    </Button>
-    <Button
-            android:id="@+id/btn_call"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/btn_calc_route"
-            android:text="@string/btn_call_text">
-    </Button>
+
+    <ListView android:id="@+id/menu_list"
+              android:layout_height="wrap_content"
+              android:layout_width="match_parent"
+              android:layout_alignParentTop="true"
+              android:dividerHeight="0dip"
+              android:fadingEdge="vertical"
+              android:fadingEdgeLength="0dip"
+              android:cacheColorHint="#AA000000"
+              android:paddingBottom="0dip"
+            >
+    </ListView>
+
+    <View
+            android:id="@+id/shade_view"
+            android:layout_height="10dip"
+            android:layout_width="match_parent"
+            android:layout_below="@id/menu_list"
+            android:background="@drawable/shade">
+
+    </View>
+
     <Button
             android:id="@+id/btn_calc_route"
+            android:layout_margin="5dp"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height= "30pt"
+
             android:layout_alignParentBottom="true"
             android:text="@string/btn_calc_route_text">
     </Button>
+
 </RelativeLayout>
 
