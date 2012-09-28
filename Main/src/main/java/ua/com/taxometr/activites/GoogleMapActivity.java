@@ -282,10 +282,11 @@ public class GoogleMapActivity extends MapActivity {
         @SuppressWarnings("NumericCastThatLosesPrecision")
         @Override
         public void onClick(View view) {
+            final LocationHelper locationHelper = new LocationHelper();
             if (isInRouteMode) { // if rote was displayed
                 try {
                     //determine current city and country
-                    final Address address = LocationHelper.getAddressByCoordinates(road.route.get(0).getLatitudeE6() / LocationHelper.MILLION,
+                    final Address address = locationHelper.getAddressByCoordinates(road.route.get(0).getLatitudeE6() / LocationHelper.MILLION,
                             road.route.get(0).getLongitudeE6() / LocationHelper.MILLION, GoogleMapActivity.this);
                     final SharedPreferences prefs = getSharedPreferences(StartActivity.PREFS_NAME, Context.MODE_PRIVATE);
                     final SharedPreferences.Editor editor = prefs.edit();
@@ -307,7 +308,7 @@ public class GoogleMapActivity extends MapActivity {
                 int resultCode = RESULT_OK;
                 String address = "";
                 try {
-                    address = LocationHelper.getAddressStringByGeoPoint(addressItemizedOverlay.getItem(0).getPoint(), GoogleMapActivity.this);
+                    address = locationHelper.getAddressStringByGeoPoint(addressItemizedOverlay.getItem(0).getPoint(), GoogleMapActivity.this);
                 } catch (IOException e) {
                     Log.e(CLASSTAG, e.getMessage(), e);
                     resultCode = RESULT_CANCELED;

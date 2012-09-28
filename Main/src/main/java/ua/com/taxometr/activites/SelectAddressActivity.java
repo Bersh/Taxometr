@@ -1,6 +1,7 @@
 package ua.com.taxometr.activites;
 
 import android.app.Activity;
+import android.app.LocalActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -127,8 +128,9 @@ public class SelectAddressActivity extends Activity {
     private class LocationTrackingListener implements LocationListener {
         @Override
         public void onLocationChanged(final Location loc) {
+            final LocationHelper locationHelper = new LocationHelper();
             try {
-                address.setText(LocationHelper.getAddressStringByCoordinates(loc.getLatitude(), loc.getLongitude(), SelectAddressActivity.this));
+                address.setText(locationHelper.getAddressStringByCoordinates(loc.getLatitude(), loc.getLongitude(), SelectAddressActivity.this));
             } catch (IOException e) {
                 Log.e(LocationHelper.LOGTAG, CLASSTAG + " " + e.getMessage(), e);
                 Toast.makeText(SelectAddressActivity.this, getString(R.string.err_geocoder_not_available),

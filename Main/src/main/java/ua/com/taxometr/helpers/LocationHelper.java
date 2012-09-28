@@ -10,8 +10,8 @@ import com.google.android.maps.GeoPoint;
 import ua.com.taxometr.R;
 
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.List;
+import java.util.concurrent.*;
 
 /**
  * useful functions and constants for location
@@ -28,8 +28,6 @@ public class LocationHelper {
      * million
      */
     public static final double MILLION = 1e6;
-
-    private static final DecimalFormat DEC_FORMAT = new DecimalFormat("###.##");
 
     /**
      * Golden Gate location
@@ -58,12 +56,6 @@ public class LocationHelper {
     public static final int GPS_TIMEOUT = 30000;
 
     /**
-     * Default constructor
-     */
-    private LocationHelper() {
-    }
-
-    /**
      * Parse Location into GeoPoint  <br/>
      * note GeoPoint stores lat/long as "integer numbers of microdegrees"
      * meaning int*1E6
@@ -75,63 +67,6 @@ public class LocationHelper {
         final int lat = (int) (loc.getLatitude() * LocationHelper.MILLION);
         final int lon = (int) (loc.getLongitude() * LocationHelper.MILLION);
         return new GeoPoint(lat, lon);
-    }
-
-    /**
-     * Parse geoRssPoint into GeoPoint(<georss:point>36.835 -121.899</georss:point>)
-     *
-     * @param geoRssPoint geo point in rss format
-     * @return {@link com.google.android.maps.GeoPoint} converted from rss format
-     */
-    public static GeoPoint getGeoPoint(final String geoRssPoint) {
-        Log.d(LOGTAG, LocationHelper.CLASSTAG + " getGeoPoint - geoRssPoint - " + geoRssPoint);
-        GeoPoint returnPoint = null;
-        final String gPoint = geoRssPoint.trim();
-        if (gPoint.contains(" ")) {
-            final String latString = gPoint.substring(0, gPoint.indexOf(" "));
-            final String lonString = gPoint.substring(gPoint.indexOf(" "), gPoint.length());
-            final double latd = Double.parseDouble(latString);
-            final double lond = Double.parseDouble(lonString);
-            final int lat = (int) (latd * LocationHelper.MILLION);
-            final int lon = (int) (lond * LocationHelper.MILLION);
-            returnPoint = new GeoPoint(lat, lon);
-        }
-        return returnPoint;
-    }
-
-    /**
-     * Parse double point(-127.50) into String (127.50W)
-     *
-     * @param point double cordinate
-     * @param isLat is latitude
-     * @return string coordinate
-     */
-    public static String parsePoint(final double point, final boolean isLat) {
-        Log.d(LOGTAG, LocationHelper.CLASSTAG + " parsePoint - point - " + point + " isLat - " + isLat);
-        String result = LocationHelper.DEC_FORMAT.format(point);
-        if (result.contains("-")) {
-            result = result.substring(1, result.length());
-        }
-        // latitude is decimal expressed as +- 0-90
-        // (South negative, North positive, from Equator)
-        if (isLat) {
-            if (point < 0) {
-                result += "S";
-            } else {
-                result += "N";
-            }
-        }
-        // longitude is decimal expressed as +- 0-180
-        // (West negative, East positive, from Prime Meridian)
-        else {
-            if (point < 0) {
-                result += "W";
-            } else {
-                result += "E";
-            }
-        }
-        Log.d(LOGTAG, LocationHelper.CLASSTAG + " parsePoint result - " + result);
-        return result;
     }
 
     /**
@@ -161,15 +96,22 @@ public class LocationHelper {
      * @return address by given coordinates
      * @throws IOException if {@link android.location.Geocoder} is not available
      */
-    public static Address getAddressByCoordinates(double latitude, double longitude, Context context) throws IOException {
+    public Address getAddressByCoordinates(double latitude, double longitude, Context context) throws IOException {
         final Geocoder geocoder = new Geocoder(context);
+        FutureTask<Address> getLocationByGeoPointTask = new FutureTask<Address>(new GetLocationByGeoPointTask(latitude, longitude, geocoder));
+        new Thread(getLocationByGeoPointTask).start();
+        Address address = null;
         try {
-            final List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            return addresses.get(0);
-        } catch (IOException e) {
-            Log.e(LOGTAG, CLASSTAG + e.getMessage(), e);
-            throw e;
+            address = getLocationByGeoPointTask.get(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            getLocationByGeoPointTask.cancel(true);
+            Log.d(LOGTAG, e.getMessage());
+        } catch (ExecutionException e) {
+            Log.e(LOGTAG, e.getMessage());
+        } catch (TimeoutException e) {
+            Log.d(LOGTAG, e.getMessage());
         }
+        return address;
     }
 
     /**
@@ -180,17 +122,18 @@ public class LocationHelper {
      * @return address string
      * @throws IOException if {@link android.location.Geocoder} is not available
      */
-    public static String getAddressStringByCoordinates(double latitude, double longitude, Context context) throws IOException {
+    public String getAddressStringByCoordinates(double latitude, double longitude, Context context) throws IOException {
         final Geocoder geocoder = new Geocoder(context);
-        final Address address;
+        Future<Address> getLocationByGeoPointTask = new FutureTask<Address>(new GetLocationByGeoPointTask(latitude, longitude, geocoder));
+        Address address = null;
         try {
-            final List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            address = addresses.get(0);
-        } catch (IOException e) {
-            Log.e(LOGTAG, CLASSTAG + e.getMessage(), e);
-            throw e;
+            address = getLocationByGeoPointTask.get();
+        } catch (InterruptedException e) {
+            getLocationByGeoPointTask.cancel(true);
+            Log.d(LOGTAG, e.getMessage());
+        } catch (ExecutionException e) {
+            Log.e(LOGTAG, e.getMessage());
         }
-
         return getAddressString(address);
     }
 
@@ -201,6 +144,9 @@ public class LocationHelper {
      */
     private static String getAddressString(Address address) {
         final StringBuilder sb = new StringBuilder();
+        if(address == null) {
+            return "";
+        }
         for (int i = 0; i < 3; i++) {
             final String s = address.getAddressLine(i);
             if (s != null) {
@@ -221,20 +167,10 @@ public class LocationHelper {
      * @return address by given coordinates
      * @throws IOException if {@link android.location.Geocoder} is not available
      */
-    public static String getAddressStringByGeoPoint(GeoPoint geoPoint, Context context) throws IOException {
+    public String getAddressStringByGeoPoint(GeoPoint geoPoint, Context context) throws IOException {
         final double latitude = geoPoint.getLatitudeE6() / MILLION;
         final double longitude = geoPoint.getLongitudeE6() / MILLION;
-        final Geocoder geocoder = new Geocoder(context);
-        final Address address;
-        try {
-            final List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            address = addresses.get(0);
-        } catch (IOException e) {
-            Log.e(LOGTAG, CLASSTAG + e.getMessage(), e);
-            throw e;
-        }
-
-        return getAddressString(address);
+        return getAddressStringByCoordinates(latitude, longitude, context);
     }
 
     /**
@@ -324,6 +260,29 @@ public class LocationHelper {
         final ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting();
+    }
+
+    private class GetLocationByGeoPointTask implements Callable<Address> {
+        private  final double latitude;
+        private  final double longitude;
+        private  final Geocoder geocoder;
+
+        GetLocationByGeoPointTask(double latitude, double longitude, Geocoder geocoder) {
+            this.latitude = latitude;
+            this.longitude = longitude;
+            this.geocoder = geocoder;
+        }
+
+        @Override
+        public Address call() throws Exception {
+            try {
+                final List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                return addresses.get(0);
+            } catch (IOException e) {
+                Log.e(LOGTAG, CLASSTAG + e.getMessage(), e);
+                throw e;
+            }
+        }
     }
 
 }

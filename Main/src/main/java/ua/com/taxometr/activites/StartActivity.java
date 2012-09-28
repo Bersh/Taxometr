@@ -59,8 +59,8 @@ public class StartActivity extends Activity {
 
     private LocationManager locationManager;
 
-    private static String fromAddress;// = "Днепропетровск, пр. Карла Маркса 88";     //uncomment this for debug. If needed
-    private static String toAddress;// = "Днепропетровск, ул. Артема 3";
+    private static String fromAddress = "Днепропетровск, пр. Карла Маркса 88";     //uncomment this for debug. If needed
+    private static String toAddress = "Днепропетровск, ул. Артема 3";
 
     final private ArrayList<HashMap<String, Object>> menuItems = new ArrayList<HashMap<String, Object>>();
     private static final String ITEMKEY = "menu_item";
@@ -79,6 +79,20 @@ public class StartActivity extends Activity {
     @SuppressWarnings("ReuseOfLocalVariable")
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        /* works sine API 9 if (DEVELOPER_MODE) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectDiskReads()
+                    .detectDiskWrites()
+                    .detectNetwork()   // or .detectAll() for all detectable problems
+                    .penaltyLog()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .detectLeakedClosableObjects()
+                    .penaltyLog()
+                    .penaltyDeath()
+                    .build());
+        }      */
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_view);
 
@@ -135,11 +149,10 @@ public class StartActivity extends Activity {
                 intent.putExtra("fromAddress", fromAddress);
                 intent.putExtra("toAddress", toAddress);
                 startActivity(intent);
-
             }
         });
 
-        btnCalcRoute.setEnabled(false);
+//        btnCalcRoute.setEnabled(false);
         final SharedPreferences prefs = getSharedPreferences(StartActivity.PREFS_NAME, Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = prefs.edit();
         editor.clear();
@@ -178,46 +191,6 @@ public class StartActivity extends Activity {
         }
     }
 
-
-    /**
-     * LocationListener to track location changes
-     */
-    private class LocationTrackingListener implements LocationListener {
-        @Override
-        public void onLocationChanged(final Location loc) {
-            try {
-                final Address address = LocationHelper.getAddressByCoordinates(loc.getLatitude(), loc.getLongitude(), StartActivity.this);
-                final SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-                final SharedPreferences.Editor editor = prefs.edit();
-                editor.putString(CITY_KEY, address.getAddressLine(1));
-                editor.putString(COUNTRY_KEY, address.getAddressLine(3));
-                editor.putBoolean(IS_CALLED_FROM_START_ACTIVITY_KEY, true);
-                editor.commit();
-                final Intent intent = new Intent(StartActivity.this, TaxiServicesListActivity.class);
-                startActivity(intent);
-            } catch (IOException e) {
-                Log.e(LocationHelper.LOGTAG, CLASSTAG + " " + e.getMessage(), e);
-                Toast.makeText(StartActivity.this, getString(R.string.err_geocoder_not_available),
-                        Toast.LENGTH_LONG).show();
-            } finally {
-                locationManager.removeUpdates(this);
-                progressDialog.dismiss();
-            }
-        }
-
-        @Override
-        public void onProviderDisabled(String s) {
-        }
-
-        @Override
-        public void onProviderEnabled(String s) {
-        }
-
-        @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-        }
-    }
-
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)
@@ -249,6 +222,47 @@ public class StartActivity extends Activity {
             menuItems.get(1).put(SUBITEMKEY, toAddress);
         } else {
             menuItems.get(1).put(SUBITEMKEY, getString(R.string.adress_info));
+        }
+    }
+
+
+    /**
+     * LocationListener to track location changes
+     */
+    private class LocationTrackingListener implements LocationListener {
+        @Override
+        public void onLocationChanged(final Location loc) {
+            final LocationHelper locationHelper = new LocationHelper();
+            try {
+                final Address address = locationHelper.getAddressByCoordinates(loc.getLatitude(), loc.getLongitude(), StartActivity.this);
+                final SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                final SharedPreferences.Editor editor = prefs.edit();
+                editor.putString(CITY_KEY, address.getAddressLine(1));
+                editor.putString(COUNTRY_KEY, address.getAddressLine(3));
+                editor.putBoolean(IS_CALLED_FROM_START_ACTIVITY_KEY, true);
+                editor.commit();
+                final Intent intent = new Intent(StartActivity.this, TaxiServicesListActivity.class);
+                startActivity(intent);
+            } catch (IOException e) {
+                Log.e(LocationHelper.LOGTAG, CLASSTAG + " " + e.getMessage(), e);
+                Toast.makeText(StartActivity.this, getString(R.string.err_geocoder_not_available),
+                        Toast.LENGTH_LONG).show();
+            } finally {
+                locationManager.removeUpdates(this);
+                progressDialog.dismiss();
+            }
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
         }
     }
 
