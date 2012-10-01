@@ -1,14 +1,19 @@
 package ua.com.taxometr.activites;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.Settings;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -40,17 +45,50 @@ public class SelectAddressActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_address_view);
 
+        if (TextUtils.isEmpty(Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED))) {
+            new AlertDialog.Builder(this)
+                    .setMessage(getString(R.string.dlg_enable_gps_text))
+                    .setNegativeButton(android.R.string.no, null)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            Intent intent = new Intent(Settings. ACTION_SECURITY_SETTINGS);
+                            startActivity(intent);
+                        }
+                    }).create().show();
+        }
+
+        if (TextUtils.isEmpty(Settings.Secure.getString(getContentResolver(), Settings.Secure.NETWORK_PREFERENCE))) {
+            new AlertDialog.Builder(this)
+                    .setMessage(getString(R.string.dlg_enable_gps_text))
+                    .setNegativeButton(android.R.string.no, null)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            Intent intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                            startActivity(intent);
+                        }
+                    }).create().show();
+        }
+
         final Button mapPointBtn = (Button) findViewById(R.id.btn_map_point);
-        final View.OnClickListener mapPointBtnListener = new MapPointBtnListener();
-        mapPointBtn.setOnClickListener(mapPointBtnListener);
+        final Button myLocationBtn = (Button) findViewById(R.id.btn_my_location);
+        if(LocationHelper.isInternetPresent(this) && LocationHelper.isGpsAvailable(this)) {
+            final View.OnClickListener mapPointBtnListener = new MapPointBtnListener();
+            mapPointBtn.setOnClickListener(mapPointBtnListener);
+            final View.OnClickListener myLocationBtnListener = new MyLocationBtnListener();
+            myLocationBtn.setOnClickListener(myLocationBtnListener);
+        } else {
+            mapPointBtn.setEnabled(false);
+            myLocationBtn.setEnabled(false);
+        }
 
         final Button acceptBtn = (Button) findViewById(R.id.btn_accept_address);
         final View.OnClickListener acceptBtnListener = new AcceptBtnListener();
         acceptBtn.setOnClickListener(acceptBtnListener);
 
         address = (EditText) findViewById(R.id.address);
-        final View.OnClickListener myLocationBtnListener = new MyLocationBtnListener();
-        findViewById(R.id.btn_my_location).setOnClickListener(myLocationBtnListener);
+
     }
 
     @Override

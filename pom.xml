@@ -18,22 +18,16 @@
         <repository>
             <id>mavenAndroid</id>
             <name>central</name>
-            <url>https://maven-android-archetype.googlecode.com/svn/repository</url>
+            <url>http://mvnrepository.com/</url>
         </repository>
     </repositories>
 
     <dependencyManagement>
         <dependencies>
-            <!--            <dependency>
+            <dependency>
                 <groupId>com.google.android</groupId>
                 <artifactId>android</artifactId>
-                <version>2.1.2</version>
-                <scope>provided</scope>
-            </dependency>-->
-            <dependency>
-                <groupId>com.google</groupId>
-                <artifactId>android</artifactId>
-                <version>2.2_r2</version>
+                <version>2.2.1</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -100,13 +94,6 @@
                     <version>1.0</version>
                 </plugin>
                 <plugin>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>2.1</version>
-                    <configuration>
-                        <autoVersionSubmodules>true</autoVersionSubmodules>
-                    </configuration>
-                </plugin>
-                <plugin>
                     <artifactId>maven-jarsigner-plugin</artifactId>
                     <version>1.2</version>
                     <inherited>true</inherited>
@@ -156,6 +143,7 @@
                 <sign.alias>bersh_alias</sign.alias>
                 <sign.keypass>sd2jEY4</sign.keypass>
                 <sign.storepass>sd2jEY4</sign.storepass>
+                <android.sdk.path>C:\Program Files (x86)\Android\android-sdk</android.sdk.path>
             </properties>
             <build>
                 <plugins>
