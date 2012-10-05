@@ -34,7 +34,8 @@
             android:layout_height= "30pt"
 
             android:layout_alignParentBottom="true"
-            android:text="@string/btn_calc_route_text">
+            android:text="@string/btn_calc_route_text"
+            android:background="@drawable/button_background_test">
     </Button>
 
 </RelativeLayout>
