@@ -10,6 +10,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.Settings;
@@ -27,6 +28,7 @@ import ua.com.taxometr.helpers.LocationHelper;
 import ua.com.taxometr.helpers.MenuHelper;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 
 /**
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
@@ -58,9 +60,9 @@ public class SelectAddressActivity extends Activity {
                     }).create().show();
         }
 
-        if (TextUtils.isEmpty(Settings.Secure.getString(getContentResolver(), Settings.Secure.NETWORK_PREFERENCE))) {
+        if (isMobileDataEnabled()) {
             new AlertDialog.Builder(this)
-                    .setMessage(getString(R.string.dlg_enable_gps_text))
+                    .setMessage(getString(R.string.dlg_enable_network_data_text))
                     .setNegativeButton(android.R.string.no, null)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
@@ -203,4 +205,21 @@ public class SelectAddressActivity extends Activity {
         return menu.optionsItemSelected(item, this);
     }
 
+    /**
+     * Checks is data transfer throw mobile network enabled
+     * @return true if enabled or unconfirmed
+     */
+    public Boolean isMobileDataEnabled(){
+        Object connectivityService = getSystemService(CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) connectivityService;
+
+        try {
+            Class<?> c = Class.forName(cm.getClass().getName());
+            Method m = c.getDeclaredMethod("getMobileDataEnabled");
+            m.setAccessible(true);
+            return (Boolean)m.invoke(cm);
+        } catch (Exception e) {
+            return true;
+        }
+    }
 }

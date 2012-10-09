@@ -35,6 +35,7 @@
     <string name="btn_map_point">Указать точку на карте</string>
     <string name="btn_accept_adress">Принять</string>
     <string name="dlg_enable_gps_text">В данный момент GPS отключен. Включить GPS сейчас?</string>
+    <string name="dlg_enable_network_data_text">В данный момент передача данных по сети отключена. Включить ее сейчас?</string>
     <!--/SelectAddressActivity-->
 
     <!-- TaxiServiceListActivity -->
