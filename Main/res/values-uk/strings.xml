@@ -34,6 +34,8 @@
     <string name="btn_my_location">Поточне місцезнаходження</string>
     <string name="btn_map_point">Вказати точку на мапі</string>
     <string name="btn_accept_adress">Прийняти</string>
+    <string name="dlg_enable_gps_text">У даний момент GPS відключений. Увімкнути GPS зараз?</string>
+    <string name="dlg_enable_network_data_text">У даний момент предеча данних відключена. Увімкнути її зараз?</string>
     <!--/SelectAddressActivity-->
 
     <!-- TaxiServicesListActivity -->	

@@ -32,7 +32,6 @@
             android:layout_margin="5dp"
             android:layout_width="fill_parent"
             android:layout_height= "30pt"
-
             android:layout_alignParentBottom="true"
             android:text="@string/btn_calc_route_text">
     </Button>

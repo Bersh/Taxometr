@@ -33,6 +33,8 @@
     <string name="btn_my_location">Current location</string>
     <string name="btn_map_point">Specify a point on the map</string>
     <string name="btn_accept_adress">Accept</string>
+    <string name="dlg_enable_gps_text">GPS is disabled now. Do you want enable GPS?</string>
+    <string name="dlg_enable_network_data_text">Network data transfer is disabled now. Do you want enable it?</string>
     <!--/SelectAddressActivity-->
 
     <!-- TaxiServiceListActivity -->
