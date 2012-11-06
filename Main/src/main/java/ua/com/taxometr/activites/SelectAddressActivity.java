@@ -6,14 +6,15 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,6 +29,7 @@ import ua.com.taxometr.helpers.LocationHelper;
 import ua.com.taxometr.helpers.MenuHelper;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
@@ -41,6 +43,8 @@ public class SelectAddressActivity extends Activity {
     private final LocationListener locationTrackingListener = new LocationTrackingListener();
     private LocationManager locationManager;
     private ProgressDialog progressDialog;
+    private Button mapPointBtn;
+    private Button myLocationBtn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,35 +58,34 @@ public class SelectAddressActivity extends Activity {
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
-                            Intent intent = new Intent(Settings. ACTION_SECURITY_SETTINGS);
+                            Intent intent = new Intent(Settings.ACTION_SECURITY_SETTINGS);
                             startActivity(intent);
+
                         }
                     }).create().show();
         }
 
-        if (isMobileDataEnabled()) {
+        if (!isMobileDataEnabled()) {
             new AlertDialog.Builder(this)
                     .setMessage(getString(R.string.dlg_enable_network_data_text))
                     .setNegativeButton(android.R.string.no, null)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
-                            Intent intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                            Intent intent = new Intent(Intent.ACTION_MAIN);
+                            intent.setClassName("com.android.phone", "com.android.phone.Settings");
                             startActivity(intent);
                         }
                     }).create().show();
         }
 
-        final Button mapPointBtn = (Button) findViewById(R.id.btn_map_point);
-        final Button myLocationBtn = (Button) findViewById(R.id.btn_my_location);
-        if(LocationHelper.isInternetPresent(this) && LocationHelper.isGpsAvailable(this)) {
+        mapPointBtn = (Button) findViewById(R.id.btn_map_point);
+        myLocationBtn = (Button) findViewById(R.id.btn_my_location);
+        if (LocationHelper.isInternetPresent(this) && LocationHelper.isGpsAvailable(this)) {
             final View.OnClickListener mapPointBtnListener = new MapPointBtnListener();
             mapPointBtn.setOnClickListener(mapPointBtnListener);
             final View.OnClickListener myLocationBtnListener = new MyLocationBtnListener();
             myLocationBtn.setOnClickListener(myLocationBtnListener);
-        } else {
-            mapPointBtn.setEnabled(false);
-            myLocationBtn.setEnabled(false);
         }
 
         final Button acceptBtn = (Button) findViewById(R.id.btn_accept_address);
@@ -91,6 +94,15 @@ public class SelectAddressActivity extends Activity {
 
         address = (EditText) findViewById(R.id.address);
 
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        boolean enabled = (LocationHelper.isInternetPresent(this) && LocationHelper.isGpsAvailable(this));
+        mapPointBtn.setEnabled(enabled);
+        myLocationBtn.setEnabled(enabled);
     }
 
     @Override
@@ -167,8 +179,9 @@ public class SelectAddressActivity extends Activity {
     private class LocationTrackingListener implements LocationListener {
         @Override
         public void onLocationChanged(final Location loc) {
+            LocationHelper locationHelper = new LocationHelper();
             try {
-                address.setText(LocationHelper.getAddressStringByCoordinates(loc.getLatitude(), loc.getLongitude(), SelectAddressActivity.this));
+                address.setText(locationHelper.getAddressStringByCoordinates(loc.getLatitude(), loc.getLongitude(), SelectAddressActivity.this));
             } catch (IOException e) {
                 Log.e(LocationHelper.LOGTAG, CLASSTAG + " " + e.getMessage(), e);
                 Toast.makeText(SelectAddressActivity.this, getString(R.string.err_geocoder_not_available),
@@ -207,19 +220,12 @@ public class SelectAddressActivity extends Activity {
 
     /**
      * Checks is data transfer throw mobile network enabled
+     *
      * @return true if enabled or unconfirmed
      */
-    public Boolean isMobileDataEnabled(){
-        Object connectivityService = getSystemService(CONNECTIVITY_SERVICE);
-        ConnectivityManager cm = (ConnectivityManager) connectivityService;
-
-        try {
-            Class<?> c = Class.forName(cm.getClass().getName());
-            Method m = c.getDeclaredMethod("getMobileDataEnabled");
-            m.setAccessible(true);
-            return (Boolean)m.invoke(cm);
-        } catch (Exception e) {
-            return true;
-        }
+    private Boolean isMobileDataEnabled() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }
