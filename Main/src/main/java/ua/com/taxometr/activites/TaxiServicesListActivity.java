@@ -16,6 +16,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
+import com.google.inject.Inject;
+import roboguice.activity.RoboListActivity;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.DBHelper;
 import ua.com.taxometr.helpers.MenuHelper;
@@ -31,7 +33,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @since 02.06.12
  */
 
-public class TaxiServicesListActivity extends ListActivity {
+public class TaxiServicesListActivity extends RoboListActivity {
 
     private static final String TAXISERVICE = "nameTS";     //name for taxi service
     private static final String COST_LENGTH = "cost";       //cost of travel
@@ -42,7 +44,8 @@ public class TaxiServicesListActivity extends ListActivity {
     //Check field for list listeners
     private boolean listener = true;
 
-    private DBHelper dbHelper;
+    @Inject
+    DBHelper dbHelper;
 
     private SQLiteDatabase db;
 
@@ -67,9 +70,6 @@ public class TaxiServicesListActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //create object for manegment DB versions
-        dbHelper = new DBHelper(this);
 
         //connect to DB
         db = dbHelper.getWritableDatabase();
@@ -242,14 +242,6 @@ public class TaxiServicesListActivity extends ListActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (this.dbHelper != null) {
-            this.dbHelper.close();
-            this.dbHelper = null;
-        }
-        if (this.db != null) {
-            this.db.close();
-            this.db = null;
-        }
         if (this.agencies != null) {
             this.agencies.close();
             this.agencies = null;

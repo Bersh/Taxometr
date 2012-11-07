@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import com.google.inject.Inject;
+import roboguice.activity.RoboListActivity;
 import ua.com.taxometr.helpers.DBHelper;
 import ua.com.taxometr.helpers.MenuHelper;
 
@@ -24,9 +26,11 @@ import ua.com.taxometr.helpers.MenuHelper;
  * @author Ilya Lisovyy <a href="mailto:ip.lisoviy@gmail.com">Ilya Lisovyy</a>
  * @since 13.06.12
  */
-public class CitiesActivity extends ListActivity {
+public class CitiesActivity extends RoboListActivity {
 
     private SQLiteDatabase db;
+
+    @Inject
     private DBHelper dbHelper;
     private Cursor cities;
     private String localeName;
@@ -35,7 +39,6 @@ public class CitiesActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        dbHelper = new DBHelper(this);
         db = dbHelper.getWritableDatabase();
         localeName = TaxiServicesListActivity.getLocaleName(this);
         cities = db.query("cities a",
@@ -77,14 +80,6 @@ public class CitiesActivity extends ListActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (this.dbHelper != null) {
-            this.dbHelper.close();
-            this.dbHelper = null;
-        }
-        if (this.db != null) {
-            this.db.close();
-            this.db = null;
-        }
         if (this.cities != null) {
             this.cities.close();
             this.cities = null;

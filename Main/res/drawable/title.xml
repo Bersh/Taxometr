@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item>
         <shape>
             <solid android:color="#ffa800"/>
@@ -10,7 +9,6 @@
         <shape>
             <padding android:left="4dip"/>
             <gradient android:startColor="#ffa800" android:endColor="#77eeeeee"  android:angle="-90.0"/>
-
         </shape>
     </item>
 </layer-list>

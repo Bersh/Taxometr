@@ -5,6 +5,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
 
 /**
  * Class with Database Helper
@@ -12,14 +15,16 @@ import android.util.Log;
  * @author Ilya Lisovyy <a href="mailto:ip.lisoviy@gmail.com">Ilya Lisovyy</a>
  * @since 04.06.12
  */
+@Singleton
 public class DBHelper extends SQLiteOpenHelper {
     /**
      * Constructor
      *
-     * @param context instance of {@link android.content.Context}
+     * @param contextProvider instance of Provider<Context>
      */
-    public DBHelper(Context context) {
-        super(context, "Taxometr", null, 1);
+    @Inject
+    public DBHelper(Provider<Context> contextProvider) {
+        super(contextProvider.get(), "Taxometr", null, 1);
     }
 
     @Override

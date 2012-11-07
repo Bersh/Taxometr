@@ -18,9 +18,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
+import com.google.inject.Inject;
 import de.akquinet.android.androlog.Log;
+import roboguice.activity.RoboActivity;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.LocationHelper;
+import ua.com.taxometr.helpers.LocationHelperInterface;
 import ua.com.taxometr.helpers.MenuHelper;
 
 import java.io.IOException;
@@ -31,7 +34,7 @@ import java.util.HashMap;
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  * @since 22.03.12
  */
-public class StartActivity extends Activity {
+public class StartActivity extends RoboActivity {
 
     private static final int BTN_FROM_REQUEST_CODE = 1;
     private static final int BTN_TO_REQUEST_CODE = 2;
@@ -71,6 +74,9 @@ public class StartActivity extends Activity {
     private Button btnCalcRoute;
     private ListView menuListView;
 
+    @Inject
+    LocationHelper locationHelper;
+
     /**
      * Shown when determining city
      */
@@ -79,20 +85,6 @@ public class StartActivity extends Activity {
     @SuppressWarnings("ReuseOfLocalVariable")
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        /* works sine API 9 if (DEVELOPER_MODE) {
-            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                    .detectDiskReads()
-                    .detectDiskWrites()
-                    .detectNetwork()   // or .detectAll() for all detectable problems
-                    .penaltyLog()
-                    .build());
-            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-                    .detectLeakedSqlLiteObjects()
-                    .detectLeakedClosableObjects()
-                    .penaltyLog()
-                    .penaltyDeath()
-                    .build());
-        }      */
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_view);
 
@@ -180,7 +172,7 @@ public class StartActivity extends Activity {
         }
 
         btnCalcRoute.setEnabled(fromAddress != null && toAddress != null && !"".equals(fromAddress) && !"".equals(toAddress)
-        /*&& Geocoder.isPresent()*/ && LocationHelper.isInternetPresent(this) && LocationHelper.isGpsAvailable(this));
+                /*&& Geocoder.isPresent()*/ && LocationHelper.isInternetPresent(this) && LocationHelper.isGpsAvailable(this));
     }
 
     @Override
@@ -225,14 +217,12 @@ public class StartActivity extends Activity {
         }
     }
 
-
     /**
      * LocationListener to track location changes
      */
     private class LocationTrackingListener implements LocationListener {
         @Override
         public void onLocationChanged(final Location loc) {
-            final LocationHelper locationHelper = new LocationHelper();
             try {
                 final Address address = locationHelper.getAddressByCoordinates(loc.getLatitude(), loc.getLongitude(), StartActivity.this);
                 final SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);

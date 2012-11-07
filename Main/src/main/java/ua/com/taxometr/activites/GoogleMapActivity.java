@@ -15,8 +15,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.maps.*;
+import com.google.inject.Inject;
+import roboguice.activity.RoboMapActivity;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.LocationHelper;
+import ua.com.taxometr.helpers.LocationHelperInterface;
 import ua.com.taxometr.helpers.MenuHelper;
 import ua.com.taxometr.helpers.RoadHelper;
 import ua.com.taxometr.mapOverlays.AddressItemizedOverlay;
@@ -38,7 +41,7 @@ import static ua.com.taxometr.helpers.LocationHelper.getGeoPointByAddressString;
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  * @since 15.03.12
  */
-public class GoogleMapActivity extends MapActivity {
+public class GoogleMapActivity extends RoboMapActivity {
     private static final String CLASSTAG = GoogleMapActivity.class.getSimpleName();
     private static final int MAP_ZOOM_LEVEL = 18;
 
@@ -57,6 +60,9 @@ public class GoogleMapActivity extends MapActivity {
     private Road road;
     private ProgressDialog progressDialog;
     private ImageButton myLocationBtn;
+
+    @Inject
+    LocationHelperInterface locationHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -278,11 +284,9 @@ public class GoogleMapActivity extends MapActivity {
      * @see android.view.View.OnClickListener
      */
     private class AcceptBtnListener implements View.OnClickListener {
-
         @SuppressWarnings("NumericCastThatLosesPrecision")
         @Override
         public void onClick(View view) {
-            final LocationHelper locationHelper = new LocationHelper();
             if (isInRouteMode) { // if rote was displayed
                 try {
                     //determine current city and country

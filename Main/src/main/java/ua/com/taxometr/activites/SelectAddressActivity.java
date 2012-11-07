@@ -14,7 +14,6 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.Settings;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,20 +22,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.google.inject.Inject;
 import de.akquinet.android.androlog.Log;
+import roboguice.activity.RoboActivity;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.LocationHelper;
+import ua.com.taxometr.helpers.LocationHelperInterface;
 import ua.com.taxometr.helpers.MenuHelper;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 /**
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  * @since 22.03.12
  */
-public class SelectAddressActivity extends Activity {
+public class SelectAddressActivity extends RoboActivity {
     private static final String CLASSTAG = SelectAddressActivity.class.getSimpleName();
     private static final int MAP_ACTIVITY_REQUEST_CODE = 1;
     private EditText address;
@@ -45,6 +45,9 @@ public class SelectAddressActivity extends Activity {
     private ProgressDialog progressDialog;
     private Button mapPointBtn;
     private Button myLocationBtn;
+
+    @Inject
+    LocationHelperInterface locationHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,7 +100,7 @@ public class SelectAddressActivity extends Activity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 
         boolean enabled = (LocationHelper.isInternetPresent(this) && LocationHelper.isGpsAvailable(this));
@@ -179,7 +182,6 @@ public class SelectAddressActivity extends Activity {
     private class LocationTrackingListener implements LocationListener {
         @Override
         public void onLocationChanged(final Location loc) {
-            LocationHelper locationHelper = new LocationHelper();
             try {
                 address.setText(locationHelper.getAddressStringByCoordinates(loc.getLatitude(), loc.getLongitude(), SelectAddressActivity.this));
             } catch (IOException e) {

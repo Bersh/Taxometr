@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.util.Log;
 import android.widget.Toast;
 import com.google.android.maps.GeoPoint;
+import com.google.inject.Singleton;
 import ua.com.taxometr.R;
 
 import java.io.IOException;
@@ -18,42 +19,8 @@ import java.util.concurrent.*;
  *
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  */
-public class LocationHelper {
-    /**
-     * Class tag for logging
-     */
-    public static final String CLASSTAG = LocationHelper.class.getSimpleName();
-
-    /**
-     * million
-     */
-    public static final double MILLION = 1e6;
-
-    /**
-     * Golden Gate location
-     */
-    public static final GeoPoint DEFAULT_LOCATION = new GeoPoint((int) (30.30 * LocationHelper.MILLION),
-            (int) (50.27 * LocationHelper.MILLION));
-
-    /**
-     * log tag for logging
-     */
-    public static final String LOGTAG = "taxometr";
-
-    /**
-     * the minimum time interval for notifications, in milliseconds.
-     */
-    public static final int MIN_UPDATE_TIME = 3000;
-
-    /**
-     * the minimum distance interval for notifications, in meters
-     */
-    public static final int MIN_DISTANCE = 10;
-
-    /**
-     * Timeout for determining location in milliseconds
-     */
-    public static final int GPS_TIMEOUT = 30000;
+@Singleton
+public class LocationHelper implements LocationHelperInterface {
 
     /**
      * Parse Location into GeoPoint  <br/>
@@ -87,15 +54,7 @@ public class LocationHelper {
         return lastKnownPoint;
     }
 
-    /**
-     * Return address by given coordinates
-     *
-     * @param latitude  latitude
-     * @param longitude longitude
-     * @param context   context
-     * @return address by given coordinates
-     * @throws IOException if {@link android.location.Geocoder} is not available
-     */
+    @Override
     public Address getAddressByCoordinates(double latitude, double longitude, Context context) throws IOException {
         final Geocoder geocoder = new Geocoder(context);
         FutureTask<Address> getLocationByGeoPointTask = new FutureTask<Address>(new GetLocationByGeoPointTask(latitude, longitude, geocoder));
@@ -114,14 +73,7 @@ public class LocationHelper {
         return address;
     }
 
-    /**
-     * Returns assress in string format by given coordinates
-     * @param latitude latitude
-     * @param longitude longitude
-     * @param context context
-     * @return address string
-     * @throws IOException if {@link android.location.Geocoder} is not available
-     */
+    @Override
     public String getAddressStringByCoordinates(double latitude, double longitude, Context context) throws IOException {
         final Geocoder geocoder = new Geocoder(context);
         Future<Address> getLocationByGeoPointTask = new FutureTask<Address>(new GetLocationByGeoPointTask(latitude, longitude, geocoder));
@@ -159,14 +111,7 @@ public class LocationHelper {
         return sb.toString();
     }
 
-    /**
-     * Return string address representation by given {@link com.google.android.maps.GeoPoint}
-     *
-     * @param geoPoint geo point
-     * @param context  context
-     * @return address by given coordinates
-     * @throws IOException if {@link android.location.Geocoder} is not available
-     */
+    @Override
     public String getAddressStringByGeoPoint(GeoPoint geoPoint, Context context) throws IOException {
         final double latitude = geoPoint.getLatitudeE6() / MILLION;
         final double longitude = geoPoint.getLongitudeE6() / MILLION;
