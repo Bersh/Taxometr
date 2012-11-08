@@ -21,6 +21,8 @@ import android.widget.*;
 import com.google.inject.Inject;
 import de.akquinet.android.androlog.Log;
 import roboguice.activity.RoboActivity;
+import roboguice.inject.ContentView;
+import roboguice.inject.InjectView;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.LocationHelper;
 import ua.com.taxometr.helpers.LocationHelperInterface;
@@ -34,6 +36,7 @@ import java.util.HashMap;
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  * @since 22.03.12
  */
+@ContentView(R.layout.start_view)
 public class StartActivity extends RoboActivity {
 
     private static final int BTN_FROM_REQUEST_CODE = 1;
@@ -60,6 +63,7 @@ public class StartActivity extends RoboActivity {
      */
     public static final String IS_CALLED_FROM_START_ACTIVITY_KEY = "IS_CALLED_FROM_START_ACTIVITY";
 
+    @Inject
     private LocationManager locationManager;
 
     private static String fromAddress = "Днепропетровск, пр. Карла Маркса 88";     //uncomment this for debug. If needed
@@ -71,7 +75,10 @@ public class StartActivity extends RoboActivity {
     private static final String IMGKEY = "iconfromraw";
 
     private final LocationListener locationTrackingListener = new LocationTrackingListener();
+
+    @InjectView(R.id.btn_calc_route)
     private Button btnCalcRoute;
+    @InjectView(R.id.menu_list)
     private ListView menuListView;
 
     @Inject
@@ -86,15 +93,11 @@ public class StartActivity extends RoboActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.start_view);
 
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         if (locationManager == null) {
             this.finish();
             return;
         }
-
-        menuListView = (ListView) findViewById(R.id.menu_list);
 
         HashMap<String, Object> hm = new HashMap<String, Object>();
         hm.put(ITEMKEY, getString(R.string.btn_from_text));//add title for current row
@@ -132,7 +135,7 @@ public class StartActivity extends RoboActivity {
 
         menuListView.setOnItemClickListener(new MainMenuOnItemClickListener());
 
-        btnCalcRoute = (Button) findViewById(R.id.btn_calc_route);
+//        btnCalcRoute = (Button) findViewById(R.id.btn_calc_route);
         btnCalcRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,18 +1,16 @@
 package ua.com.taxometr;
 
 
+import android.app.Application;
 import android.content.pm.ApplicationInfo;
-import com.google.inject.Module;
 import de.akquinet.android.androlog.Log;
-import roboguice.application.RoboApplication;
-import roboguice.config.AbstractAndroidModule;
-import ua.com.taxometr.helpers.LocationHelper;
-import ua.com.taxometr.helpers.LocationHelperInterface;
 
 import java.lang.reflect.Method;
-import java.util.List;
 
-public class TaxometrApplication extends RoboApplication {
+/**
+ * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
+ */
+public class TaxometrApplication extends Application {
     @Override
     public void onCreate() {
         int applicationFlags = getApplicationInfo().flags;
@@ -26,17 +24,5 @@ public class TaxometrApplication extends RoboApplication {
             }
         }
         super.onCreate();
-    }
-
-    @Override
-    protected void addApplicationModules(List<Module> modules) {
-        modules.add(new TaxometrModule());
-    }
-
-    static class TaxometrModule extends AbstractAndroidModule {
-        @Override
-        protected void configure() {
-            bind(LocationHelperInterface.class).to(LocationHelper.class);
-        }
     }
 }

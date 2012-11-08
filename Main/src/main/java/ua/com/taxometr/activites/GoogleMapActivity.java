@@ -17,6 +17,9 @@ import android.widget.Toast;
 import com.google.android.maps.*;
 import com.google.inject.Inject;
 import roboguice.activity.RoboMapActivity;
+import roboguice.inject.ContentView;
+import roboguice.inject.InjectExtra;
+import roboguice.inject.InjectView;
 import ua.com.taxometr.R;
 import ua.com.taxometr.helpers.LocationHelper;
 import ua.com.taxometr.helpers.LocationHelperInterface;
@@ -41,6 +44,7 @@ import static ua.com.taxometr.helpers.LocationHelper.getGeoPointByAddressString;
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  * @since 15.03.12
  */
+@ContentView(R.layout.google_map_view)
 public class GoogleMapActivity extends RoboMapActivity {
     private static final String CLASSTAG = GoogleMapActivity.class.getSimpleName();
     private static final int MAP_ZOOM_LEVEL = 18;
@@ -51,14 +55,24 @@ public class GoogleMapActivity extends RoboMapActivity {
     public static final String ROUTE_LENGTH_KEY = "LENGTH";
 
     private MapController mapController;
+
+    @InjectView(R.id.map_view)
     private MapView mapView;
     private final LocationListener locationTrackingListener = new LocationTrackingListener();
     private AddressItemizedOverlay addressItemizedOverlay;
+
+    @Inject
     private LocationManager locationManager;
+
+    @InjectView(R.id.btn_accept)
     private Button acceptBtn;
-    private boolean isInRouteMode;
+
+    @InjectExtra("isRouteMode")
+    private boolean isInRouteMode;  //activity started to display route?
     private Road road;
     private ProgressDialog progressDialog;
+
+    @InjectView(R.id.btn_my_location)
     private ImageButton myLocationBtn;
 
     @Inject
@@ -67,11 +81,9 @@ public class GoogleMapActivity extends RoboMapActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.google_map_view);
-        mapView = (MapView) this.findViewById(R.id.map_view);
+
         mapView.setBuiltInZoomControls(false);
 
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         if (locationManager == null) {
             this.finish();
             return;
@@ -81,13 +93,12 @@ public class GoogleMapActivity extends RoboMapActivity {
         myLocationOverlay.disableCompass();
         myLocationOverlay.enableMyLocation();
 
-        acceptBtn = (Button) findViewById(R.id.btn_accept);
         final View.OnClickListener acceptBtnListener = new AcceptBtnListener();
         acceptBtn.setOnClickListener(acceptBtnListener);
 
         final ImageButton zoomInBtn = (ImageButton) findViewById(R.id.btn_zoom_in);
         final ImageButton zoomOutBtn = (ImageButton) findViewById(R.id.btn_zoom_out);
-        myLocationBtn = (ImageButton) findViewById(R.id.btn_my_location);
+
         zoomInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,7 +130,7 @@ public class GoogleMapActivity extends RoboMapActivity {
         mapController.setZoom(MAP_ZOOM_LEVEL);
 
         final Intent intent = getIntent();
-        isInRouteMode = intent.getBooleanExtra("isRouteMode", false);  //activity started to display route?
+
         if (isInRouteMode) {
             final String fromAddress = intent.getStringExtra("fromAddress");
             final String toAddress = intent.getStringExtra("toAddress");
