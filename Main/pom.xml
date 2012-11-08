@@ -6,12 +6,11 @@
     <parent>
         <groupId>ua.com.taxometr</groupId>
         <artifactId>Taxometr-parent</artifactId>
-        <version>0.1</version>
+        <version>0.5.2</version>
     </parent>
 
     <groupId>ua.com.taxometr</groupId>
     <artifactId>Main</artifactId>
-    <version>0.1</version>
     <packaging>apk</packaging>
     <name>Taxometr - Application</name>
 

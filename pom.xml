@@ -5,13 +5,14 @@
 
     <groupId>ua.com.taxometr</groupId>
     <artifactId>Taxometr-parent</artifactId>
-    <version>0.1</version>
+    <version>0.5.2</version>
     <packaging>pom</packaging>
     <name>Taxometr - Parent</name>
 
     <modules>
         <module>Main</module>
         <module>Taxometr-it</module>
+        <module>Parsers</module>
     </modules>
 
     <repositories>
@@ -116,22 +117,6 @@
                         <keypass>${sign.keypass}</keypass>
                     </configuration>
                 </plugin>
-<!--                <plugin>
-                    <groupId>com.pyx4me</groupId>
-                    <artifactId>proguard-maven-plugin</artifactId>
-                    <version>2.0.4</version>
-                    <dependencies>
-                        <dependency>
-                            <groupId>net.sf.proguard</groupId>
-                            <artifactId>proguard</artifactId>
-                            <version>4.5.1</version>
-                            <scope>runtime</scope>
-                        </dependency>
-                    </dependencies>
-                    <configuration>
-                        <proguardVersion>4.4</proguardVersion>
-                    </configuration>
-                </plugin>-->
             </plugins>
         </pluginManagement>
     </build>
@@ -247,7 +232,7 @@
             <properties>
                 <rt.jar.path>${java.home}/jre/lib/rt.jar</rt.jar.path>
                 <jsse.jar.path>${java.home}/jre/lib/jsse.jar</jsse.jar.path>
-                <!--<android.sdk.path>c:\Program Files (x86)\Android\android-sdk\</android.sdk.path>-->
+                <android.sdk.path>c:\Program Files (x86)\Android\android-sdk\</android.sdk.path>
             </properties>
         </profile>
     </profiles>
