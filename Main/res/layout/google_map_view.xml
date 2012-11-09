@@ -14,9 +14,8 @@
             android:clickable="true"
             android:layout_below="@+id/txt_route_info"
             android:apiKey=
-                    "05pgTR7t1F5oE85N2ngINZs8mRrNXU1t2A1Idgw"/>
-    <!--debug new 05pgTR7t1F5oE85N2ngINZs8mRrNXU1t2A1Idgw-->
-    <!--debug 05pgTR7t1F5rmXHkTjhT9zPx1Q9cn1Rxg5Ks9ug not works-->
+                    "05pgTR7t1F5q2JiqtAia0JEseF38GjUF_dQMzGA"/>
+    <!--debug 05pgTR7t1F5q2JiqtAia0JEseF38GjUF_dQMzGA-->
     <!--release 05pgTR7t1F5qg5HU9jmuHs-gWPYCeMFknBF93Vg-->
     <!--05pgTR7t1F5qg5HU9jmuHs-gWPYCeMFknBF93Vg-->
 
