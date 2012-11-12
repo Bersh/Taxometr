@@ -1,6 +1,5 @@
 package ua.com.taxometr.activites;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -25,10 +24,12 @@ import android.widget.Toast;
 import com.google.inject.Inject;
 import de.akquinet.android.androlog.Log;
 import roboguice.activity.RoboActivity;
+import roboguice.inject.ContentView;
+import roboguice.inject.InjectView;
 import ua.com.taxometr.R;
+import ua.com.taxometr.TaxometrApplication;
 import ua.com.taxometr.helpers.LocationHelper;
 import ua.com.taxometr.helpers.LocationHelperInterface;
-import ua.com.taxometr.helpers.MenuHelper;
 
 import java.io.IOException;
 
@@ -36,23 +37,37 @@ import java.io.IOException;
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  * @since 22.03.12
  */
+@ContentView(R.layout.select_address_view)
 public class SelectAddressActivity extends RoboActivity {
     private static final String CLASSTAG = SelectAddressActivity.class.getSimpleName();
     private static final int MAP_ACTIVITY_REQUEST_CODE = 1;
+
+    @InjectView(R.id.address)
     private EditText address;
     private final LocationListener locationTrackingListener = new LocationTrackingListener();
-    private LocationManager locationManager;
     private ProgressDialog progressDialog;
+
+    @InjectView(R.id.btn_map_point)
     private Button mapPointBtn;
+
+    @InjectView(R.id.btn_my_location)
     private Button myLocationBtn;
+
+    @InjectView(R.id.btn_accept_address)
+    private Button acceptBtn;
 
     @Inject
     LocationHelperInterface locationHelper;
 
+    @Inject
+    private LocationManager locationManager;
+
+    @Inject
+    private ConnectivityManager cm;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.select_address_view);
 
         if (TextUtils.isEmpty(Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED))) {
             new AlertDialog.Builder(this)
@@ -82,8 +97,6 @@ public class SelectAddressActivity extends RoboActivity {
                     }).create().show();
         }
 
-        mapPointBtn = (Button) findViewById(R.id.btn_map_point);
-        myLocationBtn = (Button) findViewById(R.id.btn_my_location);
         if (LocationHelper.isInternetPresent(this) && LocationHelper.isGpsAvailable(this)) {
             final View.OnClickListener mapPointBtnListener = new MapPointBtnListener();
             mapPointBtn.setOnClickListener(mapPointBtnListener);
@@ -91,12 +104,8 @@ public class SelectAddressActivity extends RoboActivity {
             myLocationBtn.setOnClickListener(myLocationBtnListener);
         }
 
-        final Button acceptBtn = (Button) findViewById(R.id.btn_accept_address);
         final View.OnClickListener acceptBtnListener = new AcceptBtnListener();
         acceptBtn.setOnClickListener(acceptBtnListener);
-
-        address = (EditText) findViewById(R.id.address);
-
     }
 
     @Override
@@ -154,7 +163,6 @@ public class SelectAddressActivity extends RoboActivity {
         @Override
         public void onClick(View v) {
             progressDialog = ProgressDialog.show(SelectAddressActivity.this, "", getString(R.string.dlg_progress_obtaining_location), true);
-            locationManager = (LocationManager) SelectAddressActivity.this.getSystemService(Context.LOCATION_SERVICE);
             LocationHelper.requestLocationUpdates(SelectAddressActivity.this, locationManager, locationTrackingListener);
             new CountDownTimer(LocationHelper.GPS_TIMEOUT, LocationHelper.GPS_TIMEOUT) {
                 @Override
@@ -216,8 +224,7 @@ public class SelectAddressActivity extends RoboActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        final MenuHelper menu = new MenuHelper();
-        return menu.optionsItemSelected(item, this);
+        return ((TaxometrApplication) getApplication()).getMenu().optionsItemSelected(item, this);
     }
 
     /**
@@ -226,7 +233,6 @@ public class SelectAddressActivity extends RoboActivity {
      * @return true if enabled or unconfirmed
      */
     private Boolean isMobileDataEnabled() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }

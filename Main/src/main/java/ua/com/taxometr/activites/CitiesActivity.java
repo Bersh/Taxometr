@@ -1,7 +1,6 @@
 package ua.com.taxometr.activites;
 
 import android.R;
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,8 +16,8 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import com.google.inject.Inject;
 import roboguice.activity.RoboListActivity;
+import ua.com.taxometr.TaxometrApplication;
 import ua.com.taxometr.helpers.DBHelper;
-import ua.com.taxometr.helpers.MenuHelper;
 
 /**
  * Activity with list of cities
@@ -95,7 +94,6 @@ public class CitiesActivity extends RoboListActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        final MenuHelper menu = new MenuHelper();
-        return menu.optionsItemSelected(item, this);
+        return ((TaxometrApplication) getApplication()).getMenu().optionsItemSelected(item, this);
     }
 }

@@ -1,7 +1,6 @@
 package ua.com.taxometr.activites;
 
 import android.app.Dialog;
-import android.app.ListActivity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -19,8 +18,8 @@ import android.widget.*;
 import com.google.inject.Inject;
 import roboguice.activity.RoboListActivity;
 import ua.com.taxometr.R;
+import ua.com.taxometr.TaxometrApplication;
 import ua.com.taxometr.helpers.DBHelper;
-import ua.com.taxometr.helpers.MenuHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,7 +41,7 @@ public class TaxiServicesListActivity extends RoboListActivity {
     private static final String IMGKEY = "icon";
 
     //Check field for list listeners
-    private boolean listener = true;
+    private boolean listener;
 
     @Inject
     DBHelper dbHelper;
@@ -261,8 +260,7 @@ public class TaxiServicesListActivity extends RoboListActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        final MenuHelper menu = new MenuHelper();
-        return menu.optionsItemSelected(item, this);
+        return ((TaxometrApplication) getApplication()).getMenu().optionsItemSelected(item, this);
     }
 
     /**

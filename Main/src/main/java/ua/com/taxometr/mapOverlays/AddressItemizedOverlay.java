@@ -1,7 +1,6 @@
 package ua.com.taxometr.mapOverlays;
 
 import android.graphics.drawable.Drawable;
-import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
 
@@ -17,6 +16,7 @@ public class AddressItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 
     /**
      * Constructor for {@link AddressItemizedOverlay}
+     *
      * @param defaultMarker default marker image for overlay items
      */
     public AddressItemizedOverlay(Drawable defaultMarker) {
@@ -25,6 +25,7 @@ public class AddressItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 
     /**
      * Uses for adding {@link com.google.android.maps.OverlayItem} to {@link com.google.android.maps.ItemizedOverlay}
+     *
      * @param overlayItem new overlay item
      */
     public void addOverlay(OverlayItem overlayItem) {

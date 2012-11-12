@@ -5,13 +5,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.MenuItem;
-import android.widget.ImageView;
+import com.google.inject.Singleton;
 import ua.com.taxometr.R;
 import ua.com.taxometr.activites.LanguageListActivity;
-
-//import android.view.View;
-//import android.widget.Button;
-//import android.widget.ImageView;
 
 /**
  * Menu for all application's activities
@@ -20,6 +16,7 @@ import ua.com.taxometr.activites.LanguageListActivity;
  * @since 05.07.12
  */
 
+@Singleton
 public class MenuHelper extends Activity {
 
     /**
@@ -30,11 +27,12 @@ public class MenuHelper extends Activity {
 
     /**
      * listener for option menu
-     * @param item instance of {@link MenuItem}
+     *
+     * @param item            instance of {@link MenuItem}
      * @param activityContext instance of {@link Context}
      * @return boolean value
      */
-    public boolean optionsItemSelected(MenuItem item,Context activityContext) {
+    public boolean optionsItemSelected(MenuItem item, Context activityContext) {
         switch (item.getItemId()) {
             case R.id.lang:
                 final Intent intent = new Intent(activityContext, LanguageListActivity.class);

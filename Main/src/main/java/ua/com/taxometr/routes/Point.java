@@ -2,6 +2,7 @@ package ua.com.taxometr.routes;
 
 /**
  * Point representation
+ *
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  * @since 26.04.12
  */

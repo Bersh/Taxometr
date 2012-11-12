@@ -57,6 +57,7 @@ public class GoogleDirectionsJsonParser {
     /**
      * Decodes polyline from GoogleDirections JSON
      * Black magic. Do not touch
+     *
      * @param encoded encoded polyline
      * @return list of geo points from polyline
      */

@@ -91,12 +91,13 @@ public class LocationHelper implements LocationHelperInterface {
 
     /**
      * Returns address in string format by given {@link android.location.Address} object
+     *
      * @param address {@link android.location.Address} object
      * @return address string
      */
     private static String getAddressString(Address address) {
         final StringBuilder sb = new StringBuilder();
-        if(address == null) {
+        if (address == null) {
             return "";
         }
         for (int i = 0; i < 3; i++) {
@@ -120,8 +121,9 @@ public class LocationHelper implements LocationHelperInterface {
 
     /**
      * Return {@link com.google.android.maps.GeoPoint} by given address string
+     *
      * @param addressString address string
-     * @param context context
+     * @param context       context
      * @return {@link com.google.android.maps.GeoPoint} by given address string
      * @throws IOException if {@link android.location.Geocoder} is not available
      */
@@ -131,7 +133,7 @@ public class LocationHelper implements LocationHelperInterface {
         final Address address;
         try {
             final List<Address> addresses = geocoder.getFromLocationName(addressString, 1);
-            if(addresses.isEmpty()) {
+            if (addresses.isEmpty()) {
                 throw new IOException("No address found");
             }
             address = addresses.get(0);
@@ -146,9 +148,10 @@ public class LocationHelper implements LocationHelperInterface {
 
     /**
      * Requset location updates from {@link android.location.LocationProvider}
-     * @param context context
+     *
+     * @param context         context
      * @param locationManager {@link android.location.LocationManager} instance
-     * @param listener {@link android.location.LocationListener} for location changes
+     * @param listener        {@link android.location.LocationListener} for location changes
      */
     public static void requestLocationUpdates(Context context, LocationManager locationManager, LocationListener listener) {
         if (locationManager == null) {
@@ -198,6 +201,7 @@ public class LocationHelper implements LocationHelperInterface {
 
     /**
      * Check if internet is present
+     *
      * @param context context
      * @return true if internet is present
      */
@@ -208,9 +212,9 @@ public class LocationHelper implements LocationHelperInterface {
     }
 
     private class GetLocationByGeoPointTask implements Callable<Address> {
-        private  final double latitude;
-        private  final double longitude;
-        private  final Geocoder geocoder;
+        private final double latitude;
+        private final double longitude;
+        private final Geocoder geocoder;
 
         GetLocationByGeoPointTask(double latitude, double longitude, Geocoder geocoder) {
             this.latitude = latitude;

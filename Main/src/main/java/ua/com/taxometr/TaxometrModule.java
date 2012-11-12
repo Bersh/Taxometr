@@ -6,6 +6,7 @@ import ua.com.taxometr.helpers.LocationHelperInterface;
 
 /**
  * Guice module
+ *
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  * @since 08.11.12
  */

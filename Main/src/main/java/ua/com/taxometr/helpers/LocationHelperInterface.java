@@ -50,9 +50,10 @@ public interface LocationHelperInterface {
 
     /**
      * Returns assress in string format by given coordinates
-     * @param latitude latitude
+     *
+     * @param latitude  latitude
      * @param longitude longitude
-     * @param context context
+     * @param context   context
      * @return address string
      * @throws java.io.IOException if {@link android.location.Geocoder} is not available
      */

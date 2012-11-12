@@ -11,8 +11,9 @@ import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import roboguice.activity.RoboListActivity;
 import ua.com.taxometr.R;
-import ua.com.taxometr.helpers.MenuHelper;
+import ua.com.taxometr.TaxometrApplication;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +25,7 @@ import java.util.Locale;
  * @author Ilya Lisovyy <a href="mailto:ip.lisoviy@gmail.com">Ilya Lisovyy</a>
  * @since 02.06.12
  */
-public class LanguageListActivity extends ListActivity {
+public class LanguageListActivity extends RoboListActivity {
 
     private static final String LOCALEKEY = "LOCALE";
     private static final String IMGKEY = "ICON";
@@ -100,8 +101,7 @@ public class LanguageListActivity extends ListActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        final MenuHelper menu = new MenuHelper();
-        return menu.optionsItemSelected(item, this);
+        return ((TaxometrApplication) getApplication()).getMenu().optionsItemSelected(item, this);
     }
 
 }

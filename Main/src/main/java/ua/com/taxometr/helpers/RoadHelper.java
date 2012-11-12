@@ -6,6 +6,7 @@ import ua.com.taxometr.routes.Road;
 
 /**
  * Helper for creating route
+ *
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  * @since 26.04.12
  */
@@ -19,6 +20,7 @@ public class RoadHelper {
 
     /**
      * Parse KML file
+     *
      * @param is input string
      * @return {@link ua.com.taxometr.routes.Road} object
      */
@@ -29,10 +31,11 @@ public class RoadHelper {
 
     /**
      * Build url for route calculation
+     *
      * @param fromLat start point latitude
      * @param fromLon start point longitude
-     * @param toLat destination point latitude
-     * @param toLon destination point longitude
+     * @param toLat   destination point latitude
+     * @param toLon   destination point longitude
      * @param context current context
      * @return route url for Google Maps service
      */

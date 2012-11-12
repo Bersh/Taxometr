@@ -21,9 +21,9 @@ import roboguice.inject.ContentView;
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
 import ua.com.taxometr.R;
+import ua.com.taxometr.TaxometrApplication;
 import ua.com.taxometr.helpers.LocationHelper;
 import ua.com.taxometr.helpers.LocationHelperInterface;
-import ua.com.taxometr.helpers.MenuHelper;
 import ua.com.taxometr.helpers.RoadHelper;
 import ua.com.taxometr.mapOverlays.AddressItemizedOverlay;
 import ua.com.taxometr.mapOverlays.RouteOverlay;
@@ -378,8 +378,7 @@ public class GoogleMapActivity extends RoboMapActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        final MenuHelper menu = new MenuHelper();
-        return menu.optionsItemSelected(item, this);
+        return ((TaxometrApplication) getApplication()).getMenu().optionsItemSelected(item, this);
     }
 
 }

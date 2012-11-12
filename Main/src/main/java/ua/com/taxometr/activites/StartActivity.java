@@ -1,6 +1,5 @@
 package ua.com.taxometr.activites;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -24,9 +23,8 @@ import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 import ua.com.taxometr.R;
+import ua.com.taxometr.TaxometrApplication;
 import ua.com.taxometr.helpers.LocationHelper;
-import ua.com.taxometr.helpers.LocationHelperInterface;
-import ua.com.taxometr.helpers.MenuHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -78,6 +76,7 @@ public class StartActivity extends RoboActivity {
 
     @InjectView(R.id.btn_calc_route)
     private Button btnCalcRoute;
+
     @InjectView(R.id.menu_list)
     private ListView menuListView;
 
@@ -135,7 +134,6 @@ public class StartActivity extends RoboActivity {
 
         menuListView.setOnItemClickListener(new MainMenuOnItemClickListener());
 
-//        btnCalcRoute = (Button) findViewById(R.id.btn_calc_route);
         btnCalcRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,10 +146,15 @@ public class StartActivity extends RoboActivity {
         });
 
 //        btnCalcRoute.setEnabled(false);
-        final SharedPreferences prefs = getSharedPreferences(StartActivity.PREFS_NAME, Context.MODE_PRIVATE);
-        final SharedPreferences.Editor editor = prefs.edit();
-        editor.clear();
-        editor.commit();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final SharedPreferences prefs = getSharedPreferences(StartActivity.PREFS_NAME, Context.MODE_PRIVATE);
+                final SharedPreferences.Editor editor = prefs.edit();
+                editor.clear();
+                editor.commit();
+            }
+        }).start();
     }
 
     @SuppressWarnings("AssignmentToStaticFieldFromInstanceMethod")
@@ -341,8 +344,7 @@ public class StartActivity extends RoboActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        final MenuHelper menu = new MenuHelper();
-        return menu.optionsItemSelected(item, this);
+        return ((TaxometrApplication) getApplication()).getMenu().optionsItemSelected(item, this);
     }
 
 }
