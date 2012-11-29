@@ -9,6 +9,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
+ * This class creates {@link Road} object by giving Google Directions JSON response
+ *
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  * @since 12.08.12
  */
@@ -28,6 +30,7 @@ public class GoogleDirectionsJsonParser {
      *
      * @param inputString received json
      * @return {@link Road}
+     * @see <a href="https://developers.google.com/maps/documentation/directions/?hl=en">Official google doc</a>
      */
     public Road getRoad(String inputString) {
         try {
@@ -56,10 +59,13 @@ public class GoogleDirectionsJsonParser {
 
     /**
      * Decodes polyline from GoogleDirections JSON
-     * Black magic. Do not touch
+     * Black magic. Do not touch.
+     * If you still want to change something examine attached articles before.
      *
      * @param encoded encoded polyline
      * @return list of geo points from polyline
+     * @see <a href="http://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java">Official google doc</a>
+     * @see <a href="http://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java">Useful article</a>
      */
     private static ArrayList<GeoPoint> decodePolyline(CharSequence encoded) {
 
