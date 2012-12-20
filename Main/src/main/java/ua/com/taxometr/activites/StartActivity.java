@@ -81,7 +81,7 @@ public class StartActivity extends RoboActivity {
     private ListView menuListView;
 
     @Inject
-    LocationHelper locationHelper;
+    private LocationHelper locationHelper;
 
     /**
      * Shown when determining city
@@ -239,10 +239,6 @@ public class StartActivity extends RoboActivity {
                 editor.commit();
                 final Intent intent = new Intent(StartActivity.this, TaxiServicesListActivity.class);
                 startActivity(intent);
-            } catch (IOException e) {
-                Log.e(LocationHelper.LOGTAG, CLASSTAG + " " + e.getMessage(), e);
-                Toast.makeText(StartActivity.this, getString(R.string.err_geocoder_not_available),
-                        Toast.LENGTH_LONG).show();
             } finally {
                 locationManager.removeUpdates(this);
                 progressDialog.dismiss();

@@ -55,9 +55,9 @@ public class LocationHelper implements LocationHelperInterface {
     }
 
     @Override
-    public Address getAddressByCoordinates(double latitude, double longitude, Context context) throws IOException {
+    public Address getAddressByCoordinates(double latitude, double longitude, Context context) {
         final Geocoder geocoder = new Geocoder(context);
-        FutureTask<Address> getLocationByGeoPointTask = new FutureTask<Address>(new GetLocationByGeoPointTask(latitude, longitude, geocoder));
+        FutureTask<Address> getLocationByGeoPointTask = new FutureTask<Address>(new GetLocationByCoordinatesTask(latitude, longitude, geocoder));
         new Thread(getLocationByGeoPointTask).start();
         Address address = null;
         try {
@@ -75,17 +75,7 @@ public class LocationHelper implements LocationHelperInterface {
 
     @Override
     public String getAddressStringByCoordinates(double latitude, double longitude, Context context) throws IOException {
-        final Geocoder geocoder = new Geocoder(context);
-        Future<Address> getLocationByGeoPointTask = new FutureTask<Address>(new GetLocationByGeoPointTask(latitude, longitude, geocoder));
-        Address address = null;
-        try {
-            address = getLocationByGeoPointTask.get();
-        } catch (InterruptedException e) {
-            getLocationByGeoPointTask.cancel(true);
-            Log.d(LOGTAG, e.getMessage());
-        } catch (ExecutionException e) {
-            Log.e(LOGTAG, e.getMessage());
-        }
+        Address address = getAddressByCoordinates(latitude, longitude, context);
         return getAddressString(address);
     }
 
@@ -211,19 +201,22 @@ public class LocationHelper implements LocationHelperInterface {
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 
-    private class GetLocationByGeoPointTask implements Callable<Address> {
+    /**
+     * Retrieves address from {@link android.location.Geocoder}  by given latitude, longitude
+     */
+    private class GetLocationByCoordinatesTask implements Callable<Address> {
         private final double latitude;
         private final double longitude;
         private final Geocoder geocoder;
 
-        GetLocationByGeoPointTask(double latitude, double longitude, Geocoder geocoder) {
+        GetLocationByCoordinatesTask(double latitude, double longitude, Geocoder geocoder) {
             this.latitude = latitude;
             this.longitude = longitude;
             this.geocoder = geocoder;
         }
 
         @Override
-        public Address call() throws Exception {
+        public Address call() throws IOException {
             try {
                 final List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
                 return addresses.get(0);

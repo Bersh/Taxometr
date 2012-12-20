@@ -67,8 +67,8 @@ public class GoogleMapActivity extends RoboMapActivity {
     @InjectView(R.id.btn_accept)
     private Button acceptBtn;
 
-    @InjectExtra("isRouteMode")
-    private boolean isInRouteMode;  //activity started to display route?
+    @InjectExtra(value = "isRouteMode", optional = true)
+    private boolean isInRouteMode = false;  //activity started to display route?
     private Road road;
     private ProgressDialog progressDialog;
 
