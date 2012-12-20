@@ -54,6 +54,15 @@ public class LocationHelper implements LocationHelperInterface {
         return lastKnownPoint;
     }
 
+    /**
+     * Basic method to get {@link android.location.Address}  by given coordinates(latitude, longitude). <br/>
+     * This method used by all other getAddress methods
+     *
+     * @param latitude  latitude
+     * @param longitude longitude
+     * @param context   context
+     * @return address bu given coordinates
+     */
     @Override
     public Address getAddressByCoordinates(double latitude, double longitude, Context context) {
         final Geocoder geocoder = new Geocoder(context);
