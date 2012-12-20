@@ -26,7 +26,6 @@ import ua.com.taxometr.R;
 import ua.com.taxometr.TaxometrApplication;
 import ua.com.taxometr.helpers.LocationHelper;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -292,14 +291,8 @@ public class StartActivity extends RoboActivity {
                 default:
                     break;
             }
-
-            android.util.Log.d("TestTag", "itemClick: position = " + position + ", id = "
-                    + id);
         }
 
-        /**
-         * Just starts {@link CitiesActivity}
-         */
         private void startCitiesActivity() {
             final Intent intent = new Intent(StartActivity.this, CitiesActivity.class);
             startActivity(intent);

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.concurrent.*;
 
 /**
- * useful functions and constants for location
+ * Useful functions and constants for location
  *
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  */
