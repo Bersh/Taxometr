@@ -1,23 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:gravity="center_horizontal" android:padding="0px">
 
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/map"
+              android:name="com.google.android.gms.maps.SupportMapFragment"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent" />
 
-    <com.google.android.maps.MapView
-            android:id="@+id/map_view"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:enabled="true"
-            android:clickable="true"
-            android:layout_below="@+id/txt_route_info"
-            android:apiKey= "05pgTR7t1F5q2JiqtAia0JEseF38GjUF_dQMzGA"/>
-    <!--release 05pgTR7t1F5qg5HU9jmuHs-gWPYCeMFknBF93Vg -->
-    <!--debug old 05pgTR7t1F5q2JiqtAia0JEseF38GjUF_dQMzGA-->
-
-    <Button
+     <Button
             android:id="@+id/btn_accept"
             android:layout_width="fill_parent"
             android:layout_height="55dp"
@@ -71,6 +63,5 @@
                 android:layout_weight="1"
                 android:src="@drawable/my_location"
                 android:contentDescription="@string/btn_my_location_content_descriptor"/>
-
     </LinearLayout>
 </RelativeLayout>

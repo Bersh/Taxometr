@@ -1,17 +1,5 @@
 package ua.com.taxometr.mapOverlays;
 
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Point;
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapController;
-import com.google.android.maps.MapView;
-import com.google.android.maps.Overlay;
-import ua.com.taxometr.routes.Road;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
 
 /**
  * Map overlay for displaying route
@@ -19,17 +7,17 @@ import java.util.ArrayList;
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  * @since 08.05.12
  */
-public class RouteOverlay extends Overlay {
-    private static final int EARTH_RADIUS = 6371;
+public class RouteOverlay {
+/*    private static final int EARTH_RADIUS = 6371;
     Road road;
     ArrayList<GeoPoint> points;
 
-    /**
+    *//**
      * Constructor for route map overlay
      *
      * @param road {@link ua.com.taxometr.routes.Road}
      * @param mv   current {@link com.google.android.maps.MapView}
-     */
+     *//*
     @SuppressWarnings("NumericCastThatLosesPrecision")
     public RouteOverlay(Road road, MapView mv) {
         this.road = road;
@@ -43,14 +31,14 @@ public class RouteOverlay extends Overlay {
         }
     }
 
-    /**
+    *//**
      * Rounds given double to given precision
      *
      * @param unrounded    unrounded double value
      * @param precision    precision
      * @param roundingMode rounding mode {@link java.math.BigDecimal#ROUND_HALF_UP}
      * @return rounded value
-     */
+     *//*
     private static double round(double unrounded, int precision, int roundingMode) {
         final BigDecimal bd = new BigDecimal(unrounded);
         final BigDecimal rounded = bd.setScale(precision, roundingMode);
@@ -64,12 +52,12 @@ public class RouteOverlay extends Overlay {
         return true;
     }
 
-    /**
+    *//**
      * Draws route on map's canvas
      *
      * @param mv     current {@link com.google.android.maps.MapView}
      * @param canvas canvas
-     */
+     *//*
     public void drawRoute(MapView mv, Canvas canvas) {
         if (points.isEmpty()) {
             return;
@@ -97,6 +85,6 @@ public class RouteOverlay extends Overlay {
             x1 = x2;
             y1 = y2;
         }
-    }
+    }*/
 }
 

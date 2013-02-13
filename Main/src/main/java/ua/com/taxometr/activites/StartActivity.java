@@ -63,8 +63,8 @@ public class StartActivity extends RoboActivity {
     @Inject
     private LocationManager locationManager;
 
-    private static String fromAddress = ""; //"Днепропетровск, пр. Карла Маркса 88";     //uncomment this for debug. If needed
-    private static String toAddress = ""; //"Днепропетровск, ул. Артема 3";
+    private static String fromAddress = "Днепропетровск, пр. Карла Маркса 88";     //uncomment this for debug. If needed
+    private static String toAddress = "Днепропетровск, ул. Артема 3";
 
     final private ArrayList<HashMap<String, Object>> menuItems = new ArrayList<HashMap<String, Object>>();
     private static final String ITEMKEY = "menu_item";
@@ -107,7 +107,7 @@ public class StartActivity extends RoboActivity {
         hm = new HashMap<String, Object>();
         hm.put(ITEMKEY, getString(R.string.btn_to_text));
         hm.put(SUBITEMKEY, getString(R.string.adress_info));
-        hm.put(IMGKEY, R.drawable.where_icon);
+        hm.put(IMGKEY, R.drawable.to_icon);
 
         menuItems.add(hm);
 
@@ -136,7 +136,7 @@ public class StartActivity extends RoboActivity {
         btnCalcRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Intent intent = new Intent(StartActivity.this, GoogleMapActivity.class);
+                final Intent intent = new Intent(StartActivity.this, MapActivity.class);
                 intent.putExtra("isRouteMode", true);
                 intent.putExtra("fromAddress", fromAddress);
                 intent.putExtra("toAddress", toAddress);
@@ -144,7 +144,7 @@ public class StartActivity extends RoboActivity {
             }
         });
 
-        btnCalcRoute.setEnabled(false);
+//        btnCalcRoute.setEnabled(false);         //comment this for debug
         new Thread(new Runnable() {
             @Override
             public void run() {
