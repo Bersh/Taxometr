@@ -6,7 +6,7 @@
     <parent>
         <groupId>ua.com.taxometr</groupId>
         <artifactId>Taxometr-parent</artifactId>
-        <version>0.5.3</version>
+        <version>0.5.5</version>
     </parent>
 
     <groupId>ua.com.taxometr</groupId>
@@ -28,8 +28,17 @@
             <artifactId>androlog</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.google.android.maps</groupId>
-            <artifactId>maps</artifactId>
+            <groupId>com.google.android</groupId>
+            <artifactId>support-v4</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.android.gms</groupId>
+            <artifactId>google-play-services</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.android.gms</groupId>
+            <artifactId>google-play-services</artifactId>
+            <type>jar</type>
         </dependency>
     </dependencies>
 

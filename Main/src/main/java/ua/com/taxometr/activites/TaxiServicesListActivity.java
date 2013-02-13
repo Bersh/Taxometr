@@ -80,7 +80,7 @@ public class TaxiServicesListActivity extends RoboListActivity {
         final SharedPreferences prefs = getSharedPreferences(StartActivity.PREFS_NAME, Context.MODE_PRIVATE);
         final String country = prefs.getString(StartActivity.COUNTRY_KEY, "");//"Ukraine";     //uncomment this for debug
         final String town = prefs.getString(StartActivity.CITY_KEY, "");//"Dnepropetrovsk";
-        final float length = prefs.getFloat(GoogleMapActivity.ROUTE_LENGTH_KEY, 0F);
+        final float length = prefs.getFloat(MapActivity.ROUTE_LENGTH_KEY, 0F);
         final Boolean isCalledFromStartActivity = prefs.getBoolean(StartActivity.IS_CALLED_FROM_START_ACTIVITY_KEY, false);
 
         //make query for taxi agencies
@@ -232,7 +232,7 @@ public class TaxiServicesListActivity extends RoboListActivity {
             final SharedPreferences.Editor propsEditor = prefs.edit();
             propsEditor.remove(StartActivity.COUNTRY_KEY);
             propsEditor.remove(StartActivity.CITY_KEY);
-            propsEditor.remove(GoogleMapActivity.ROUTE_LENGTH_KEY);
+            propsEditor.remove(MapActivity.ROUTE_LENGTH_KEY);
             propsEditor.remove(StartActivity.IS_CALLED_FROM_START_ACTIVITY_KEY);
             propsEditor.commit();
         }

@@ -127,7 +127,7 @@ public class SelectAddressActivity extends RoboActivity {
     @Override
     public void onPause() {
         super.onPause();
-        if (locationManager != null && locationTrackingListener != null) {
+        if (locationManager != null) {
             locationManager.removeUpdates(locationTrackingListener);
         }
     }
@@ -138,7 +138,7 @@ public class SelectAddressActivity extends RoboActivity {
     private class MapPointBtnListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            final Intent intent = new Intent(SelectAddressActivity.this, GoogleMapActivity.class);
+            final Intent intent = new Intent(SelectAddressActivity.this, MapActivity.class);
             startActivityForResult(intent, MAP_ACTIVITY_REQUEST_CODE);
         }
     }
@@ -173,7 +173,7 @@ public class SelectAddressActivity extends RoboActivity {
                     if (progressDialog != null) {
                         progressDialog.dismiss();
 
-                        if (locationManager != null && locationTrackingListener != null) {
+                        if (locationManager != null) {
                             locationManager.removeUpdates(locationTrackingListener);
                         }
                         Toast.makeText(SelectAddressActivity.this, getString(R.string.err_gps_not_available),

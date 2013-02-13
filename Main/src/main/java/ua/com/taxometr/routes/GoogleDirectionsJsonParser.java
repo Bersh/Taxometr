@@ -1,6 +1,6 @@
 package ua.com.taxometr.routes;
 
-import com.google.android.maps.GeoPoint;
+import com.google.android.gms.maps.model.LatLng;
 import de.akquinet.android.androlog.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,16 +60,16 @@ public class GoogleDirectionsJsonParser {
     /**
      * Decodes polyline from GoogleDirections JSON
      * Black magic. Do not touch.
-     * If you still want to change something examine attached articles before.
+     * If you still want to change something check attached articles before.
      *
      * @param encoded encoded polyline
      * @return list of geo points from polyline
      * @see <a href="http://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java">Official google doc</a>
      * @see <a href="http://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java">Useful article</a>
      */
-    private static ArrayList<GeoPoint> decodePolyline(CharSequence encoded) {
+    private static ArrayList<LatLng> decodePolyline(CharSequence encoded) {
 
-        final ArrayList<GeoPoint> poly = new ArrayList<GeoPoint>();
+        final ArrayList<LatLng> poly = new ArrayList<LatLng>();
         int index = 0;
         final int len = encoded.length();
         int lat = 0;
@@ -97,9 +97,9 @@ public class GoogleDirectionsJsonParser {
             final int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
             lng += dlng;
 
-            final GeoPoint p = new GeoPoint((int) (((double) lat / 1E5) * 1E6),
-                    (int) (((double) lng / 1E5) * 1E6));
-            poly.add(p);
+            final LatLng point = new LatLng((double) lat / 1E5,
+                    (double) lng / 1E5);
+            poly.add(point);
         }
 
         return poly;

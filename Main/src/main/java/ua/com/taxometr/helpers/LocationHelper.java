@@ -6,7 +6,7 @@ import android.location.*;
 import android.net.ConnectivityManager;
 import android.util.Log;
 import android.widget.Toast;
-import com.google.android.maps.GeoPoint;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.inject.Singleton;
 import ua.com.taxometr.R;
 
@@ -21,38 +21,6 @@ import java.util.concurrent.*;
  */
 @Singleton
 public class LocationHelper implements LocationHelperInterface {
-
-    /**
-     * Parse Location into GeoPoint  <br/>
-     * note GeoPoint stores lat/long as "integer numbers of microdegrees"
-     * meaning int*1E6
-     *
-     * @param loc instance of {@link android.location.Location}
-     * @return {@link com.google.android.maps.GeoPoint} converted from given location
-     */
-    public static GeoPoint getGeoPoint(final Location loc) {
-        final int lat = (int) (loc.getLatitude() * LocationHelper.MILLION);
-        final int lon = (int) (loc.getLongitude() * LocationHelper.MILLION);
-        return new GeoPoint(lat, lon);
-    }
-
-    /**
-     * Converts last known point from LocationManager to GeoPoint
-     *
-     * @param locationManager      location manager
-     * @param locationProviderType location provider type
-     * @return GeoPoint corresponds to last known point from LocationManager
-     */
-    public static GeoPoint getLastKnownPoint(LocationManager locationManager, String locationProviderType) {
-        final GeoPoint lastKnownPoint;
-        final Location lastKnownLocation = locationManager.getLastKnownLocation(locationProviderType);
-        if (lastKnownLocation != null) {
-            lastKnownPoint = LocationHelper.getGeoPoint(lastKnownLocation);
-        } else {
-            lastKnownPoint = LocationHelper.DEFAULT_LOCATION;
-        }
-        return lastKnownPoint;
-    }
 
     /**
      * Basic method to get {@link android.location.Address}  by given coordinates(latitude, longitude). <br/>
@@ -77,7 +45,7 @@ public class LocationHelper implements LocationHelperInterface {
         } catch (ExecutionException e) {
             Log.e(LOGTAG, e.getMessage());
         } catch (TimeoutException e) {
-            Log.d(LOGTAG, e.getMessage());
+            Log.d(LOGTAG, "Timeout Exception: getAddressByCoordinates");
         }
         return address;
     }
@@ -112,22 +80,22 @@ public class LocationHelper implements LocationHelperInterface {
     }
 
     @Override
-    public String getAddressStringByGeoPoint(GeoPoint geoPoint, Context context) throws IOException {
-        final double latitude = geoPoint.getLatitudeE6() / MILLION;
-        final double longitude = geoPoint.getLongitudeE6() / MILLION;
+    public String getAddressStringByLatLng(LatLng geoPoint, Context context) throws IOException {
+        final double latitude = geoPoint.latitude;
+        final double longitude = geoPoint.longitude;
         return getAddressStringByCoordinates(latitude, longitude, context);
     }
 
     /**
-     * Return {@link com.google.android.maps.GeoPoint} by given address string
+     * Return {@link com.google.android.gms.maps.model.LatLng} by given address string
      *
      * @param addressString address string
      * @param context       context
-     * @return {@link com.google.android.maps.GeoPoint} by given address string
+     * @return {@link com.google.android.gms.maps.model.LatLng} by given address string
      * @throws IOException if {@link android.location.Geocoder} is not available
      */
     @SuppressWarnings("ThrowCaughtLocally")
-    public static GeoPoint getGeoPointByAddressString(String addressString, Context context) throws IOException {
+    public static LatLng getLatLngByAddressString(String addressString, Context context) throws IOException {
         final Geocoder geocoder = new Geocoder(context);
         final Address address;
         try {
@@ -140,9 +108,9 @@ public class LocationHelper implements LocationHelperInterface {
             Log.e(LOGTAG, CLASSTAG + e.getMessage(), e);
             throw e;
         }
-        final Double latitude = address.getLatitude() * MILLION;
-        final Double longitude = address.getLongitude() * MILLION;
-        return new GeoPoint(latitude.intValue(), longitude.intValue());
+        final Double latitude = address.getLatitude();
+        final Double longitude = address.getLongitude();
+        return new LatLng(latitude, longitude);
     }
 
     /**

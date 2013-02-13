@@ -1,6 +1,6 @@
 package ua.com.taxometr.routes;
 
-import com.google.android.maps.GeoPoint;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
@@ -40,5 +40,5 @@ public class Road {
     /**
      * Route points
      */
-    public ArrayList<GeoPoint> route;
+    public ArrayList<LatLng> route;
 }

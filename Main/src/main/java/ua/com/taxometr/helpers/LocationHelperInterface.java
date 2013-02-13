@@ -2,7 +2,7 @@ package ua.com.taxometr.helpers;
 
 import android.content.Context;
 import android.location.Address;
-import com.google.android.maps.GeoPoint;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
 
@@ -11,15 +11,6 @@ public interface LocationHelperInterface {
      * Class tag for logging
      */
     String CLASSTAG = LocationHelper.class.getSimpleName();
-    /**
-     * million
-     */
-    double MILLION = 1e6;
-    /**
-     * Golden Gate location
-     */
-    GeoPoint DEFAULT_LOCATION = new GeoPoint((int) (30.30 * LocationHelperInterface.MILLION),
-            (int) (50.27 * LocationHelperInterface.MILLION));
     /**
      * log tag for logging
      */
@@ -60,12 +51,12 @@ public interface LocationHelperInterface {
     String getAddressStringByCoordinates(double latitude, double longitude, Context context) throws IOException;
 
     /**
-     * Return string address representation by given {@link com.google.android.maps.GeoPoint}
+     * Return string address representation by given {@link com.google.android.gms.maps.model.LatLng}
      *
      * @param geoPoint geo point
      * @param context  context
      * @return address by given coordinates
      * @throws java.io.IOException if {@link android.location.Geocoder} is not available
      */
-    String getAddressStringByGeoPoint(GeoPoint geoPoint, Context context) throws IOException;
+    String getAddressStringByLatLng(LatLng geoPoint, Context context) throws IOException;
 }

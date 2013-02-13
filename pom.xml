@@ -5,7 +5,7 @@
 
     <groupId>ua.com.taxometr</groupId>
     <artifactId>Taxometr-parent</artifactId>
-    <version>0.5.3</version>
+    <version>0.5.5</version>
     <packaging>pom</packaging>
     <name>Taxometr - Parent</name>
 
@@ -64,6 +64,25 @@
                 <artifactId>junit</artifactId>
                 <version>4.8.1</version>
                 <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.android</groupId>
+                <artifactId>support-v4</artifactId>
+                <version>r7</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.android.gms</groupId>
+                <artifactId>google-play-services</artifactId>
+                <version>4</version>
+                <type>apklib</type>
+            </dependency>
+            <dependency>
+                <groupId>com.google.android.gms</groupId>
+                <artifactId>google-play-services</artifactId>
+                <version>4</version>
+                <type>jar</type>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -135,7 +154,7 @@
                 <sign.alias>bersh_alias</sign.alias>
                 <sign.keypass>sd2jEY4</sign.keypass>
                 <sign.storepass>sd2jEY4</sign.storepass>
-                <android.sdk.path>C:\Program Files (x86)\Android\android-sdk</android.sdk.path>
+                <!--<android.sdk.path>C:\Program Files (x86)\Android\android-sdk</android.sdk.path>-->
             </properties>
             <build>
                 <plugins>
@@ -204,6 +223,7 @@
             <properties>
                 <rt.jar.path>${java.home}/jre/lib/rt.jar</rt.jar.path>
                 <jsse.jar.path>${java.home}/jre/lib/jsse.jar</jsse.jar.path>
+                <android.sdk.path>/opt/android/android-sdk-linux</android.sdk.path>
             </properties>
         </profile>
         <!-- mac profile has to be after unix since running on mac will trigger both -->
@@ -232,7 +252,7 @@
             <properties>
                 <rt.jar.path>${java.home}/jre/lib/rt.jar</rt.jar.path>
                 <jsse.jar.path>${java.home}/jre/lib/jsse.jar</jsse.jar.path>
-                <android.sdk.path>c:\Program Files (x86)\Android\android-sdk\</android.sdk.path>
+                <!--<android.sdk.path>c:\Program Files (x86)\Android\android-sdk\</android.sdk.path>-->
             </properties>
         </profile>
     </profiles>
