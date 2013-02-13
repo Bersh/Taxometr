@@ -79,7 +79,7 @@ public class MapActivity extends RoboFragmentActivity implements LocationListene
     private Road road;
     private ProgressDialog progressDialog;
     private LatLng selectedPoint;
-    private Location lastknownLocation;
+    private Location lastKnownLocation;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,6 +90,7 @@ public class MapActivity extends RoboFragmentActivity implements LocationListene
         map.getUiSettings().setZoomControlsEnabled(false);
 
         final Intent intent = getIntent();
+
         if (isInRouteMode) {
             final String fromAddress = intent.getStringExtra("fromAddress");
             final String toAddress = intent.getStringExtra("toAddress");
@@ -123,7 +124,7 @@ public class MapActivity extends RoboFragmentActivity implements LocationListene
 
         setButtonsListeners();
 
-        if (locationManager != null) {
+        if (locationManager != null) {    //request location updates
             boolean gpsIsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             boolean networkIsEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
@@ -233,12 +234,12 @@ public class MapActivity extends RoboFragmentActivity implements LocationListene
                 mListener.onLocationChanged(location);
 
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                if (lastknownLocation == null) {
+                if (lastKnownLocation == null) {
                     map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, MAP_ZOOM_LEVEL));
                 } else {
                     map.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                 }
-                lastknownLocation = location;
+                lastKnownLocation = location;
             }
         } finally {
             if (progressDialog != null) {
