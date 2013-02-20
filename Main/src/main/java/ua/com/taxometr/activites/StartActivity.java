@@ -63,8 +63,8 @@ public class StartActivity extends RoboActivity {
     @Inject
     private LocationManager locationManager;
 
-    private static String fromAddress = "Днепропетровск, пр. Карла Маркса 88";     //uncomment this for debug. If needed
-    private static String toAddress = "Днепропетровск, ул. Артема 3";
+    private static String fromAddress;// = "Днепропетровск, пр. Карла Маркса 88";     //uncomment this for debug. If needed
+    private static String toAddress;// = "Днепропетровск, ул. Артема 3";
 
     final private ArrayList<HashMap<String, Object>> menuItems = new ArrayList<HashMap<String, Object>>();
     private static final String ITEMKEY = "menu_item";
@@ -80,7 +80,7 @@ public class StartActivity extends RoboActivity {
     private ListView menuListView;
 
     @Inject
-    private LocationHelper locationHelper;
+    protected LocationHelper locationHelper;
 
     /**
      * Shown when determining city
@@ -144,7 +144,7 @@ public class StartActivity extends RoboActivity {
             }
         });
 
-//        btnCalcRoute.setEnabled(false);         //comment this for debug
+        btnCalcRoute.setEnabled(false);         //comment this for debug
         new Thread(new Runnable() {
             @Override
             public void run() {
