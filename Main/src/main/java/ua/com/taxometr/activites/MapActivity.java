@@ -73,7 +73,7 @@ public class MapActivity extends RoboFragmentActivity implements LocationListene
     private ImageButton myLocationBtn;
 
     @Inject
-    private LocationHelperInterface locationHelper;
+    protected LocationHelperInterface locationHelper;
 
 
     private Road road;
