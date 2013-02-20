@@ -11,8 +11,6 @@
 
     <modules>
         <module>Main</module>
-        <module>Taxometr-it</module>
-        <module>Parsers</module>
     </modules>
 
     <repositories>

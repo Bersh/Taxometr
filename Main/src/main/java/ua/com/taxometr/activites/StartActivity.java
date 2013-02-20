@@ -314,6 +314,7 @@ public class StartActivity extends RoboActivity {
             public void onFinish() {
                 if (progressDialog != null) {
                     progressDialog.dismiss();
+                    progressDialog = null;
 
                     if (locationManager != null && locationTrackingListener != null) {
                         locationManager.removeUpdates(locationTrackingListener);

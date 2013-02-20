@@ -199,6 +199,7 @@ public class SelectAddressActivity extends RoboActivity {
             } finally {
                 locationManager.removeUpdates(this);
                 progressDialog.dismiss();
+                progressDialog = null;
             }
         }
 

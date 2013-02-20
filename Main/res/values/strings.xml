@@ -57,7 +57,7 @@
     <string name="btn_cancel_text">Cancel</string>
     <!--/CallActivity-->
 
-    <!--GoogleMapActivity-->
+    <!--MapActivity-->
     <string name="btn_accept">Accept</string>
     <string name="btn_zoom_in_content_descriptor">btn_zoom_in image</string>
     <string name="btn_zoom_out_content_descriptor">btn_zoom_out image</string>
@@ -65,7 +65,7 @@
     <string name="err_cant_determine_coordinates_by_address">Can not determine coordinates by given address.</string>
     <string name="err_gps_location_provider_is_not_available">GPS location provider is not available</string>
     <!--<string name="err_gps_location_provider_is_not_available">GPS location provider is not available</string>-->
-    <!--/GoogleMapActivity-->
+    <!--/MapActivity-->
 
     <!--Global-->
     <string name="dlg_progress_obtaining_location">Obtaining your location…</string>

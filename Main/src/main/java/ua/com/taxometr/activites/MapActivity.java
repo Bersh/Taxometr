@@ -46,7 +46,7 @@ import static ua.com.taxometr.helpers.LocationHelperInterface.LOGTAG;
  * @author ibershadskiy <a href="mailto:iBersh20@gmail.com">Ilya Bershadskiy</a>
  * @since 11.02.13
  */
-@ContentView(R.layout.google_map_view)
+@ContentView(R.layout.map_view)
 public class MapActivity extends RoboFragmentActivity implements LocationListener, LocationSource {
 
     private static final String CLASSTAG = MapActivity.class.getSimpleName();
@@ -61,7 +61,7 @@ public class MapActivity extends RoboFragmentActivity implements LocationListene
     private LocationSource.OnLocationChangedListener mListener;
 
     @Inject
-    private LocationManager locationManager;
+    protected LocationManager locationManager;
 
     @InjectExtra(value = "isRouteMode", optional = true)
     private boolean isInRouteMode = false;  //activity started to display route?
@@ -191,6 +191,7 @@ public class MapActivity extends RoboFragmentActivity implements LocationListene
 
         if (progressDialog != null) {
             progressDialog.dismiss();
+            progressDialog = null;
         }
         super.onPause();
     }
@@ -244,6 +245,7 @@ public class MapActivity extends RoboFragmentActivity implements LocationListene
         } finally {
             if (progressDialog != null) {
                 progressDialog.dismiss();
+                progressDialog = null;
             }
         }
     }
