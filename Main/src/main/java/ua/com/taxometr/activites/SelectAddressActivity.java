@@ -2,7 +2,6 @@ package ua.com.taxometr.activites;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
@@ -198,8 +197,10 @@ public class SelectAddressActivity extends RoboActivity {
                         Toast.LENGTH_LONG).show();
             } finally {
                 locationManager.removeUpdates(this);
-                progressDialog.dismiss();
-                progressDialog = null;
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                    progressDialog = null;
+                }
             }
         }
 

@@ -18,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import com.google.inject.Inject;
-import de.akquinet.android.androlog.Log;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
@@ -232,6 +231,11 @@ public class StartActivity extends RoboActivity {
                 final Address address = locationHelper.getAddressByCoordinates(loc.getLatitude(), loc.getLongitude(), StartActivity.this);
                 final SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
                 final SharedPreferences.Editor editor = prefs.edit();
+                if((address == null) || (address.getAddressLine(1) == null)) {
+                    Toast.makeText(StartActivity.this, getString(R.string.err_geocoder_not_available),
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
                 editor.putString(CITY_KEY, address.getAddressLine(1));
                 editor.putString(COUNTRY_KEY, address.getAddressLine(3));
                 editor.putBoolean(IS_CALLED_FROM_START_ACTIVITY_KEY, true);

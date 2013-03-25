@@ -71,5 +71,6 @@
     <string name="dlg_progress_obtaining_location">Obtaining your location…</string>
     <string name="err_gps_not_available">Cannot determine your location, the GPS location provider is not available.</string>
     <string name="err_geocoder_not_available">Can not determine your location, Geocoder service is not available.</string>
+    <string name="err_map_not_available">Something wrong. Map is not available.</string>
     <!--/Global-->
 </resources>

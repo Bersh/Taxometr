@@ -86,6 +86,11 @@ public class MapActivity extends RoboFragmentActivity implements LocationListene
         super.onCreate(savedInstanceState);
 
         map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+        if((map == null) || (map.getUiSettings() == null)) {
+            Log.e(LocationHelper.LOGTAG, CLASSTAG + " " + R.string.err_map_not_available);
+            finish();
+            return;
+        }
         map.getUiSettings().setMyLocationButtonEnabled(false);
         map.getUiSettings().setZoomControlsEnabled(false);
 

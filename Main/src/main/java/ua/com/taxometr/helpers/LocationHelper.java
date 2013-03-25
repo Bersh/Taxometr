@@ -34,11 +34,11 @@ public class LocationHelper implements LocationHelperInterface {
     @Override
     public Address getAddressByCoordinates(double latitude, double longitude, Context context) {
         final Geocoder geocoder = new Geocoder(context);
-        FutureTask<Address> getLocationByGeoPointTask = new FutureTask<Address>(new GetLocationByCoordinatesTask(latitude, longitude, geocoder));
+        final FutureTask<Address> getLocationByGeoPointTask = new FutureTask<Address>(new GetLocationByCoordinatesTask(latitude, longitude, geocoder));
         new Thread(getLocationByGeoPointTask).start();
         Address address = null;
         try {
-            address = getLocationByGeoPointTask.get(5, TimeUnit.SECONDS);
+            address = getLocationByGeoPointTask.get(10, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             getLocationByGeoPointTask.cancel(true);
             Log.d(LOGTAG, e.getMessage());
@@ -181,11 +181,11 @@ public class LocationHelper implements LocationHelperInterface {
     /**
      * Retrieves address from {@link android.location.Geocoder}  by given latitude, longitude
      */
-    private class GetLocationByCoordinatesTask implements Callable<Address> {
+    private static class GetLocationByCoordinatesTask implements Callable<Address> {
         private final double latitude;
         private final double longitude;
         private final Geocoder geocoder;
-
+                                                                   `
         GetLocationByCoordinatesTask(double latitude, double longitude, Geocoder geocoder) {
             this.latitude = latitude;
             this.longitude = longitude;
