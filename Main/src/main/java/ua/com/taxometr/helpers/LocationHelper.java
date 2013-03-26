@@ -185,7 +185,7 @@ public class LocationHelper implements LocationHelperInterface {
         private final double latitude;
         private final double longitude;
         private final Geocoder geocoder;
-                                                                   `
+
         GetLocationByCoordinatesTask(double latitude, double longitude, Geocoder geocoder) {
             this.latitude = latitude;
             this.longitude = longitude;
