@@ -5,7 +5,7 @@
 
     <groupId>ua.com.taxometr</groupId>
     <artifactId>Taxometr-parent</artifactId>
-    <version>0.5.5</version>
+    <version>0.5.6</version>
     <packaging>pom</packaging>
     <name>Taxometr - Parent</name>
 
